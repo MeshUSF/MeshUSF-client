@@ -37,7 +37,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  flutter_blue_plus: ^2.1.0
+  flutter_blue_plus: ^2.3.14
   # TODO: Switch to official flserial repo once changes are upstreamed
   flserial:
     git:

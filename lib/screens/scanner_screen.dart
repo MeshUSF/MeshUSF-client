@@ -207,15 +207,19 @@ class _ScannerScreenState extends State<ScannerScreen> {
   }
 
   void _toggleScan(MeshCoreConnector connector) {
-    if (PlatformInfo.isWeb) {
-      // flutter_blue_plus has no web backend, so a BLE scan silently no-ops in
-      // the browser. Tell the user instead of leaving them staring at a button.
-      showDismissibleSnackBar(
-        context,
-        content: Text(context.l10n.scanner_bluetoothWebUnsupported),
-      );
-      return;
-    }
+    // if (PlatformInfo.isWeb) {
+    //   // flutter_blue_plus has no web backend, so a BLE scan silently no-ops in
+    //   // the browser. Tell the user instead of leaving them staring at a button.
+    //   showDismissibleSnackBar(
+    //     context,
+    //     content: Text(context.l10n.scanner_bluetoothWebUnsupported),
+    //   );
+    //   return;
+    // }   
+
+    // the meshcore open devs put this guardrail to prevent connection over ble on the web but I am not sure why? I removed it and
+    // I was able to connect over ble. Need to investigate as to why.
+    
     if (connector.state == MeshCoreConnectionState.scanning) {
       connector.stopScan();
     } else {
