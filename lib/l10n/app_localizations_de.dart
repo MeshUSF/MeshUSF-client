@@ -4802,6 +4802,15 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wenn die Kontaktliste voll ist, wird der älteste nicht favorisierte Kontakt ersetzt.';
 
   @override
+  String get contactsSettings_evictDiscoveredContactsTitle =>
+      'Liste entdeckter Kontakte kürzen';
+
+  @override
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'Wenn aktiviert, wird die Liste der entdeckten Kontakte auf $limit Kontakte begrenzt.';
+  }
+
+  @override
   String get discoveredContacts_Title => 'Entdeckte Kontakte';
 
   @override

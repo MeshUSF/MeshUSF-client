@@ -180,7 +180,7 @@ class MeshCoreConnector extends ChangeNotifier {
   // continuously from the whole mesh, so without a bound this list grows for
   // as long as the app stays connected. When full, the stalest node (oldest
   // lastSeen) is evicted to make room for a newly heard one.
-  static const int _maxDiscoveredContacts = 500;
+  static const int maxDiscoveredContacts = 500;
 
   MeshCoreConnectionState _state = MeshCoreConnectionState.disconnected;
   BluetoothDevice? _device;
@@ -1356,16 +1356,32 @@ class MeshCoreConnector extends ChangeNotifier {
 
   Future<void> _loadDiscoveredContactCache() async {
     final cached = await _discoveryContactStore.loadContacts();
-    // Trim a previously-saved oversized list down to the freshest entries so a
-    // device that grew unbounded before the cap existed recovers on load.
-    if (cached.length > _maxDiscoveredContacts) {
-      cached.sort((a, b) => b.lastSeen.compareTo(a.lastSeen));
-      cached.removeRange(_maxDiscoveredContacts, cached.length);
+    // When eviction is enabled, trim a previously-saved oversized list down to
+    // the freshest entries so a device that grew unbounded before the cap
+    // existed recovers on load.
+    if (_evictDiscoveredContactsEnabled &&
+        _trimDiscoveredContactsToLimit(cached)) {
       unawaited(_discoveryContactStore.saveContacts(cached));
     }
     _discoveredContacts
       ..clear()
       ..addAll(cached);
+  }
+
+  bool get _evictDiscoveredContactsEnabled =>
+      _appSettingsService?.settings.evictDiscoveredContactsEnabled ?? true;
+
+  bool _trimDiscoveredContactsToLimit(List<Contact> contacts) {
+    if (contacts.length <= maxDiscoveredContacts) return false;
+    contacts.sort((a, b) => b.lastSeen.compareTo(a.lastSeen));
+    contacts.removeRange(maxDiscoveredContacts, contacts.length);
+    return true;
+  }
+
+  Future<void> trimDiscoveredContactsToLimit() async {
+    if (!_trimDiscoveredContactsToLimit(_discoveredContacts)) return;
+    await _persistDiscoveredContacts();
+    notifyListeners();
   }
 
   Future<void> loadChannelSettings({int? maxChannels}) async {
@@ -8182,8 +8198,10 @@ class MeshCoreConnector extends ChangeNotifier {
       flags: 0,
     );
 
-    if (_discoveredContacts.length >= _maxDiscoveredContacts) {
-      _evictStalestDiscoveredContact();
+    if (_evictDiscoveredContactsEnabled) {
+      while (_discoveredContacts.length >= maxDiscoveredContacts) {
+        _evictStalestDiscoveredContact();
+      }
     }
     _discoveredContacts.add(disContact);
 

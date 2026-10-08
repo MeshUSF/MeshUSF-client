@@ -4565,6 +4565,15 @@ class AppLocalizationsKo extends AppLocalizations {
       '연락처 목록이 가득 차면, 가장 오래된 (선호하지 않은) 연락처가 대체됩니다.';
 
   @override
+  String get contactsSettings_evictDiscoveredContactsTitle =>
+      'Evict discovered contacts';
+
+  @override
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+  }
+
+  @override
   String get discoveredContacts_Title => '연락처 찾기';
 
   @override

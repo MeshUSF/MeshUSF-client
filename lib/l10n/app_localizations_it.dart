@@ -4799,6 +4799,15 @@ class AppLocalizationsIt extends AppLocalizations {
       'Quando l\'elenco dei contatti è pieno, il contatto più vecchio non tra i preferiti verrà sostituito.';
 
   @override
+  String get contactsSettings_evictDiscoveredContactsTitle =>
+      'Evict discovered contacts';
+
+  @override
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+  }
+
+  @override
   String get discoveredContacts_Title => 'Contatti scoperti';
 
   @override

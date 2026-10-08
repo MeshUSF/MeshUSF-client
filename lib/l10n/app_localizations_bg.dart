@@ -4790,6 +4790,15 @@ class AppLocalizationsBg extends AppLocalizations {
       'Когато списъкът с контакти е пълен, най-старият неключов контакт ще бъде заменен.';
 
   @override
+  String get contactsSettings_evictDiscoveredContactsTitle =>
+      'Evict discovered contacts';
+
+  @override
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+  }
+
+  @override
   String get discoveredContacts_Title => 'Открити контакти';
 
   @override

@@ -4805,6 +4805,15 @@ class AppLocalizationsUk extends AppLocalizations {
       'Коли список контактів заповнений, найстарший контакт без позначки улюбленого буде замінений.';
 
   @override
+  String get contactsSettings_evictDiscoveredContactsTitle =>
+      'Evict discovered contacts';
+
+  @override
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+  }
+
+  @override
   String get discoveredContacts_Title => 'Виявлені контакти';
 
   @override
