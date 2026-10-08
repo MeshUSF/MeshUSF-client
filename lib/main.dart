@@ -49,6 +49,13 @@ void main() async {
     debugPrint = (String? message, {int? wrapWidth}) {};
   }
 
+  // Android 15+ forces edge-to-edge for apps targeting SDK 35; opt Android
+  // 10-14 in too so they lay out the same way under the bars. Flutter ignores
+  // this mode before Android 10, where the old layout remains.
+  if (PlatformInfo.isAndroid) {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  }
+
   // Initialize SharedPreferences cache
   await PrefsManager.initialize();
 
@@ -461,19 +468,22 @@ class _MeshCoreAppState extends State<MeshCoreApp> with WidgetsBindingObserver {
 
   SystemUiOverlayStyle _systemUiOverlayStyle(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
     final iconBrightness = isDark ? Brightness.light : Brightness.dark;
 
-    // Keep Android system bars aligned with the resolved Flutter theme.
+    // The app draws edge-to-edge, so both system bars stay transparent and
+    // their icon brightness follows the resolved Flutter theme. Contrast
+    // enforcement keeps a scrim behind three-button navigation in case a
+    // route paints a dark surface under light-theme icons; dark full-screen
+    // routes also set light icons themselves.
     return SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: iconBrightness,
       statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
-      systemNavigationBarColor: colorScheme.surface,
+      systemNavigationBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: iconBrightness,
-      systemNavigationBarDividerColor: colorScheme.surface,
-      systemNavigationBarContrastEnforced: false,
+      systemNavigationBarDividerColor: Colors.transparent,
+      systemNavigationBarContrastEnforced: true,
     );
   }
 
