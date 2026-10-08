@@ -3185,5 +3185,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "Impossible d'enregistrer l'image"
+  "receivedImage_saveFailed": "Impossible d'enregistrer l'image",
+  "reviewMode_dialogTitle": "Activer le mode revue ?",
+  "reviewMode_dialogBody": "Le mode revue se connecte à une radio simulée avec des contacts, canaux et messages d'exemple. Aucune radio réelle n'est nécessaire.",
+  "reviewMode_confirm": "Activer",
+  "reviewMode_cancel": "Annuler",
+  "reviewMode_banner": "Mode revue — données simulées",
+  "reviewMode_sendTest": "Envoyer un message test",
+  "reviewMode_testSent": "Un message test arrivera sous peu.",
+  "reviewMode_exit": "Quitter",
+  "reviewMode_connectFailed": "Impossible de démarrer le mode revue : {error}"
 }

@@ -3051,5 +3051,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "Não foi possível guardar a imagem"
+  "receivedImage_saveFailed": "Não foi possível guardar a imagem",
+  "reviewMode_dialogTitle": "Entrar no modo de revisão?",
+  "reviewMode_dialogBody": "O modo de revisão conecta-se a um rádio simulado com contatos, canais e mensagens de exemplo. Não é necessário um rádio real.",
+  "reviewMode_confirm": "Entrar",
+  "reviewMode_cancel": "Cancelar",
+  "reviewMode_banner": "Modo de revisão — dados simulados",
+  "reviewMode_sendTest": "Enviar mensagem de teste",
+  "reviewMode_testSent": "Uma mensagem de teste chegará em breve.",
+  "reviewMode_exit": "Sair",
+  "reviewMode_connectFailed": "Não foi possível iniciar o modo de revisão: {error}"
 }

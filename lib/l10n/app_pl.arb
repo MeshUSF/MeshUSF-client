@@ -3090,5 +3090,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "Nie udało się zapisać obrazu"
+  "receivedImage_saveFailed": "Nie udało się zapisać obrazu",
+  "reviewMode_dialogTitle": "Włączyć tryb recenzji?",
+  "reviewMode_dialogBody": "Tryb recenzji łączy się z symulowanym radiem z przykładowymi kontaktami, kanałami i wiadomościami. Prawdziwe radio nie jest potrzebne.",
+  "reviewMode_confirm": "Włącz",
+  "reviewMode_cancel": "Anuluj",
+  "reviewMode_banner": "Tryb recenzji — dane symulowane",
+  "reviewMode_sendTest": "Wyślij wiadomość testową",
+  "reviewMode_testSent": "Wiadomość testowa wkrótce nadejdzie.",
+  "reviewMode_exit": "Wyjdź",
+  "reviewMode_connectFailed": "Nie udało się uruchomić trybu recenzji: {error}"
 }

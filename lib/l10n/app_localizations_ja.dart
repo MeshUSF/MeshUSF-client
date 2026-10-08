@@ -5215,4 +5215,34 @@ class AppLocalizationsJa extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return '158バイトを超える場合：最大 $count 回まで送信されます';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'レビューモードに入りますか？';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'レビューモードでは、サンプルの連絡先、チャンネル、メッセージを備えたシミュレートされたデバイスに接続します。実際のデバイスは不要です。';
+
+  @override
+  String get reviewMode_confirm => '開始';
+
+  @override
+  String get reviewMode_cancel => 'キャンセル';
+
+  @override
+  String get reviewMode_banner => 'レビューモード — シミュレーションデータ';
+
+  @override
+  String get reviewMode_sendTest => 'テストメッセージを送信';
+
+  @override
+  String get reviewMode_testSent => 'まもなくテストメッセージが届きます。';
+
+  @override
+  String get reviewMode_exit => '終了';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'レビューモードを開始できませんでした: $error';
+  }
 }

@@ -5494,4 +5494,34 @@ class AppLocalizationsDe extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return 'Über 158 Byte: wird höchstens $count Mal gesendet';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Prüfmodus aktivieren?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Der Prüfmodus verbindet sich mit einem simulierten Radio mit Beispielkontakten, Kanälen und Nachrichten. Es wird kein echtes Radio benötigt.';
+
+  @override
+  String get reviewMode_confirm => 'Aktivieren';
+
+  @override
+  String get reviewMode_cancel => 'Abbrechen';
+
+  @override
+  String get reviewMode_banner => 'Prüfmodus — simulierte Daten';
+
+  @override
+  String get reviewMode_sendTest => 'Testnachricht senden';
+
+  @override
+  String get reviewMode_testSent => 'Eine Testnachricht trifft in Kürze ein.';
+
+  @override
+  String get reviewMode_exit => 'Beenden';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Prüfmodus konnte nicht gestartet werden: $error';
+  }
 }

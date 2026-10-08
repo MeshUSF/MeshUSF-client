@@ -5451,4 +5451,34 @@ class AppLocalizationsNl extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return 'Meer dan 158 bytes: maximaal $count keer verzonden';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Beoordelingsmodus starten?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'De beoordelingsmodus maakt verbinding met een gesimuleerde radio met voorbeeldcontacten, kanalen en berichten. Een echte radio is niet nodig.';
+
+  @override
+  String get reviewMode_confirm => 'Starten';
+
+  @override
+  String get reviewMode_cancel => 'Annuleren';
+
+  @override
+  String get reviewMode_banner => 'Beoordelingsmodus — gesimuleerde gegevens';
+
+  @override
+  String get reviewMode_sendTest => 'Testbericht sturen';
+
+  @override
+  String get reviewMode_testSent => 'Er komt zo een testbericht binnen.';
+
+  @override
+  String get reviewMode_exit => 'Afsluiten';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Beoordelingsmodus kon niet worden gestart: $error';
+  }
 }

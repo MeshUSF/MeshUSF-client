@@ -3052,5 +3052,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "Kunde inte spara bilden"
+  "receivedImage_saveFailed": "Kunde inte spara bilden",
+  "reviewMode_dialogTitle": "Aktivera granskningsläge?",
+  "reviewMode_dialogBody": "Granskningsläget ansluter till en simulerad radio med exempelkontakter, kanaler och meddelanden. Ingen riktig radio behövs.",
+  "reviewMode_confirm": "Aktivera",
+  "reviewMode_cancel": "Avbryt",
+  "reviewMode_banner": "Granskningsläge — simulerad data",
+  "reviewMode_sendTest": "Skicka testmeddelande",
+  "reviewMode_testSent": "Ett testmeddelande kommer snart.",
+  "reviewMode_exit": "Avsluta",
+  "reviewMode_connectFailed": "Det gick inte att starta granskningsläget: {error}"
 }

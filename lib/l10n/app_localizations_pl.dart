@@ -5511,4 +5511,34 @@ class AppLocalizationsPl extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return 'Powyżej 158 bajtów: wysyłane maksymalnie $count razy';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Włączyć tryb recenzji?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Tryb recenzji łączy się z symulowanym radiem z przykładowymi kontaktami, kanałami i wiadomościami. Prawdziwe radio nie jest potrzebne.';
+
+  @override
+  String get reviewMode_confirm => 'Włącz';
+
+  @override
+  String get reviewMode_cancel => 'Anuluj';
+
+  @override
+  String get reviewMode_banner => 'Tryb recenzji — dane symulowane';
+
+  @override
+  String get reviewMode_sendTest => 'Wyślij wiadomość testową';
+
+  @override
+  String get reviewMode_testSent => 'Wiadomość testowa wkrótce nadejdzie.';
+
+  @override
+  String get reviewMode_exit => 'Wyjdź';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Nie udało się uruchomić trybu recenzji: $error';
+  }
 }

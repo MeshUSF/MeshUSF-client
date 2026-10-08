@@ -5225,4 +5225,34 @@ class AppLocalizationsKo extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return '158바이트 초과 시: 최대 $count회 전송됩니다';
   }
+
+  @override
+  String get reviewMode_dialogTitle => '검토 모드로 들어갈까요?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      '검토 모드는 샘플 연락처, 채널, 메시지가 있는 시뮬레이션 기기에 연결합니다. 실제 기기는 필요하지 않습니다.';
+
+  @override
+  String get reviewMode_confirm => '들어가기';
+
+  @override
+  String get reviewMode_cancel => '취소';
+
+  @override
+  String get reviewMode_banner => '검토 모드 — 시뮬레이션 데이터';
+
+  @override
+  String get reviewMode_sendTest => '테스트 메시지 보내기';
+
+  @override
+  String get reviewMode_testSent => '잠시 후 테스트 메시지가 도착합니다.';
+
+  @override
+  String get reviewMode_exit => '나가기';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return '검토 모드를 시작할 수 없습니다: $error';
+  }
 }

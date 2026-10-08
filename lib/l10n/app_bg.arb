@@ -3051,5 +3051,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "Изображението не можа да бъде запазено"
+  "receivedImage_saveFailed": "Изображението не можа да бъде запазено",
+  "reviewMode_dialogTitle": "Вход в режим за преглед?",
+  "reviewMode_dialogBody": "Режимът за преглед се свързва със симулирано радио с примерни контакти, канали и съобщения. Не е нужно реално радио.",
+  "reviewMode_confirm": "Вход",
+  "reviewMode_cancel": "Отказ",
+  "reviewMode_banner": "Режим за преглед — симулирани данни",
+  "reviewMode_sendTest": "Тестово съобщение",
+  "reviewMode_testSent": "Скоро ще пристигне тестово съобщение.",
+  "reviewMode_exit": "Изход",
+  "reviewMode_connectFailed": "Режимът за преглед не можа да се стартира: {error}"
 }

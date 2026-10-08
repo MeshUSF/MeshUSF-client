@@ -5473,4 +5473,34 @@ class AppLocalizationsHu extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return '158 bájt felett: legfeljebb $count alkalommal küldve';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Belép az áttekintő módba?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Az áttekintő mód egy szimulált rádióhoz csatlakozik, mintakapcsolatokkal, csatornákkal és üzenetekkel. Nincs szükség valódi rádióra.';
+
+  @override
+  String get reviewMode_confirm => 'Belépés';
+
+  @override
+  String get reviewMode_cancel => 'Mégsem';
+
+  @override
+  String get reviewMode_banner => 'Áttekintő mód — szimulált adatok';
+
+  @override
+  String get reviewMode_sendTest => 'Tesztüzenet küldése';
+
+  @override
+  String get reviewMode_testSent => 'Hamarosan megérkezik egy tesztüzenet.';
+
+  @override
+  String get reviewMode_exit => 'Kilépés';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Az áttekintő mód nem indítható el: $error';
+  }
 }

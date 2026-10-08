@@ -3090,5 +3090,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "A képet nem sikerült elmenteni"
+  "receivedImage_saveFailed": "A képet nem sikerült elmenteni",
+  "reviewMode_dialogTitle": "Belép az áttekintő módba?",
+  "reviewMode_dialogBody": "Az áttekintő mód egy szimulált rádióhoz csatlakozik, mintakapcsolatokkal, csatornákkal és üzenetekkel. Nincs szükség valódi rádióra.",
+  "reviewMode_confirm": "Belépés",
+  "reviewMode_cancel": "Mégsem",
+  "reviewMode_banner": "Áttekintő mód — szimulált adatok",
+  "reviewMode_sendTest": "Tesztüzenet küldése",
+  "reviewMode_testSent": "Hamarosan megérkezik egy tesztüzenet.",
+  "reviewMode_exit": "Kilépés",
+  "reviewMode_connectFailed": "Az áttekintő mód nem indítható el: {error}"
 }

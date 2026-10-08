@@ -5477,4 +5477,34 @@ class AppLocalizationsBg extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return 'Над 158 байта: изпраща се най-много $count пъти';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Вход в режим за преглед?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Режимът за преглед се свързва със симулирано радио с примерни контакти, канали и съобщения. Не е нужно реално радио.';
+
+  @override
+  String get reviewMode_confirm => 'Вход';
+
+  @override
+  String get reviewMode_cancel => 'Отказ';
+
+  @override
+  String get reviewMode_banner => 'Режим за преглед — симулирани данни';
+
+  @override
+  String get reviewMode_sendTest => 'Тестово съобщение';
+
+  @override
+  String get reviewMode_testSent => 'Скоро ще пристигне тестово съобщение.';
+
+  @override
+  String get reviewMode_exit => 'Изход';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Режимът за преглед не можа да се стартира: $error';
+  }
 }

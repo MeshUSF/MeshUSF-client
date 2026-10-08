@@ -5489,4 +5489,34 @@ class AppLocalizationsIt extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return 'Oltre 158 byte: inviato al massimo $count volte';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Entrare nella modalità revisione?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'La modalità revisione si connette a una radio simulata con contatti, canali e messaggi di esempio. Non serve una radio reale.';
+
+  @override
+  String get reviewMode_confirm => 'Entra';
+
+  @override
+  String get reviewMode_cancel => 'Annulla';
+
+  @override
+  String get reviewMode_banner => 'Modalità revisione — dati simulati';
+
+  @override
+  String get reviewMode_sendTest => 'Invia messaggio di prova';
+
+  @override
+  String get reviewMode_testSent => 'A breve arriverà un messaggio di prova.';
+
+  @override
+  String get reviewMode_exit => 'Esci';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Impossibile avviare la modalità revisione: $error';
+  }
 }

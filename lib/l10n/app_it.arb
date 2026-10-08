@@ -3185,5 +3185,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "Impossibile salvare l'immagine"
+  "receivedImage_saveFailed": "Impossibile salvare l'immagine",
+  "reviewMode_dialogTitle": "Entrare nella modalità revisione?",
+  "reviewMode_dialogBody": "La modalità revisione si connette a una radio simulata con contatti, canali e messaggi di esempio. Non serve una radio reale.",
+  "reviewMode_confirm": "Entra",
+  "reviewMode_cancel": "Annulla",
+  "reviewMode_banner": "Modalità revisione — dati simulati",
+  "reviewMode_sendTest": "Invia messaggio di prova",
+  "reviewMode_testSent": "A breve arriverà un messaggio di prova.",
+  "reviewMode_exit": "Esci",
+  "reviewMode_connectFailed": "Impossibile avviare la modalità revisione: {error}"
 }

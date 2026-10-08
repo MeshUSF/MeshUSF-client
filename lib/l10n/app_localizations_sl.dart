@@ -5464,4 +5464,34 @@ class AppLocalizationsSl extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return 'Nad 158 bajtov: poslano največ $count-krat';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Vstop v način pregleda?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Način pregleda se poveže s simuliranim radiem z vzorčnimi stiki, kanali in sporočili. Pravi radio ni potreben.';
+
+  @override
+  String get reviewMode_confirm => 'Vstopi';
+
+  @override
+  String get reviewMode_cancel => 'Prekliči';
+
+  @override
+  String get reviewMode_banner => 'Način pregleda — simulirani podatki';
+
+  @override
+  String get reviewMode_sendTest => 'Pošlji testno sporočilo';
+
+  @override
+  String get reviewMode_testSent => 'Kmalu bo prispelo testno sporočilo.';
+
+  @override
+  String get reviewMode_exit => 'Izhod';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Načina pregleda ni bilo mogoče zagnati: $error';
+  }
 }

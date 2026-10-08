@@ -3031,5 +3031,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "Не вдалося зберегти зображення"
+  "receivedImage_saveFailed": "Не вдалося зберегти зображення",
+  "reviewMode_dialogTitle": "Увійти в режим перевірки?",
+  "reviewMode_dialogBody": "Режим перевірки підключається до імітованого радіо із прикладами контактів, каналів і повідомлень. Справжнє радіо не потрібне.",
+  "reviewMode_confirm": "Увійти",
+  "reviewMode_cancel": "Скасувати",
+  "reviewMode_banner": "Режим перевірки — імітовані дані",
+  "reviewMode_sendTest": "Тестове повідомлення",
+  "reviewMode_testSent": "Незабаром надійде тестове повідомлення.",
+  "reviewMode_exit": "Вийти",
+  "reviewMode_connectFailed": "Не вдалося запустити режим перевірки: {error}"
 }

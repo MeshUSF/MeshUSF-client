@@ -3186,5 +3186,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "Das Bild konnte nicht gespeichert werden"
+  "receivedImage_saveFailed": "Das Bild konnte nicht gespeichert werden",
+  "reviewMode_dialogTitle": "Prüfmodus aktivieren?",
+  "reviewMode_dialogBody": "Der Prüfmodus verbindet sich mit einem simulierten Radio mit Beispielkontakten, Kanälen und Nachrichten. Es wird kein echtes Radio benötigt.",
+  "reviewMode_confirm": "Aktivieren",
+  "reviewMode_cancel": "Abbrechen",
+  "reviewMode_banner": "Prüfmodus — simulierte Daten",
+  "reviewMode_sendTest": "Testnachricht senden",
+  "reviewMode_testSent": "Eine Testnachricht trifft in Kürze ein.",
+  "reviewMode_exit": "Beenden",
+  "reviewMode_connectFailed": "Prüfmodus konnte nicht gestartet werden: {error}"
 }

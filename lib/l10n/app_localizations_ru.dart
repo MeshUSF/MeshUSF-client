@@ -5497,4 +5497,34 @@ class AppLocalizationsRu extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return 'Более 158 байт: отправляется не более $count раз';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Войти в режим проверки?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Режим проверки подключается к имитируемому радио с примерами контактов, каналов и сообщений. Реальное радио не требуется.';
+
+  @override
+  String get reviewMode_confirm => 'Войти';
+
+  @override
+  String get reviewMode_cancel => 'Отмена';
+
+  @override
+  String get reviewMode_banner => 'Режим проверки — имитация данных';
+
+  @override
+  String get reviewMode_sendTest => 'Тестовое сообщение';
+
+  @override
+  String get reviewMode_testSent => 'Скоро придёт тестовое сообщение.';
+
+  @override
+  String get reviewMode_exit => 'Выйти';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Не удалось запустить режим проверки: $error';
+  }
 }

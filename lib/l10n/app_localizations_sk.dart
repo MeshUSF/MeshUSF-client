@@ -5460,4 +5460,34 @@ class AppLocalizationsSk extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return 'Nad 158 bajtov: odoslané najviac $count-krát';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Vstúpiť do režimu kontroly?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Režim kontroly sa pripojí k simulovanému rádiu s ukážkovými kontaktmi, kanálmi a správami. Skutočné rádio nie je potrebné.';
+
+  @override
+  String get reviewMode_confirm => 'Vstúpiť';
+
+  @override
+  String get reviewMode_cancel => 'Zrušiť';
+
+  @override
+  String get reviewMode_banner => 'Režim kontroly — simulované údaje';
+
+  @override
+  String get reviewMode_sendTest => 'Poslať testovaciu správu';
+
+  @override
+  String get reviewMode_testSent => 'Čoskoro príde testovacia správa.';
+
+  @override
+  String get reviewMode_exit => 'Ukončiť';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Režim kontroly sa nepodarilo spustiť: $error';
+  }
 }
