@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+import 'review_mode/review_mode_storage.dart';
 import 'screens/chrome_required_screen.dart';
 import 'utils/platform_info.dart';
 
@@ -73,6 +74,8 @@ void main() async {
   // `appSettingsService.settings`, so this cannot stay where it used to be
   // (after the constructions) without those two starting out wrong.
   await appSettingsService.loadSettings();
+  // Undo a review-mode session the app was killed in before it could exit.
+  await endReviewModeSession(appSettingsService);
 
   // ---- image messages (AEIC over GRP_DATA) --------------------------------
   // The codec owns the ONNX decoder; the store owns received-image state and

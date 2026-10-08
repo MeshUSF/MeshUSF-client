@@ -9297,6 +9297,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Over 158 bytes: sent at most {count} times'**
   String chat_longMessageRetryNote(int count);
+
+  /// Title of the review mode confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enter review mode?'**
+  String get reviewMode_dialogTitle;
+
+  /// Body of the review mode confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.'**
+  String get reviewMode_dialogBody;
+
+  /// Confirm button of the review mode dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enter'**
+  String get reviewMode_confirm;
+
+  /// Cancel button of the review mode dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get reviewMode_cancel;
+
+  /// Label of the banner shown while review mode is active
+  ///
+  /// In en, this message translates to:
+  /// **'Review mode — simulated data'**
+  String get reviewMode_banner;
+
+  /// Banner action that makes the simulated radio deliver a message
+  ///
+  /// In en, this message translates to:
+  /// **'Send test message'**
+  String get reviewMode_sendTest;
+
+  /// Snackbar shown after requesting a test message
+  ///
+  /// In en, this message translates to:
+  /// **'A test message will arrive shortly.'**
+  String get reviewMode_testSent;
+
+  /// Banner action that leaves review mode
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get reviewMode_exit;
+
+  /// Snackbar shown when review mode fails to connect
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start review mode: {error}'**
+  String reviewMode_connectFailed(String error);
 }
 
 class _AppLocalizationsDelegate

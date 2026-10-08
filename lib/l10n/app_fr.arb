@@ -3185,5 +3185,14 @@
       }
     }
   },
-  "receivedImage_saveFailed": "Impossible d'enregistrer l'image"
+  "receivedImage_saveFailed": "Impossible d'enregistrer l'image",
+  "reviewMode_dialogTitle": "Enter review mode?",
+  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
+  "reviewMode_confirm": "Enter",
+  "reviewMode_cancel": "Cancel",
+  "reviewMode_banner": "Review mode — simulated data",
+  "reviewMode_sendTest": "Send test message",
+  "reviewMode_testSent": "A test message will arrive shortly.",
+  "reviewMode_exit": "Exit",
+  "reviewMode_connectFailed": "Could not start review mode: {error}"
 }

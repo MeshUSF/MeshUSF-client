@@ -2952,5 +2952,14 @@
   "notification_replyTooLong": "Je antwoord is te lang om vanuit een melding te verzenden. Verzend het vanuit MeshCore Open.",
   "notification_replyUnavailable": "Dit gesprek staat niet meer op de verbonden radio.",
   "notification_replySendFailed": "Je antwoord is mogelijk niet verzonden. Controleer dit in MeshCore Open en probeer het opnieuw.",
-  "notification_replyAppNotRunning": "MeshCore Open is niet actief. Open de app en verzend je antwoord opnieuw."
+  "notification_replyAppNotRunning": "MeshCore Open is niet actief. Open de app en verzend je antwoord opnieuw.",
+  "reviewMode_dialogTitle": "Enter review mode?",
+  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
+  "reviewMode_confirm": "Enter",
+  "reviewMode_cancel": "Cancel",
+  "reviewMode_banner": "Review mode — simulated data",
+  "reviewMode_sendTest": "Send test message",
+  "reviewMode_testSent": "A test message will arrive shortly.",
+  "reviewMode_exit": "Exit",
+  "reviewMode_connectFailed": "Could not start review mode: {error}"
 }

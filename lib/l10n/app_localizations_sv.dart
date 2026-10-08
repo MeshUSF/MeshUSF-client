@@ -5434,4 +5434,34 @@ class AppLocalizationsSv extends AppLocalizations {
   String chat_longMessageRetryNote(int count) {
     return 'Över 158 byte: skickas högst $count gånger';
   }
+
+  @override
+  String get reviewMode_dialogTitle => 'Enter review mode?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.';
+
+  @override
+  String get reviewMode_confirm => 'Enter';
+
+  @override
+  String get reviewMode_cancel => 'Cancel';
+
+  @override
+  String get reviewMode_banner => 'Review mode — simulated data';
+
+  @override
+  String get reviewMode_sendTest => 'Send test message';
+
+  @override
+  String get reviewMode_testSent => 'A test message will arrive shortly.';
+
+  @override
+  String get reviewMode_exit => 'Exit';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Could not start review mode: $error';
+  }
 }
