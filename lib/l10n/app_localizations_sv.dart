@@ -5436,32 +5436,32 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get reviewMode_dialogTitle => 'Enter review mode?';
+  String get reviewMode_dialogTitle => 'Aktivera granskningsläge?';
 
   @override
   String get reviewMode_dialogBody =>
-      'Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.';
+      'Granskningsläget ansluter till en simulerad radio med exempelkontakter, kanaler och meddelanden. Ingen riktig radio behövs.';
 
   @override
-  String get reviewMode_confirm => 'Enter';
+  String get reviewMode_confirm => 'Aktivera';
 
   @override
-  String get reviewMode_cancel => 'Cancel';
+  String get reviewMode_cancel => 'Avbryt';
 
   @override
-  String get reviewMode_banner => 'Review mode — simulated data';
+  String get reviewMode_banner => 'Granskningsläge — simulerad data';
 
   @override
-  String get reviewMode_sendTest => 'Send test message';
+  String get reviewMode_sendTest => 'Skicka testmeddelande';
 
   @override
-  String get reviewMode_testSent => 'A test message will arrive shortly.';
+  String get reviewMode_testSent => 'Ett testmeddelande kommer snart.';
 
   @override
-  String get reviewMode_exit => 'Exit';
+  String get reviewMode_exit => 'Avsluta';
 
   @override
   String reviewMode_connectFailed(String error) {
-    return 'Could not start review mode: $error';
+    return 'Det gick inte att starta granskningsläget: $error';
   }
 }

@@ -3057,13 +3057,13 @@
     }
   },
   "receivedImage_saveFailed": "无法保存图片",
-  "reviewMode_dialogTitle": "Enter review mode?",
-  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
-  "reviewMode_confirm": "Enter",
-  "reviewMode_cancel": "Cancel",
-  "reviewMode_banner": "Review mode — simulated data",
-  "reviewMode_sendTest": "Send test message",
-  "reviewMode_testSent": "A test message will arrive shortly.",
-  "reviewMode_exit": "Exit",
-  "reviewMode_connectFailed": "Could not start review mode: {error}"
+  "reviewMode_dialogTitle": "进入审核模式？",
+  "reviewMode_dialogBody": "审核模式会连接到模拟设备，其中包含示例联系人、频道和消息。无需真实设备。",
+  "reviewMode_confirm": "进入",
+  "reviewMode_cancel": "取消",
+  "reviewMode_banner": "审核模式 — 模拟数据",
+  "reviewMode_sendTest": "发送测试消息",
+  "reviewMode_testSent": "测试消息即将送达。",
+  "reviewMode_exit": "退出",
+  "reviewMode_connectFailed": "无法启动审核模式：{error}"
 }

@@ -2953,13 +2953,13 @@
   "notification_replyUnavailable": "Dit gesprek staat niet meer op de verbonden radio.",
   "notification_replySendFailed": "Je antwoord is mogelijk niet verzonden. Controleer dit in MeshCore Open en probeer het opnieuw.",
   "notification_replyAppNotRunning": "MeshCore Open is niet actief. Open de app en verzend je antwoord opnieuw.",
-  "reviewMode_dialogTitle": "Enter review mode?",
-  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
-  "reviewMode_confirm": "Enter",
-  "reviewMode_cancel": "Cancel",
-  "reviewMode_banner": "Review mode — simulated data",
-  "reviewMode_sendTest": "Send test message",
-  "reviewMode_testSent": "A test message will arrive shortly.",
-  "reviewMode_exit": "Exit",
-  "reviewMode_connectFailed": "Could not start review mode: {error}"
+  "reviewMode_dialogTitle": "Beoordelingsmodus starten?",
+  "reviewMode_dialogBody": "De beoordelingsmodus maakt verbinding met een gesimuleerde radio met voorbeeldcontacten, kanalen en berichten. Een echte radio is niet nodig.",
+  "reviewMode_confirm": "Starten",
+  "reviewMode_cancel": "Annuleren",
+  "reviewMode_banner": "Beoordelingsmodus — gesimuleerde gegevens",
+  "reviewMode_sendTest": "Testbericht sturen",
+  "reviewMode_testSent": "Er komt zo een testbericht binnen.",
+  "reviewMode_exit": "Afsluiten",
+  "reviewMode_connectFailed": "Beoordelingsmodus kon niet worden gestart: {error}"
 }

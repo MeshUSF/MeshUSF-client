@@ -5485,32 +5485,32 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get reviewMode_dialogTitle => 'Enter review mode?';
+  String get reviewMode_dialogTitle => '¿Entrar en el modo de revisión?';
 
   @override
   String get reviewMode_dialogBody =>
-      'Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.';
+      'El modo de revisión se conecta a una radio simulada con contactos, canales y mensajes de ejemplo. No se necesita una radio real.';
 
   @override
-  String get reviewMode_confirm => 'Enter';
+  String get reviewMode_confirm => 'Entrar';
 
   @override
-  String get reviewMode_cancel => 'Cancel';
+  String get reviewMode_cancel => 'Cancelar';
 
   @override
-  String get reviewMode_banner => 'Review mode — simulated data';
+  String get reviewMode_banner => 'Modo de revisión — datos simulados';
 
   @override
-  String get reviewMode_sendTest => 'Send test message';
+  String get reviewMode_sendTest => 'Enviar mensaje de prueba';
 
   @override
-  String get reviewMode_testSent => 'A test message will arrive shortly.';
+  String get reviewMode_testSent => 'En breve llegará un mensaje de prueba.';
 
   @override
-  String get reviewMode_exit => 'Exit';
+  String get reviewMode_exit => 'Salir';
 
   @override
   String reviewMode_connectFailed(String error) {
-    return 'Could not start review mode: $error';
+    return 'No se pudo iniciar el modo de revisión: $error';
   }
 }

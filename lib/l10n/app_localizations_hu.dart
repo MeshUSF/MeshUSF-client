@@ -5475,32 +5475,32 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get reviewMode_dialogTitle => 'Enter review mode?';
+  String get reviewMode_dialogTitle => 'Belép az áttekintő módba?';
 
   @override
   String get reviewMode_dialogBody =>
-      'Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.';
+      'Az áttekintő mód egy szimulált rádióhoz csatlakozik, mintakapcsolatokkal, csatornákkal és üzenetekkel. Nincs szükség valódi rádióra.';
 
   @override
-  String get reviewMode_confirm => 'Enter';
+  String get reviewMode_confirm => 'Belépés';
 
   @override
-  String get reviewMode_cancel => 'Cancel';
+  String get reviewMode_cancel => 'Mégsem';
 
   @override
-  String get reviewMode_banner => 'Review mode — simulated data';
+  String get reviewMode_banner => 'Áttekintő mód — szimulált adatok';
 
   @override
-  String get reviewMode_sendTest => 'Send test message';
+  String get reviewMode_sendTest => 'Tesztüzenet küldése';
 
   @override
-  String get reviewMode_testSent => 'A test message will arrive shortly.';
+  String get reviewMode_testSent => 'Hamarosan megérkezik egy tesztüzenet.';
 
   @override
-  String get reviewMode_exit => 'Exit';
+  String get reviewMode_exit => 'Kilépés';
 
   @override
   String reviewMode_connectFailed(String error) {
-    return 'Could not start review mode: $error';
+    return 'Az áttekintő mód nem indítható el: $error';
   }
 }

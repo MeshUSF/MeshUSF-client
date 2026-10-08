@@ -5502,32 +5502,32 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get reviewMode_dialogTitle => 'Enter review mode?';
+  String get reviewMode_dialogTitle => 'Увійти в режим перевірки?';
 
   @override
   String get reviewMode_dialogBody =>
-      'Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.';
+      'Режим перевірки підключається до імітованого радіо із прикладами контактів, каналів і повідомлень. Справжнє радіо не потрібне.';
 
   @override
-  String get reviewMode_confirm => 'Enter';
+  String get reviewMode_confirm => 'Увійти';
 
   @override
-  String get reviewMode_cancel => 'Cancel';
+  String get reviewMode_cancel => 'Скасувати';
 
   @override
-  String get reviewMode_banner => 'Review mode — simulated data';
+  String get reviewMode_banner => 'Режим перевірки — імітовані дані';
 
   @override
-  String get reviewMode_sendTest => 'Send test message';
+  String get reviewMode_sendTest => 'Тестове повідомлення';
 
   @override
-  String get reviewMode_testSent => 'A test message will arrive shortly.';
+  String get reviewMode_testSent => 'Незабаром надійде тестове повідомлення.';
 
   @override
-  String get reviewMode_exit => 'Exit';
+  String get reviewMode_exit => 'Вийти';
 
   @override
   String reviewMode_connectFailed(String error) {
-    return 'Could not start review mode: $error';
+    return 'Не вдалося запустити режим перевірки: $error';
   }
 }

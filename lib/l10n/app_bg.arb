@@ -3052,13 +3052,13 @@
     }
   },
   "receivedImage_saveFailed": "Изображението не можа да бъде запазено",
-  "reviewMode_dialogTitle": "Enter review mode?",
-  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
-  "reviewMode_confirm": "Enter",
-  "reviewMode_cancel": "Cancel",
-  "reviewMode_banner": "Review mode — simulated data",
-  "reviewMode_sendTest": "Send test message",
-  "reviewMode_testSent": "A test message will arrive shortly.",
-  "reviewMode_exit": "Exit",
-  "reviewMode_connectFailed": "Could not start review mode: {error}"
+  "reviewMode_dialogTitle": "Вход в режим за преглед?",
+  "reviewMode_dialogBody": "Режимът за преглед се свързва със симулирано радио с примерни контакти, канали и съобщения. Не е нужно реално радио.",
+  "reviewMode_confirm": "Вход",
+  "reviewMode_cancel": "Отказ",
+  "reviewMode_banner": "Режим за преглед — симулирани данни",
+  "reviewMode_sendTest": "Тестово съобщение",
+  "reviewMode_testSent": "Скоро ще пристигне тестово съобщение.",
+  "reviewMode_exit": "Изход",
+  "reviewMode_connectFailed": "Режимът за преглед не можа да се стартира: {error}"
 }

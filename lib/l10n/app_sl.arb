@@ -3053,13 +3053,13 @@
     }
   },
   "receivedImage_saveFailed": "Slike ni bilo mogoče shraniti",
-  "reviewMode_dialogTitle": "Enter review mode?",
-  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
-  "reviewMode_confirm": "Enter",
-  "reviewMode_cancel": "Cancel",
-  "reviewMode_banner": "Review mode — simulated data",
-  "reviewMode_sendTest": "Send test message",
-  "reviewMode_testSent": "A test message will arrive shortly.",
-  "reviewMode_exit": "Exit",
-  "reviewMode_connectFailed": "Could not start review mode: {error}"
+  "reviewMode_dialogTitle": "Vstop v način pregleda?",
+  "reviewMode_dialogBody": "Način pregleda se poveže s simuliranim radiem z vzorčnimi stiki, kanali in sporočili. Pravi radio ni potreben.",
+  "reviewMode_confirm": "Vstopi",
+  "reviewMode_cancel": "Prekliči",
+  "reviewMode_banner": "Način pregleda — simulirani podatki",
+  "reviewMode_sendTest": "Pošlji testno sporočilo",
+  "reviewMode_testSent": "Kmalu bo prispelo testno sporočilo.",
+  "reviewMode_exit": "Izhod",
+  "reviewMode_connectFailed": "Načina pregleda ni bilo mogoče zagnati: {error}"
 }

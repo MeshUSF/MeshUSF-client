@@ -3186,13 +3186,13 @@
     }
   },
   "receivedImage_saveFailed": "이미지를 저장할 수 없습니다",
-  "reviewMode_dialogTitle": "Enter review mode?",
-  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
-  "reviewMode_confirm": "Enter",
-  "reviewMode_cancel": "Cancel",
-  "reviewMode_banner": "Review mode — simulated data",
-  "reviewMode_sendTest": "Send test message",
-  "reviewMode_testSent": "A test message will arrive shortly.",
-  "reviewMode_exit": "Exit",
-  "reviewMode_connectFailed": "Could not start review mode: {error}"
+  "reviewMode_dialogTitle": "검토 모드로 들어갈까요?",
+  "reviewMode_dialogBody": "검토 모드는 샘플 연락처, 채널, 메시지가 있는 시뮬레이션 기기에 연결합니다. 실제 기기는 필요하지 않습니다.",
+  "reviewMode_confirm": "들어가기",
+  "reviewMode_cancel": "취소",
+  "reviewMode_banner": "검토 모드 — 시뮬레이션 데이터",
+  "reviewMode_sendTest": "테스트 메시지 보내기",
+  "reviewMode_testSent": "잠시 후 테스트 메시지가 도착합니다.",
+  "reviewMode_exit": "나가기",
+  "reviewMode_connectFailed": "검토 모드를 시작할 수 없습니다: {error}"
 }

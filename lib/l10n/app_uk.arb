@@ -3032,13 +3032,13 @@
     }
   },
   "receivedImage_saveFailed": "Не вдалося зберегти зображення",
-  "reviewMode_dialogTitle": "Enter review mode?",
-  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
-  "reviewMode_confirm": "Enter",
-  "reviewMode_cancel": "Cancel",
-  "reviewMode_banner": "Review mode — simulated data",
-  "reviewMode_sendTest": "Send test message",
-  "reviewMode_testSent": "A test message will arrive shortly.",
-  "reviewMode_exit": "Exit",
-  "reviewMode_connectFailed": "Could not start review mode: {error}"
+  "reviewMode_dialogTitle": "Увійти в режим перевірки?",
+  "reviewMode_dialogBody": "Режим перевірки підключається до імітованого радіо із прикладами контактів, каналів і повідомлень. Справжнє радіо не потрібне.",
+  "reviewMode_confirm": "Увійти",
+  "reviewMode_cancel": "Скасувати",
+  "reviewMode_banner": "Режим перевірки — імітовані дані",
+  "reviewMode_sendTest": "Тестове повідомлення",
+  "reviewMode_testSent": "Незабаром надійде тестове повідомлення.",
+  "reviewMode_exit": "Вийти",
+  "reviewMode_connectFailed": "Не вдалося запустити режим перевірки: {error}"
 }

@@ -3091,13 +3091,13 @@
     }
   },
   "receivedImage_saveFailed": "A képet nem sikerült elmenteni",
-  "reviewMode_dialogTitle": "Enter review mode?",
-  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
-  "reviewMode_confirm": "Enter",
-  "reviewMode_cancel": "Cancel",
-  "reviewMode_banner": "Review mode — simulated data",
-  "reviewMode_sendTest": "Send test message",
-  "reviewMode_testSent": "A test message will arrive shortly.",
-  "reviewMode_exit": "Exit",
-  "reviewMode_connectFailed": "Could not start review mode: {error}"
+  "reviewMode_dialogTitle": "Belép az áttekintő módba?",
+  "reviewMode_dialogBody": "Az áttekintő mód egy szimulált rádióhoz csatlakozik, mintakapcsolatokkal, csatornákkal és üzenetekkel. Nincs szükség valódi rádióra.",
+  "reviewMode_confirm": "Belépés",
+  "reviewMode_cancel": "Mégsem",
+  "reviewMode_banner": "Áttekintő mód — szimulált adatok",
+  "reviewMode_sendTest": "Tesztüzenet küldése",
+  "reviewMode_testSent": "Hamarosan megérkezik egy tesztüzenet.",
+  "reviewMode_exit": "Kilépés",
+  "reviewMode_connectFailed": "Az áttekintő mód nem indítható el: {error}"
 }

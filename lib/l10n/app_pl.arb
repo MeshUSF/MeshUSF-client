@@ -3091,13 +3091,13 @@
     }
   },
   "receivedImage_saveFailed": "Nie udało się zapisać obrazu",
-  "reviewMode_dialogTitle": "Enter review mode?",
-  "reviewMode_dialogBody": "Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.",
-  "reviewMode_confirm": "Enter",
-  "reviewMode_cancel": "Cancel",
-  "reviewMode_banner": "Review mode — simulated data",
-  "reviewMode_sendTest": "Send test message",
-  "reviewMode_testSent": "A test message will arrive shortly.",
-  "reviewMode_exit": "Exit",
-  "reviewMode_connectFailed": "Could not start review mode: {error}"
+  "reviewMode_dialogTitle": "Włączyć tryb recenzji?",
+  "reviewMode_dialogBody": "Tryb recenzji łączy się z symulowanym radiem z przykładowymi kontaktami, kanałami i wiadomościami. Prawdziwe radio nie jest potrzebne.",
+  "reviewMode_confirm": "Włącz",
+  "reviewMode_cancel": "Anuluj",
+  "reviewMode_banner": "Tryb recenzji — dane symulowane",
+  "reviewMode_sendTest": "Wyślij wiadomość testową",
+  "reviewMode_testSent": "Wiadomość testowa wkrótce nadejdzie.",
+  "reviewMode_exit": "Wyjdź",
+  "reviewMode_connectFailed": "Nie udało się uruchomić trybu recenzji: {error}"
 }
