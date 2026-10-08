@@ -1234,6 +1234,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final appSettingsService = context.read<AppSettingsService>();
     bool evictDiscoveredContactsEnabled =
         appSettingsService.settings.evictDiscoveredContactsEnabled;
+    bool saving = false;
 
     final connector = context.read<MeshCoreConnector>();
     autoAddChat = connector.autoAddUsers ?? false;
@@ -1298,8 +1299,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const Divider(height: 4),
                 FeatureToggleRow(
                   title: l10n.contactsSettings_evictDiscoveredContactsTitle,
-                  subtitle:
-                      l10n.contactsSettings_evictDiscoveredContactsSubtitle,
+                  subtitle: l10n
+                      .contactsSettings_evictDiscoveredContactsSubtitle(
+                        MeshCoreConnector.maxDiscoveredContacts,
+                      ),
                   value: evictDiscoveredContactsEnabled,
                   onChanged: (value) {
                     setDialogState(
@@ -1316,24 +1319,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Text(l10n.common_cancel),
             ),
             TextButton(
-              onPressed: () async {
-                await appSettingsService.setEvictDiscoveredContactsEnabled(
-                  evictDiscoveredContactsEnabled,
-                );
-                if (evictDiscoveredContactsEnabled) {
-                  await connector.trimDiscoveredContactsToLimit();
-                }
-                _sendSettings(
-                  connector,
-                  autoAddChat,
-                  autoAddRepeater,
-                  autoAddRoomServer,
-                  autoAddSensor,
-                  overwriteOldest,
-                );
-                if (!context.mounted) return;
-                Navigator.pop(context);
-              },
+              onPressed: saving
+                  ? null
+                  : () async {
+                      setDialogState(() => saving = true);
+                      _sendSettings(
+                        connector,
+                        autoAddChat,
+                        autoAddRepeater,
+                        autoAddRoomServer,
+                        autoAddSensor,
+                        overwriteOldest,
+                      );
+                      try {
+                        await appSettingsService
+                            .setEvictDiscoveredContactsEnabled(
+                              evictDiscoveredContactsEnabled,
+                            );
+                        if (evictDiscoveredContactsEnabled) {
+                          await connector.trimDiscoveredContactsToLimit();
+                        }
+                      } catch (e) {
+                        if (!context.mounted) return;
+                        showDismissibleSnackBar(
+                          context,
+                          content: Text(l10n.settings_error(e.toString())),
+                        );
+                        setDialogState(() => saving = false);
+                        return;
+                      }
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
+                    },
               child: Text(l10n.common_save),
             ),
           ],

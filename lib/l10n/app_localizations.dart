@@ -8215,8 +8215,8 @@ abstract class AppLocalizations {
   /// No description provided for @contactsSettings_evictDiscoveredContactsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of 500 entries.'**
-  String get contactsSettings_evictDiscoveredContactsSubtitle;
+  /// **'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of {limit} entries.'**
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit);
 
   /// No description provided for @discoveredContacts_Title.
   ///

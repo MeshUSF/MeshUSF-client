@@ -4803,11 +4803,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get contactsSettings_evictDiscoveredContactsTitle =>
-      'Kürze entdeckte Kontakte Liste';
+      'Liste entdeckter Kontakte kürzen';
 
   @override
-  String get contactsSettings_evictDiscoveredContactsSubtitle =>
-      'Wenn aktiviert, wird die Liste der entdeckten Kontackte auf 500 Kontakten begrenzt.';
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'Wenn aktiviert, wird die Liste der entdeckten Kontakte auf $limit Kontakte begrenzt.';
+  }
 
   @override
   String get discoveredContacts_Title => 'Entdeckte Kontakte';

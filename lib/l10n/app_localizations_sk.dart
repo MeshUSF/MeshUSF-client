@@ -4780,8 +4780,9 @@ class AppLocalizationsSk extends AppLocalizations {
       'Evict discovered contacts';
 
   @override
-  String get contactsSettings_evictDiscoveredContactsSubtitle =>
-      'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of 500 entries.';
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+  }
 
   @override
   String get discoveredContacts_Title => 'Objavené kontakty';

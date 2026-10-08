@@ -227,7 +227,7 @@ class AppSettings {
     this.unitSystem = UnitSystem.metric,
     Set<String>? mutedChannels,
     this.mapShowDiscoveryContacts = true,
-    this.evictDiscoveredContactsEnabled = false,
+    this.evictDiscoveredContactsEnabled = true,
     this.tcpServerAddress = '',
     this.tcpServerPort = 0,
     this.jumpToOldestUnread = false,
@@ -411,7 +411,7 @@ class AppSettings {
       mapShowDiscoveryContacts:
           json['map_show_discovery_contacts'] as bool? ?? true,
       evictDiscoveredContactsEnabled:
-          json['evict_discovered_contacts_enabled'] as bool? ?? false,
+          json['evict_discovered_contacts_enabled'] as bool? ?? true,
       tcpServerAddress: json['tcp_server_address'] as String? ?? '',
       tcpServerPort: json['tcp_server_port'] as int? ?? 0,
       jumpToOldestUnread: json['jump_to_oldest_unread'] as bool? ?? false,
