@@ -2056,6 +2056,15 @@
   "discoveredContacts_noMatching": "Brak pasujących kontaktów",
   "discoveredContacts_deleteContact": "Usuń kontakt",
   "contactsSettings_overwriteOldestSubtitle": "Gdy lista kontaktów jest pełna, najstarszy nieulubiony kontakt zostanie zastąpiony.",
+  "contactsSettings_evictDiscoveredContactsTitle": "Usuwaj odkryte kontakty",
+  "contactsSettings_evictDiscoveredContactsSubtitle": "Gdy ta opcja jest włączona, aplikacja usuwa najstarsze odkryte kontakty, gdy lista odkrytych osiągnie limit {limit} wpisów.",
+  "@contactsSettings_evictDiscoveredContactsSubtitle": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "common_deleteAll": "Usuń wszystko",
   "discoveredContacts_deleteContactAllContent": "Czy na pewno chcesz usunąć wszystkie znalezione kontakty?",
   "discoveredContacts_deleteContactAll": "Usuń wszystkie odkryte kontakty",

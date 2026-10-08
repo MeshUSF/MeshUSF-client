@@ -4807,11 +4807,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get contactsSettings_evictDiscoveredContactsTitle =>
-      'Evict discovered contacts';
+      'Удалять обнаруженные контакты';
 
   @override
   String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
-    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+    return 'Если включено, приложение удаляет самые старые обнаруженные контакты, когда список обнаруженных достигает лимита в $limit записей.';
   }
 
   @override

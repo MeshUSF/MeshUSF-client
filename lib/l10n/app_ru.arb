@@ -1187,6 +1187,15 @@
   "discoveredContacts_Title": "Обнаруженные контакты",
   "discoveredContacts_deleteContact": "Удалить контакт",
   "contactsSettings_overwriteOldestSubtitle": "Когда список контактов заполнен, будет заменен самый старый контакт, который не находится в избранном.",
+  "contactsSettings_evictDiscoveredContactsTitle": "Удалять обнаруженные контакты",
+  "contactsSettings_evictDiscoveredContactsSubtitle": "Если включено, приложение удаляет самые старые обнаруженные контакты, когда список обнаруженных достигает лимита в {limit} записей.",
+  "@contactsSettings_evictDiscoveredContactsSubtitle": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "common_deleteAll": "Удалить все",
   "discoveredContacts_deleteContactAllContent": "Вы уверены, что хотите удалить все обнаруженные контакты?",
   "discoveredContacts_deleteContactAll": "Удалить Все Обнаруженные Контакты",

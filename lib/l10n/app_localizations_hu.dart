@@ -4790,11 +4790,11 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get contactsSettings_evictDiscoveredContactsTitle =>
-      'Evict discovered contacts';
+      'Felfedezett kapcsolatok eltávolítása';
 
   @override
   String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
-    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+    return 'Ha engedélyezve van, az alkalmazás eltávolítja a legrégebbi felfedezett kapcsolatokat, amint a felfedezési lista eléri a(z) $limit bejegyzéses korlátot.';
   }
 
   @override

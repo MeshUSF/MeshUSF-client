@@ -2028,6 +2028,8 @@
   "discoveredContacts_copyContact": "Копіювати контакт у буфер обміну",
   "discoveredContacts_addContact": "Додати контакт",
   "contactsSettings_overwriteOldestSubtitle": "Коли список контактів заповнений, найстарший контакт без позначки улюбленого буде замінений.",
+  "contactsSettings_evictDiscoveredContactsTitle": "Видаляти виявлені контакти",
+  "contactsSettings_evictDiscoveredContactsSubtitle": "Якщо ввімкнено, застосунок видаляє найстаріші виявлені контакти, коли список виявлених контактів досягає ліміту в {limit} записів.",
   "common_deleteAll": "Видалити все",
   "discoveredContacts_deleteContactAll": "Видалити всі виявлені контакти",
   "discoveredContacts_deleteContactAllContent": "Ви впевнені, що хочете видалити всі виявлені контакти?",
@@ -2855,6 +2857,13 @@
     }
   },
   "messageStatus_hopsNotReached": "Надіслано, але у відповідь почуто лише через {hops} з {required} ретрансляторів. Можливо, воно дійшло далі, ніж може почути ваше радіо.",
+  "@contactsSettings_evictDiscoveredContactsSubtitle": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "@messageStatus_hopsNotReached": {
     "placeholders": {
       "hops": {

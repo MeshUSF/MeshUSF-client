@@ -2018,6 +2018,15 @@
   "discoveredContacts_deleteContact": "Изтрий контакт",
   "discoveredContacts_addContact": "Добави контакт",
   "contactsSettings_overwriteOldestSubtitle": "Когато списъкът с контакти е пълен, най-старият неключов контакт ще бъде заменен.",
+  "contactsSettings_evictDiscoveredContactsTitle": "Премахване на открити контакти",
+  "contactsSettings_evictDiscoveredContactsSubtitle": "Когато е включено, приложението премахва най-старите открити контакти, щом списъкът с открити контакти достигне лимита си от {limit} записа.",
+  "@contactsSettings_evictDiscoveredContactsSubtitle": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "discoveredContacts_deleteContactAll": "Изтриване на Всички Открити Контакти",
   "discoveredContacts_deleteContactAllContent": "Сигурни ли сте, че искате да изтриете всички открити контакти?",
   "common_deleteAll": "Изтрий всичко",

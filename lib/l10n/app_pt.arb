@@ -2018,6 +2018,15 @@
   "discoveredContacts_contactAdded": "Contato adicionado",
   "discoveredContacts_addContact": "Adicionar Contato",
   "contactsSettings_overwriteOldestSubtitle": "Quando a lista de contatos estiver cheia, o contato mais antigo não favoritado será substituído.",
+  "contactsSettings_evictDiscoveredContactsTitle": "Remover contatos descobertos",
+  "contactsSettings_evictDiscoveredContactsSubtitle": "Quando ativado, o aplicativo remove os contatos descobertos mais antigos assim que a lista de descobertos atingir o limite de {limit} entradas.",
+  "@contactsSettings_evictDiscoveredContactsSubtitle": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "common_deleteAll": "Excluir Tudo",
   "discoveredContacts_deleteContactAll": "Excluir Todos os Contatos Descobertos",
   "discoveredContacts_deleteContactAllContent": "Tem certeza de que deseja excluir todos os contatos descobertos?",

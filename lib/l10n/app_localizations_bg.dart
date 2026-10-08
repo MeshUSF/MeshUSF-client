@@ -4791,11 +4791,11 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get contactsSettings_evictDiscoveredContactsTitle =>
-      'Evict discovered contacts';
+      'Премахване на открити контакти';
 
   @override
   String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
-    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+    return 'Когато е включено, приложението премахва най-старите открити контакти, щом списъкът с открити контакти достигне лимита си от $limit записа.';
   }
 
   @override

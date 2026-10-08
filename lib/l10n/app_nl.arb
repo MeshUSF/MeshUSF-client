@@ -2053,6 +2053,15 @@
   "discoveredContacts_contactAdded": "Contact toegevoegd",
   "discoveredContacts_searchHint": "Ontdekte contacten zoeken",
   "contactsSettings_overwriteOldestSubtitle": "Wanneer de contactenlijst vol is, wordt de oudste niet-favoriete contactpersoon vervangen.",
+  "contactsSettings_evictDiscoveredContactsTitle": "Ontdekte contacten verwijderen",
+  "contactsSettings_evictDiscoveredContactsSubtitle": "Indien ingeschakeld verwijdert de app de oudste ontdekte contacten zodra de lijst met ontdekte contacten de limiet van {limit} items bereikt.",
+  "@contactsSettings_evictDiscoveredContactsSubtitle": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "common_deleteAll": "Alles verwijderen",
   "discoveredContacts_deleteContactAll": "Verwijder alle ontdekte contacten",
   "discoveredContacts_deleteContactAllContent": "Weet je zeker dat je alle ontdekte contacten wilt verwijderen?",

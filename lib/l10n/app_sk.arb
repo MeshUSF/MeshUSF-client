@@ -2018,6 +2018,15 @@
   "contactsSettings_overwriteOldestTitle": "Prepísať najstaršie",
   "discoveredContacts_addContact": "Pridať kontakt",
   "contactsSettings_overwriteOldestSubtitle": "Keď je zoznam kontaktov plný, bude nahradený najstarší neoznačený kontakt.",
+  "contactsSettings_evictDiscoveredContactsTitle": "Odstraňovať objavené kontakty",
+  "contactsSettings_evictDiscoveredContactsSubtitle": "Keď je táto možnosť zapnutá, aplikácia odstráni najstaršie objavené kontakty, keď zoznam objavených dosiahne limit {limit} záznamov.",
+  "@contactsSettings_evictDiscoveredContactsSubtitle": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "discoveredContacts_deleteContactAll": "Zmazať všetky objavené kontakty",
   "common_deleteAll": "Zmazať všetko",
   "discoveredContacts_deleteContactAllContent": "Ste si istí, že chcete zmazať všetky objavené kontakty?",

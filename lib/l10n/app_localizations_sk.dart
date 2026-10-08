@@ -4777,11 +4777,11 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get contactsSettings_evictDiscoveredContactsTitle =>
-      'Evict discovered contacts';
+      'Odstraňovať objavené kontakty';
 
   @override
   String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
-    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+    return 'Keď je táto možnosť zapnutá, aplikácia odstráni najstaršie objavené kontakty, keď zoznam objavených dosiahne limit $limit záznamov.';
   }
 
   @override

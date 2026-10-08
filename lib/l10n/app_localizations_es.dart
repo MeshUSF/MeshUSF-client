@@ -4794,11 +4794,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get contactsSettings_evictDiscoveredContactsTitle =>
-      'Evict discovered contacts';
+      'Expulsar contactos descubiertos';
 
   @override
   String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
-    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+    return 'Si está activado, la aplicación elimina los contactos descubiertos más antiguos cuando la lista de descubrimiento alcanza su límite de $limit entradas.';
   }
 
   @override

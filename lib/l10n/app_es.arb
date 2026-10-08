@@ -2145,6 +2145,15 @@
   "discoveredContacts_searchHint": "Buscar contactos descubiertos",
   "discoveredContacts_addContact": "Agregar contacto",
   "contactsSettings_overwriteOldestSubtitle": "Cuando la lista de contactos esté llena, se reemplazará el contacto no favorito más antiguo.",
+  "contactsSettings_evictDiscoveredContactsTitle": "Expulsar contactos descubiertos",
+  "contactsSettings_evictDiscoveredContactsSubtitle": "Si está activado, la aplicación elimina los contactos descubiertos más antiguos cuando la lista de descubrimiento alcanza su límite de {limit} entradas.",
+  "@contactsSettings_evictDiscoveredContactsSubtitle": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "common_deleteAll": "Eliminar todo",
   "discoveredContacts_deleteContactAll": "Eliminar Todos los Contactos Descubiertos",
   "discoveredContacts_deleteContactAllContent": "¿Está seguro de que desea eliminar todos los contactos descubiertos!",

@@ -2018,6 +2018,8 @@
   "discoveredContacts_searchHint": "Najdeni stiki po iskanju",
   "discoveredContacts_deleteContact": "Izbriši stik",
   "contactsSettings_overwriteOldestSubtitle": "Ko je seznam stikov poln, bo najstarejši nestarševski stik zamenjan.",
+  "contactsSettings_evictDiscoveredContactsTitle": "Odstrani odkrite stike",
+  "contactsSettings_evictDiscoveredContactsSubtitle": "Ko je ta možnost vklopljena, aplikacija odstrani najstarejše odkrite stike, ko seznam odkritih stikov doseže omejitev {limit} vnosov.",
   "common_deleteAll": "Izbriši vse",
   "discoveredContacts_deleteContactAllContent": "Ste prepričani, da želite izbrisati vse odkrite kontakte?",
   "discoveredContacts_deleteContactAll": "Izbriši vse odkrite kontakte",
@@ -2876,6 +2878,13 @@
     }
   },
   "messageStatus_hopsNotReached": "Poslano, a nazaj slišano le skozi {hops} od {required} ponoviteljev. Morda je odšlo še dlje, kot vaše radio sliši.",
+  "@contactsSettings_evictDiscoveredContactsSubtitle": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
   "@messageStatus_hopsNotReached": {
     "placeholders": {
       "hops": {

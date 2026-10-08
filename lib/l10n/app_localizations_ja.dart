@@ -4555,12 +4555,11 @@ class AppLocalizationsJa extends AppLocalizations {
       '連絡先リストが満杯になった場合、最も古いかつ「お気に入り」ではない連絡先が削除されます。';
 
   @override
-  String get contactsSettings_evictDiscoveredContactsTitle =>
-      'Evict discovered contacts';
+  String get contactsSettings_evictDiscoveredContactsTitle => '検出された連絡先を削除';
 
   @override
   String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
-    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+    return '有効にすると、検出された連絡先のリストが上限の$limit件に達した際に、最も古い検出済み連絡先が削除されます。';
   }
 
   @override

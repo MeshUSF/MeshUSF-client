@@ -4752,11 +4752,11 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get contactsSettings_evictDiscoveredContactsTitle =>
-      'Evict discovered contacts';
+      'Rensa upptäckta kontakter';
 
   @override
   String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
-    return 'When enabled, the app removes the oldest discovered contacts once the discovery list reaches its limit of $limit entries.';
+    return 'När detta är aktiverat tar appen bort de äldsta upptäckta kontakterna när listan över upptäckta kontakter når sin gräns på $limit poster.';
   }
 
   @override
