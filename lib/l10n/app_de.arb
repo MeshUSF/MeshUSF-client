@@ -600,7 +600,7 @@
   "chat_pathManagement": "Pfadverwaltung",
   "chat_routingMode": "Routenmodus",
   "chat_autoUseSavedPath": "Automatisch (gespeicherten Pfad verwenden)",
-  "chat_forceFloodMode": "Flut-Modus erzwingen",
+  "chat_forceFloodMode": "Flood-Modus erzwingen",
   "chat_recentAckPaths": "Aktuelle ACK-Pfade (antippen, um zu verwenden):",
   "chat_pathHistoryFull": "Die Pfadhistorie ist voll. Entferne Einträge, um neue hinzuzufügen.",
   "chat_hopSingular": "Sprung",
@@ -623,7 +623,7 @@
   "chat_clearPathSubtitle": "Setze Pfad zurück, erkenne neuen Pfad bei nächster Sendung.",
   "chat_pathCleared": "Pfad zurückgesetzt. Nächste Nachricht wird Route neu entdecken.",
   "chat_floodModeSubtitle": "Verwende den Routingschalter in der App-Leiste",
-  "chat_floodModeEnabled": "Flutmodus aktiviert.",
+  "chat_floodModeEnabled": "Flood-Modus aktiviert.",
   "chat_fullPath": "Vollständiger Pfad",
   "chat_pathDetailsNotAvailable": "Die Pfaddetails sind noch nicht verfügbar. Versuchen Sie, eine Nachricht zu senden, um zu aktualisieren.",
   "chat_pathSetHops": "Pfad gesetzt: {hopCount} {hopCount, plural, =1{hop} other{hops}} - {status}",
@@ -644,7 +644,7 @@
   "chat_path": "Pfad",
   "chat_publicKey": "Öffentlicher Schlüssel",
   "chat_compressOutgoingMessages": "Komprimieren ausgehender Nachrichten",
-  "chat_floodForced": "Geflutet (erzwungen)",
+  "chat_floodForced": "Flood (erzwungen)",
   "chat_directForced": "Direkt (erzwungen)",
   "chat_hopsForced": "{count} Sprünge (erzwungen)",
   "@chat_hopsForced": {
@@ -654,7 +654,7 @@
       }
     }
   },
-  "chat_floodAuto": "Geflutet (automatisch)",
+  "chat_floodAuto": "Flood (automatisch)",
   "chat_direct": "Direkt",
   "chat_poiShared": "Geteilter POI",
   "chat_unread": "Ungelesen: {count}",
@@ -922,7 +922,7 @@
   "login_routing": "Routen",
   "login_routingMode": "Routenmodus",
   "login_autoUseSavedPath": "Automatisch (gespeicherten Pfad verwenden)",
-  "login_forceFloodMode": "Flut-Modus erzwingen",
+  "login_forceFloodMode": "Flood-Modus erzwingen",
   "login_managePaths": "Pfadverwaltung",
   "login_login": "Anmelden",
   "login_attempt": "Versuche {current}/{max}",
@@ -995,7 +995,7 @@
   "repeater_statusTitle": "Repeater-Status",
   "repeater_routingMode": "Routing-Modus",
   "repeater_autoUseSavedPath": "Automatisch (gespeicherten Pfad verwenden)",
-  "repeater_forceFloodMode": "Flut-Modus erzwingen",
+  "repeater_forceFloodMode": "Flood-Modus erzwingen",
   "repeater_pathManagement": "Pfadverwaltung",
   "repeater_refresh": "Aktualisieren",
   "repeater_statusRequestTimeout": "Statusanfrage abgelaufen.",
@@ -1195,7 +1195,7 @@
   "repeater_advancedSettings": "Erweitert",
   "repeater_advancedSettingsSubtitle": "Feinabstimmung für erfahrene Betreiber",
   "repeater_pathHashMode": "Hash-Modus für Pfade",
-  "repeater_pathHashModeHelper": "Bytes, die zur Kodierung der ID dieses Repeaters in Flood-Pfad-/Schleifen-Erkennung-Tags verwendet werden. 0 = 1 Byte (256 IDs, bis zu 64 Hops), 1 = 2 Bytes (65.000 IDs, bis zu 32 Hops), 2 = 3 Bytes (16 Millionen IDs, bis zu 21 Hops). Firmware-Versionen 1.13 und älter verwenden mehrstellige Pfade – ab Version 1.14+ wird nur ein Pfad erstellt, sobald das Netzwerk aktiv ist.",
+  "repeater_pathHashModeHelper": "Bytes, die zur Kodierung der ID dieses Repeaters in Flood-Pfad-/Schleifen-Erkennung-Tags verwendet werden. 0 = 1 Byte (256 IDs, bis zu 64 Sprüngen), 1 = 2 Bytes (65.000 IDs, bis zu 32 Sprüngen), 2 = 3 Bytes (16 Millionen IDs, bis zu 21 Sprüngen). Firmware-Versionen 1.13 und älter verwenden mehrstellige Pfade – ab Version 1.14+ wird nur ein Pfad erstellt, sobald das Netzwerk aktiv ist.",
   "repeater_txDelay": "Flood-TX-Verzögerung",
   "repeater_txDelayHelper": "Abstand für Flood-Verkehr als Faktor der Paket-Sendezeit (0-2, Standard 0,5). Höher = weniger Kollisionen, aber langsamere Zustellung.",
   "repeater_directTxDelay": "Direkte TX-Verzögerung",
@@ -1310,9 +1310,9 @@
   "repeater_cliHelpSetAgcResetInterval": "Legt das Intervall für das Zurücksetzen des Auto Gain Controllers fest. Auf 0 setzen, um die Funktion zu deaktivieren.",
   "repeater_cliHelpSetMultiAcks": "Aktiviert oder deaktiviert die Funktion 'Doppel-ACKs'.",
   "repeater_cliHelpSetAdvertInterval": "Legt das Timer-Intervall in Minuten fest, um ein lokales (ohne-Weiterleitung) Ankündigungspaket zu senden. Auf 0 setzen, um die Funktion zu deaktivieren.",
-  "repeater_cliHelpSetFloodAdvertInterval": "Legt das Timer-Intervall in Stunden für den Versand eines Flut-Ankündigungspacket fest. Auf 0 setzen, um es zu deaktivieren.",
+  "repeater_cliHelpSetFloodAdvertInterval": "Legt das Timer-Intervall in Stunden für den Versand eines Flood-Ankündigungspaket fest. Auf 0 setzen, um es zu deaktivieren.",
   "repeater_cliHelpSetGuestPassword": "Legt/aktualisiert das Gastpasswort fest. (für Repeater können Gast-Logins die \"Get Stats\"-Anfrage senden)",
-  "repeater_cliHelpSetName": "Legt den Anzeigenamen fest.",
+  "repeater_cliHelpSetName": "Legt den Ankündigungsnamen fest.",
   "repeater_cliHelpSetLat": "Legt die Breitengrad der Ankündigung fest. (dezimale Grad)",
   "repeater_cliHelpSetLon": "Legt die Längengrade der Ankündigung fest. (dezimale Grad)",
   "repeater_cliHelpSetRadio": "Legt komplett neue Radio-Parameter fest und speichert diese als Präferenzen. Benötigt einen \"Reboot\"-Befehl, um sie anzuwenden.",
@@ -1338,7 +1338,7 @@
   "repeater_cliHelpRegionGet": "Sucht die Region mit dem gegebenen Namenspräfix (oder \"\\\" für den globalen Scope) und antwortet mit \"-> region-name (parent-name) 'F'\".",
   "repeater_cliHelpRegionPut": "Fügt eine Region-Definition mit dem angegebenen Namen hinzu oder aktualisiert diese.",
   "repeater_cliHelpRegionRemove": "Löscht eine Regiondefinition mit dem angegebenen Namen. (muss genau übereinstimmen und keine Kindregionen haben)",
-  "repeater_cliHelpRegionAllowf": "Legt die 'Flut'-Berechtigung für die angegebene Region fest. ('' für den globalen/legacy-Bereich)",
+  "repeater_cliHelpRegionAllowf": "Legt die 'Flood'-Berechtigung für die angegebene Region fest. ('' für den globalen/legacy-Bereich)",
   "repeater_cliHelpRegionDenyf": "Entfernt die \"F\"lood-Berechtigung für die angegebene Region. (ANMERKUNG: in dieser Phase wird nicht empfohlen, dies auf dem globalen/legacy-Bereich zu verwenden!!)",
   "repeater_cliHelpRegionHome": "Antwortet mit der aktuellen 'Home'-Region. (Hinweis wurde bisher nirgendwo angewendet, für zukünftige Zwecke reserviert)",
   "repeater_cliHelpRegionHomeSet": "Legt die 'Home'-Region fest.",
@@ -1347,8 +1347,8 @@
   "repeater_cliHelpGpsOnOff": "Schaltet die GPS-Leistung ein/aus.",
   "repeater_cliHelpGpsSync": "Synchronisiert die Knotenzeit mit der GPS-Uhr.",
   "repeater_cliHelpGpsSetLoc": "Setze die Position des Knotens auf GPS-Koordinaten und speichere die Präferenzen.",
-  "repeater_cliHelpGpsAdvert": "Gibt Konfiguration für die Standortanzeige des Knotens:\n- none: Standort nicht in Anzeigen einbeziehen\n- share: GPS-Standort teilen (von SensorManager)\n- prefs: Standort aus Einstellungen anzeigen",
-  "repeater_cliHelpGpsAdvertSet": "Legt die Standort-Anzeigekonfiguration fest.",
+  "repeater_cliHelpGpsAdvert": "Gibt Konfiguration für die Standort-Ankündigung des Knotens:\n- none: Standort nicht in Ankündigungen einbeziehen\n- share: GPS-Standort teilen (von SensorManager)\n- prefs: Standort aus den Einstellungen ankündigen",
+  "repeater_cliHelpGpsAdvertSet": "Legt die Standort-Ankündigungskonfiguration fest.",
   "repeater_commandsListTitle": "Befehlsliste",
   "repeater_commandsListNote": "ACHTUNG: Für die verschiedenen „set ...“-Befehle gibt es auch einen „get ...“-Befehl.",
   "repeater_general": "Allgemein",
@@ -1582,7 +1582,7 @@
     }
   },
   "channelPath_unknownPath": "Unbekannt",
-  "channelPath_floodPath": "Geflutet",
+  "channelPath_floodPath": "Flood",
   "channelPath_directPath": "Direkt",
   "channelPath_observedZeroOf": "0 von {total} Sprüngen",
   "@channelPath_observedZeroOf": {
@@ -1658,7 +1658,7 @@
     }
   },
   "repeater_neighbors": "Nachbarn",
-  "repeater_neighborsSubtitle": "Anzahl der Hop-Nachbarn anzeigen.",
+  "repeater_neighborsSubtitle": "Anzahl der Sprungnachbarn anzeigen.",
   "neighbors_receivedData": "Empfangene Nachbarsdaten",
   "neighbors_requestTimedOut": "Anfrage durch Timeout fehlgeschlagen.",
   "neighbors_errorLoading": "Fehler beim Laden der Nachbarn: {error}",
@@ -1863,14 +1863,14 @@
   "contacts_contactImported": "Kontakt wurde importiert.",
   "contacts_contactImportFailed": "Kontakt konnte nicht importiert werden",
   "contacts_zeroHopAdvert": "Zero-Hop-Ankündigung",
-  "contacts_floodAdvert": "Flut-Ankündigung",
+  "contacts_floodAdvert": "Flood-Ankündigung",
   "contacts_addContactFromClipboard": "Kontakt aus Zwischenablage hinzufügen",
-  "contacts_ShareContactZeroHop": "Kontakt über Anzeige teilen",
+  "contacts_ShareContactZeroHop": "Kontakt über Ankündigung teilen",
   "contacts_copyAdvertToClipboard": "Ankündigung in die Zwischenablage kopieren",
   "contacts_ShareContact": "Kontakt in die Zwischenablage kopieren",
   "contacts_zeroHopContactAdvertFailed": "Kontakt konnte nicht gesendet werden.",
-  "contacts_zeroHopContactAdvertSent": "Kontakt über Anzeige gesendet",
-  "contacts_contactAdvertCopied": "Anzeige in die Zwischenablage kopiert.",
+  "contacts_zeroHopContactAdvertSent": "Kontakt über Ankündigung gesendet",
+  "contacts_contactAdvertCopied": "Ankündigung in die Zwischenablage kopiert.",
   "contacts_contactAdvertCopyFailed": "Kopieren der Ankündigung in die Zwischenablage fehlgeschlagen.",
   "notification_activityTitle": "MeshCore Aktivität",
   "notification_messagesCount": "{count} {count, plural, =1{Nachricht} other{Nachrichten}}",
@@ -2396,7 +2396,7 @@
   "repeater_sensors": "Sensoren",
   "repeater_cliHelpPowerOff": "Schaltet das Gerät aus. (keine Antwort erwartet)",
   "repeater_cliHelpClkReboot": "Setzt die Uhr auf einen bekannten Zeitpunkt zurück und startet das Gerät neu.",
-  "repeater_cliHelpAdvertZeroHop": "Sendet eine Werbeanzeige, die nur an unmittelbare Nachbarn gesendet wird (ohne Zwischenstation).",
+  "repeater_cliHelpAdvertZeroHop": "Sendet eine Ankündigung, die nur an unmittelbare Nachbarn gesendet wird (ohne Zwischenstation).",
   "repeater_cliHelpStartOta": "Startet ein Firmware-Update über Funk, das auf unterstützten Boards durchgeführt wird.",
   "repeater_cliHelpTime": "Stellt die Gerätuhr auf die angegebene Unix-Epoche in Sekunden ein. Die Uhr kann nicht rückwärts laufen.",
   "repeater_cliHelpBoard": "Zeigt den Hersteller/die Hardware-Kennung an.",
@@ -2427,13 +2427,13 @@
   "repeater_cliHelpGetAgcResetInterval": "Zeigt das Intervall für die Rücksetzung des AGC in Sekunden an.",
   "repeater_cliHelpGetMultiAcks": "Zeigt an, ob der Modus \"doppelte ACK\"-Funktion aktiviert (1) oder deaktiviert (0) ist.",
   "repeater_cliHelpGetAllowReadOnly": "Zeigt an, ob der Zugriff für Gäste nur in Lesemodus erlaubt ist.",
-  "repeater_cliHelpGetAdvertInterval": "Zeigt die Dauer des lokalen Werbeintervalls in Minuten an.",
-  "repeater_cliHelpGetFloodAdvertInterval": "Zeigt die Dauer der Werbeunterbrechung in Stunden an.",
+  "repeater_cliHelpGetAdvertInterval": "Zeigt die Dauer des lokalen Ankündigungsintervalls in Minuten an.",
+  "repeater_cliHelpGetFloodAdvertInterval": "Zeigt die Dauer des Flood-Ankündigungsintervalls in Stunden an.",
   "repeater_cliHelpGetGuestPassword": "Zeigt das konfigurierte Gast-Passwort an.",
   "repeater_cliHelpGetLat": "Zeigt die konfigurierte Breitengrade.",
   "repeater_cliHelpGetLon": "Zeigt die konfigurierte Länge an.",
   "repeater_cliHelpGetRxDelay": "Zeigt den Basiswert für die Verzögerungszeit an.",
-  "repeater_cliHelpGetTxDelay": "Zeigt den Faktor für die Übertragungsverzögerung im Notfallmodus an.",
+  "repeater_cliHelpGetTxDelay": "Zeigt den Faktor für die Übertragungsverzögerung im Flood-Modus an.",
   "repeater_cliHelpGetDirectTxDelay": "Zeigt den Faktor für die Verzögerung im Direktmodus an.",
   "repeater_cliHelpGetFloodMax": "Zeigt die maximale Anzahl von Sprüngen für Flood-Pakete an.",
   "repeater_cliHelpGetOwnerInfo": "Zeigt die Zeichenkette mit den Kontaktinformationen des Eigentümers an.",
@@ -2635,23 +2635,23 @@
   "contacts_searchClose": "Suche schließen",
   "routing_title": "Routenplanung",
   "routing_modeAuto": "Automatisch",
-  "routing_modeFlood": "Flut",
+  "routing_modeFlood": "Flood",
   "routing_modeManual": "Manuell",
   "routing_modeFloodHint": "Über alle Repeater senden. Am zuverlässigsten, aber mit höherem Funkzeitbedarf.",
-  "routing_modeAutoHint": "Wählt automatisch den besten bekannten Pfad und wechselt auf Flut, wenn keiner bekannt ist.",
+  "routing_modeAutoHint": "Wählt automatisch den besten bekannten Pfad und wechselt in den Flood-Modus, wenn keiner bekannt ist.",
   "routing_modeManualHint": "Sendet immer genau den von Ihnen festgelegten Pfad.",
   "routing_currentRoute": "Aktuelle Route",
   "routing_directNoHops": "Direkt - keine Repeater-Sprünge",
-  "routing_noPathYet": "Noch kein Pfad gefunden. Die nächste Nachricht wird geflutet, bis eine Route entdeckt ist.",
+  "routing_noPathYet": "Noch kein Pfad gefunden. Die nächste Nachricht wird im Flood-Modus gesendet, bis eine Route entdeckt ist.",
   "routing_floodBroadcast": "Über alle Repeater senden",
   "routing_editPath": "Pfad bearbeiten",
   "routing_forgetPath": "Pfad vergessen",
   "routing_knownPaths": "Bekannte Pfade",
   "routing_knownPathsHint": "Tippen Sie auf einen Pfad, um zu ihm zu wechseln.",
   "routing_inUse": "In Verwendung",
-  "routing_qualityStrong": "Starker erster Hop",
-  "routing_qualityGood": "Guter erster Hop",
-  "routing_qualityFair": "Ausreichender erster Hop",
+  "routing_qualityStrong": "Starker erster Sprung",
+  "routing_qualityGood": "Guter erster Sprung",
+  "routing_qualityFair": "Ausreichender erster Sprung",
   "routing_qualityWorked": "Hat zugestellt",
   "routing_qualityFlood": "Per Flood gehört",
   "routing_qualityUntested": "Nicht getestet",
@@ -2936,7 +2936,7 @@
   "imageSend_radioUnknownBody": "Verbinden Sie das Gerät, damit die Sendezeit berechnet werden kann.",
   "imageSend_longSendTitle": "Lange Übertragung",
   "imageSend_longSendBody": "Dies hält den Kanal für etwa {duration}.",
-  "imageSend_floodNote": "Flutweiterleitung: Jeder Repeater im Bereich leitet jedes Paket weiter, wodurch der Kanal länger als dieser Zeitraum beschäftigt bleibt.",
+  "imageSend_floodNote": "Flood-Weiterleitung: Jeder Repeater im Bereich leitet jedes Paket weiter, wodurch der Kanal länger als dieser Zeitraum beschäftigt bleibt.",
   "imageSend_parityTitle": "Wiederherstellungspaket",
   "imageSend_paritySubtitle": "Ein zusätzliches Paket. Gruppen-Nachrichten werden nicht bestätigt, daher kann der Empfänger das Bild rekonstruieren, falls ein Paket verloren geht.",
   "imageSend_send": "Senden",
@@ -2966,5 +2966,236 @@
   "receivedImage_tapToProcess": "Klicken Sie, um fortzufahren",
   "receivedImage_awaiting": "{bytes} Bytes · {packets} {packets, plural, =1{Paket} other{Pakete}}",
   "imageSend_secondsValue": "{seconds} s",
-  "imageSend_minutesSecondsValue": "{minutes} Min {seconds} Sek"
+  "imageSend_minutesSecondsValue": "{minutes} Min {seconds} Sek",
+  "channels_noFreeSlots": "Alle Kanal-Slots sind belegt",
+  "chat_longMessageRetryNote": "Über 158 Byte: wird höchstens {count} Mal gesendet",
+  "@chat_longMessageRetryNote": {
+    "description": "Shown under the DM composer when the message is too long for the firmware's later retry attempts",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reaction_report": "Emoji-Reaktionen",
+  "repeater_bridgeNote": "Nur verfügbar bei Firmware, die mit einer Bridge (RS232 oder ESP-NOW) gebaut wurde.",
+  "repeater_cliHelpGetFloodMaxAdvert": "Zeigt die maximale Hop-Anzahl für Flood-Ankündigungen an.",
+  "repeater_cliHelpGetFloodMaxUnscoped": "Zeigt die maximale Hop-Anzahl für Flood-Pakete ohne Region-Scope an.",
+  "repeater_cliHelpGetRadioFemRxGain": "Zeigt, ob der RX-Gain des LoRa-Frontend-Moduls aktiviert ist.",
+  "repeater_cliHelpGetRadioFemTxGain": "Zeigt, ob der TX-Gain des LoRa-Frontend-Moduls aktiviert ist.",
+  "repeater_cliHelpRegionDef": "Definiert in einem Befehl eine Kette von Regionen: Jeder Name wird unter dem vorherigen hinzugefügt; \"name,parent\" fügt den Namen hinzu und setzt dann unter der angegebenen übergeordneten Region fort. Antwortet mit der Regionsliste.",
+  "repeater_cliHelpSetFloodMaxAdvert": "Legt die maximale Hop-Anzahl für die Weiterleitung von Flood-Ankündigungen fest (0-64).",
+  "repeater_cliHelpSetFloodMaxUnscoped": "Legt die maximale Hop-Anzahl für die Weiterleitung von Flood-Paketen ohne Region-Scope fest (0-64).",
+  "repeater_cliHelpSetRadioFemRxGain": "Schaltet den RX-Gain (LNA) des LoRa-Frontend-Moduls um. Boards ohne dieses Modul antworten mit \"Error: unsupported\".",
+  "repeater_cliHelpSetRadioFemTxGain": "Schaltet den TX-Gain (PA) des LoRa-Frontend-Moduls um. Boards ohne dieses Modul antworten mit \"Error: unsupported\".",
+  "repeater_cliRegionLoadActive": "Regions-Ladevorgang: Sende pro Zeile einen Regionsnamen, eingerückt mit Leerzeichen unter der übergeordneten Region (F nach dem Namen anhängen, um Flood zu erlauben). Zeilen erhalten keine Antwort. Sende eine Leerzeile zum Abschließen, dann \"region save\", um das Ergebnis zu speichern.",
+  "repeater_cliRegionLoadEnd": "(Ende des Regions-Ladevorgangs)",
+  "repeater_cliRegionLoadHint": "Regionszeile, oder leer zum Abschließen",
+  "repeater_frequencyInvalid": "Ungültige Frequenz (150-2500 MHz)",
+  "repeater_frequencyRangeHelper": "150-2500 MHz",
+  "repeater_recvErrors": "Empfangsfehler",
+  "repeater_txPowerRangeHelper": "-9 bis 30 dBm",
+  "room_postsPushed": "Gesendete Beiträge",
+  "room_postsStored": "Beiträge",
+  "settings_publicKeyCopied": "Öffentlicher Schlüssel kopiert",
+  "settings_radioSettingsNotApplied": "Das Funkgerät hat diese Einstellungen nicht übernommen",
+  "messageStatus_failedChannel": "Ihr Funkgerät konnte diese Nachricht nicht senden.",
+  "messageStatus_resending": "Noch nicht über genügend Repeater gehört. {resends} von {maxResends} Malen erneut gesendet.",
+  "@messageStatus_resending": {
+    "placeholders": {
+      "resends": {
+        "type": "int"
+      },
+      "maxResends": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_hopsNotReached": "Gesendet, aber nur über {hops} von {required} Repeatern zurückgehört. Möglicherweise ist sie weiter gelangt, als Ihr Funkgerät hören kann.",
+  "@messageStatus_hopsNotReached": {
+    "placeholders": {
+      "hops": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_sentChannel": "Gesendet. Kanäle bestätigen keine Zustellung, das bedeutet also nur, dass Ihr Funkgerät sie gesendet hat.",
+  "messageStatus_sentDirect": "Gesendet. Warten auf die Bestätigung des Kontakts.",
+  "messageStatus_heardRepeatedCount": "Gehört {count, plural, =1{einmal} other{{count}-mal}}. Repeater in der Nähe haben sie weitergeleitet.",
+  "@messageStatus_heardRepeatedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_regionEmptyExplanation": "Regionen begrenzen Flood-Nachrichten auf die Repeater eines Gebiets. Rufen Sie sie von Repeatern in der Nähe ab oder fügen Sie eine nach Namen hinzu.",
+  "settings_regionFetchFromRepeaters": "Von Repeatern abrufen",
+  "settings_regionDefault": "Standardregion",
+  "settings_regionDefaultSubtitle": "Wird von Kanälen ohne eigene Region verwendet",
+  "settings_regionDefaultNone": "Keine",
+  "settings_telemetryPerContactHint": "Um einen Kontakt zuzulassen, öffnen Sie den zugehörigen Chat und wählen Sie im Menü Kontakteinstellungen aus.",
+  "settings_multiAckSubtitle": "Zusätzliche ACKs für eine bessere Zustellung senden; erhöht die Sendezeit",
+  "settings_presetCustom": "Benutzerdefiniert",
+  "settings_radioMatchWarning": "Alle Knoten, mit denen Sie kommunizieren, müssen dieselbe Frequenz, Bandbreite, SF und CR verwenden.",
+  "settings_txPowerRangeHelper": "{min} bis {max} dBm",
+  "@settings_txPowerRangeHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_clientRepeatFrequencyNote": "Frequenz für die Weiterleitung ohne Netzstrom auf {freq} MHz gesetzt",
+  "@settings_clientRepeatFrequencyNote": {
+    "placeholders": {
+      "freq": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_pathHashModeHelper": "Größe der einzelnen Knoten-ID, die im Pfad der von diesem Funkgerät gesendeten Flood-Pakete aufgezeichnet wird: 1 Byte (256 IDs, bis zu 64 Hops), 2 Bytes (65.000 IDs, bis zu 32 Hops), 3 Bytes (16 Millionen IDs, bis zu 21 Hops). Größere IDs verringern Kollisionen, aber Repeater mit einer Firmware älter als v1.14 verwerfen Pakete mit 2- oder 3-Byte-IDs.",
+  "settings_requiresFirmware": "Erfordert Firmware {version} oder neuer",
+  "@settings_requiresFirmware": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "appSettings_channelMinHops": "Kanalnachrichten erneut senden, bis sie weit genug gelangen",
+  "appSettings_channelMinHopsSubtitle": "Wenn Ihre Nachricht nicht über genügend Repeater zurückgehört wird, senden Sie sie erneut. Erhöht die Sendezeit.",
+  "appSettings_channelMinHopsCount": "Erforderliche Hops: {count}",
+  "@appSettings_channelMinHopsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_channelMinHopsRetries": "Bis zu {count, plural, =1{1-mal} other{{count}-mal}} erneut senden",
+  "@appSettings_channelMinHopsRetries": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_batteryOptimization": "Hintergrundaktivität",
+  "appSettings_batteryOptimizationSubtitle": "Setzen Sie MeshCore Open in den Akkueinstellungen auf „Nicht optimieren“, damit Nachrichten auch im Hintergrund ankommen",
+  "contacts_storageFull": "Der Kontaktspeicher auf dem Knoten ist voll. Neue Knoten lassen sich erst wieder hinzufügen, wenn Kontakte entfernt wurden.",
+  "contacts_removeFromContacts": "Aus Kontakten entfernen",
+  "contacts_removeFromContactsConfirm": "{contactName} wird zu „Entdeckte Kontakte“ verschoben. Der Chatverlauf wird gelöscht.",
+  "@contacts_removeFromContactsConfirm": {
+    "placeholders": {
+      "contactName": {
+        "type": "String"
+      }
+    }
+  },
+  "contacts_keepChatHistory": "Chatverlauf behalten",
+  "contacts_remove": "Entfernen",
+  "contacts_discoveredNearby": "In der Nähe entdeckt ({count})",
+  "@contacts_discoveredNearby": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contacts_noContactsDiscoveredHint": "Knoten, die Ihr Funkgerät hört, aber noch nicht hinzugefügt hat, stehen unter „Entdeckte Kontakte“.",
+  "channels_hashtag": "Hashtag",
+  "channels_addSectionJoin": "Bestehendem beitreten",
+  "channels_addSectionCreate": "Neuen erstellen",
+  "channels_dragToReorder": "Zum Umsortieren ziehen",
+  "channels_regionDefaultSuffix": "(Standard)",
+  "channels_regionSelectExplanation": "Flood-Nachrichten in diesem Kanal werden nur von Repeatern in der ausgewählten Region weitergeleitet.",
+  "channels_regionEmpty": "Noch keine Regionen.",
+  "channels_manageRegions": "Regionen verwalten",
+  "chat_removeGif": "GIF entfernen",
+  "chat_cancelReply": "Antwort abbrechen",
+  "chat_viewPathOnMap": "Pfad auf der Karte anzeigen",
+  "chat_today": "Heute",
+  "chat_yesterday": "Gestern",
+  "map_centerOnMe": "Auf meinen Standort zentrieren",
+  "map_noNodesLocationHint": "Keine Knoten mit einem aktuellen Standort. Erweitern Sie den Zeitfilter oder legen Sie Ihren eigenen Standort in den Einstellungen fest.",
+  "map_clusterNodes": "Nahegelegene Knoten gruppieren",
+  "map_groupChip": "Gruppe",
+  "map_clusterNodesSubtitle": "Beim Herauszoomen nahegelegene Knoten als einen nummerierten Kreis anzeigen",
+  "map_manageServer": "Server verwalten",
+  "login_showPassword": "Passwort anzeigen",
+  "login_hidePassword": "Passwort ausblenden",
+  "login_advanced": "Erweitert",
+  "common_clearSearch": "Suche löschen",
+  "repeater_roleAdmin": "ADMIN",
+  "repeater_roleGuest": "GAST",
+  "repeater_refreshAll": "Alle aktualisieren",
+  "repeater_settingsNotLoaded": "Die Einstellungen wurden von diesem Repeater noch nicht geladen.",
+  "repeater_settingsLoadIncomplete": "Einige Einstellungen konnten nicht geladen werden. Verwenden Sie die Aktualisieren-Schaltflächen, um es erneut zu versuchen.",
+  "contacts_scanQrCode": "QR-Code scannen",
+  "contacts_scanQrInstructions": "Richten Sie die Kamera auf einen QR-Code eines MeshCore-Kontakts",
+  "contacts_qrFromGallery": "QR-Code aus der Galerie scannen",
+  "contacts_noQrCodeFound": "Im ausgewählten Bild wurde kein QR-Code gefunden.",
+  "contacts_qrGalleryFailed": "Die Galerie konnte nicht geöffnet werden.",
+  "notification_actionReply": "Antworten",
+  "notification_actionMarkRead": "Als gelesen markieren",
+  "notification_actionMuteChannel": "Kanal stummschalten",
+  "notification_replyHint": "Nachricht",
+  "notification_you": "Du",
+  "notification_replyFailedTitle": "Antwort nicht gesendet",
+  "notification_replyNotConnected": "Keine Verbindung zu einem Funkgerät. Stellen Sie die Verbindung in MeshCore Open wieder her und senden Sie Ihre Antwort erneut.",
+  "notification_replyTooLong": "Ihre Antwort ist zu lang, um aus einer Benachrichtigung heraus gesendet zu werden. Senden Sie sie stattdessen aus MeshCore Open.",
+  "notification_replyUnavailable": "Diese Unterhaltung ist auf dem verbundenen Funkgerät nicht mehr vorhanden.",
+  "notification_replySendFailed": "Ihre Antwort wurde möglicherweise nicht gesendet. Prüfen Sie dies in MeshCore Open und versuchen Sie es erneut.",
+  "notification_replyAppNotRunning": "MeshCore Open wird nicht ausgeführt. Öffnen Sie die App und senden Sie Ihre Antwort erneut.",
+  "snrIndicator_nearByRepeatersDescription": "Repeater, die Ihr Funkgerät direkt gehört hat, zuletzt gehört zuerst.",
+  "radioStats_sectionSignal": "Signal",
+  "radioStats_sectionAirtime": "Sendezeit",
+  "imageSend_lossyNote": "Auf etwa {bytes} Bytes komprimiert. Das Modell des Empfängers rekonstruiert das Bild, daher weichen Details ab.",
+  "@imageSend_lossyNote": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "imageSend_viewOriginal": "Original",
+  "imageSend_viewReconstruction": "Was die Empfänger sehen",
+  "imageSend_reconstructionUnavailable": "Dieses Gerät kann die Rekonstruktion nicht in der Vorschau anzeigen.",
+  "imageSend_modelNotDownloaded": "Das Bildmodell wurde noch nicht heruntergeladen. Laden Sie es in den Einstellungen herunter, um Bilder zu senden.",
+  "receivedImage_save": "Bild speichern",
+  "receivedImage_shareCaption": "KI-rekonstruiert aus {bytes} Bytes; feine Details werden erzeugt und nicht übertragen.",
+  "@receivedImage_shareCaption": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_packetInfo": "Paketinfo",
+  "receivedImage_parityRecovered": "Ein Paket wurde aus dem Wiederherstellungspaket rekonstruiert.",
+  "receivedImage_decodeTime": "In {ms} ms rekonstruiert",
+  "@receivedImage_decodeTime": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_saveFailed": "Das Bild konnte nicht gespeichert werden",
+  "reviewMode_dialogTitle": "Prüfmodus aktivieren?",
+  "reviewMode_dialogBody": "Der Prüfmodus verbindet sich mit einem simulierten Radio mit Beispielkontakten, Kanälen und Nachrichten. Es wird kein echtes Radio benötigt.",
+  "reviewMode_confirm": "Aktivieren",
+  "reviewMode_cancel": "Abbrechen",
+  "reviewMode_banner": "Prüfmodus — simulierte Daten",
+  "reviewMode_sendTest": "Testnachricht senden",
+  "reviewMode_testSent": "Eine Testnachricht trifft in Kürze ein.",
+  "reviewMode_exit": "Beenden",
+  "reviewMode_connectFailed": "Prüfmodus konnte nicht gestartet werden: {error}"
 }

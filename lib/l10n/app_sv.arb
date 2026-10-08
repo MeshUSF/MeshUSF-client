@@ -2829,5 +2829,237 @@
   "receivedImage_tapToProcess": "Tryck för att bearbeta",
   "receivedImage_awaiting": "{bytes} byte · {packets} {packets, plural, =1{paket} other{paket}}",
   "imageSend_secondsValue": "{seconds} sekunder",
-  "imageSend_minutesSecondsValue": "{minutes} min {seconds} s"
+  "imageSend_minutesSecondsValue": "{minutes} min {seconds} s",
+  "channels_noFreeSlots": "Alla kanalplatser är upptagna",
+  "chat_longMessageRetryNote": "Över 158 byte: skickas högst {count} gånger",
+  "@chat_longMessageRetryNote": {
+    "description": "Shown under the DM composer when the message is too long for the firmware's later retry attempts",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "repeater_bridgeNote": "Endast tillgängligt på firmware byggd med en brygga (RS232 eller ESP-NOW).",
+  "repeater_cliHelpGetFloodMaxAdvert": "Visar det maximala antalet hopp för flood-annonser.",
+  "repeater_cliHelpGetFloodMaxUnscoped": "Visar det maximala antalet hopp för flood-paket utan regionscope.",
+  "repeater_cliHelpGetRadioFemRxGain": "Visar om LoRa-frontändmodulens RX-gain är påslagen.",
+  "repeater_cliHelpGetRadioFemTxGain": "Visar om LoRa-frontändmodulens TX-gain är påslagen.",
+  "repeater_cliHelpRegionDef": "Definierar en kedja av regioner i ett kommando: varje namn läggs till under det föregående; \"name,parent\" lägger till namnet och fortsätter sedan under den angivna föräldern. Svarar med regionlistan.",
+  "repeater_cliHelpSetFloodMaxAdvert": "Anger det maximala antalet hopp för vidarebefordran av flood-annonser (0-64).",
+  "repeater_cliHelpSetFloodMaxUnscoped": "Anger det maximala antalet hopp för vidarebefordran av flood-paket utan regionscope (0-64).",
+  "repeater_cliHelpSetRadioFemRxGain": "Växlar LoRa-frontändmodulens RX-gain (LNA). Kort utan denna modul svarar \"Error: unsupported\".",
+  "repeater_cliHelpSetRadioFemTxGain": "Växlar LoRa-frontändmodulens TX-gain (PA). Kort utan denna modul svarar \"Error: unsupported\".",
+  "repeater_cliRegionLoadActive": "Regionladdningsläge: skicka ett regionnamn per rad, indraget med blanksteg under sin förälder (lägg till F efter namnet för att tillåta flood). Rader får inget svar. Skicka en tom rad för att avsluta, och sedan \"region save\" för att spara resultatet.",
+  "repeater_cliRegionLoadEnd": "(slut på regionladdning)",
+  "repeater_cliRegionLoadHint": "Regionrad, eller tom för att avsluta",
+  "repeater_frequencyInvalid": "Ogiltig frekvens (150-2500 MHz)",
+  "repeater_frequencyRangeHelper": "150-2500 MHz",
+  "repeater_recvErrors": "Mottagningsfel",
+  "repeater_txPowerRangeHelper": "-9 till 30 dBm",
+  "room_postsPushed": "Skickade inlägg",
+  "room_postsStored": "Inlägg",
+  "settings_publicKeyCopied": "Publik nyckel kopierad",
+  "settings_radioSettingsNotApplied": "Radion tillämpade inte dessa inställningar",
+  "urlImage_enable": "Aktivera URL-bilder",
+  "urlImage_possible": "Möjlig URL-bild; aktivera den i Inställningar.",
+  "messageStatus_failedChannel": "Din radio kunde inte skicka det här meddelandet.",
+  "messageStatus_resending": "Har inte hörts via tillräckligt många repeatrar ännu. Skickat om {resends} av {maxResends} gånger.",
+  "@messageStatus_resending": {
+    "placeholders": {
+      "resends": {
+        "type": "int"
+      },
+      "maxResends": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_hopsNotReached": "Skickat, men endast hört tillbaka via {hops} av {required} repeatrar. Det kan ha kommit längre än din radio kan höra.",
+  "@messageStatus_hopsNotReached": {
+    "placeholders": {
+      "hops": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_sentChannel": "Skickat. Kanaler bekräftar inte leverans, så det betyder bara att din radio har skickat det.",
+  "messageStatus_sentDirect": "Skickat. Väntar på bekräftelse från kontakten.",
+  "messageStatus_heardRepeatedCount": "Hördes {count, plural, =1{en gång} other{{count} gånger}}. Repeatrar i närheten har vidarebefordrat det.",
+  "@messageStatus_heardRepeatedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_regionEmptyExplanation": "Regioner begränsar flood-meddelanden till repeatrar inom ett område. Hämta dem från repeatrar i närheten eller lägg till en med namn.",
+  "settings_regionFetchFromRepeaters": "Hämta från repeatrar",
+  "settings_regionDefault": "Standardregion",
+  "settings_regionDefaultSubtitle": "Används av kanaler som saknar egen region",
+  "settings_regionDefaultNone": "Ingen",
+  "settings_telemetryPerContactHint": "För att tillåta en kontakt öppnar du chatten och väljer Kontaktinställningar i menyn.",
+  "settings_multiAckSubtitle": "Skicka extra ACK för bättre leverans; använder mer sändningstid",
+  "settings_presetCustom": "Anpassad",
+  "settings_radioMatchWarning": "Alla noder du kommunicerar med måste använda samma frekvens, bandbredd, SF och CR.",
+  "settings_txPowerRangeHelper": "{min} till {max} dBm",
+  "@settings_txPowerRangeHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_clientRepeatFrequencyNote": "Frekvensen är satt till {freq} MHz för upprepning utan elnät",
+  "@settings_clientRepeatFrequencyNote": {
+    "placeholders": {
+      "freq": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_pathHashModeHelper": "Storleken på varje nod-ID som registreras i rutten för de flood-paket som den här radion skickar: 1 byte (256 ID:n, upp till 64 hopp), 2 byte (65K ID:n, upp till 32 hopp), 3 byte (16M ID:n, upp till 21 hopp). Större ID:n minskar kollisioner, men repeatrar med firmware äldre än v1.14 tappar paket med 2- eller 3-byte-ID:n.",
+  "settings_requiresFirmware": "Kräver firmware {version} eller senare",
+  "@settings_requiresFirmware": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "appSettings_channelMinHops": "Skicka om kanalmeddelanden tills de kommer tillräckligt långt",
+  "appSettings_channelMinHopsSubtitle": "Om ditt meddelande inte hörs tillbaka via tillräckligt många repeatrar skickar du om det. Använder mer sändningstid.",
+  "appSettings_channelMinHopsCount": "Nödvändiga hopp: {count}",
+  "@appSettings_channelMinHopsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_channelMinHopsRetries": "Skicka om upp till {count, plural, =1{1 gång} other{{count} gånger}}",
+  "@appSettings_channelMinHopsRetries": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_batteryOptimization": "Bakgrundsaktivitet",
+  "appSettings_batteryOptimizationSubtitle": "Sätt MeshCore Open till “Inte optimera” i batteriinställningarna så att meddelanden fortsätter att komma i bakgrunden",
+  "contacts_storageFull": "Kontaktlagringen på noden är full. Nya noder kan inte läggas till förrän kontakter har tagits bort.",
+  "contacts_removeFromContacts": "Ta bort från kontakter",
+  "contacts_removeFromContactsConfirm": "{contactName} flyttas till Upptäckta kontakter. Chatthistoriken tas bort.",
+  "@contacts_removeFromContactsConfirm": {
+    "placeholders": {
+      "contactName": {
+        "type": "String"
+      }
+    }
+  },
+  "contacts_keepChatHistory": "Behåll chatthistorik",
+  "contacts_remove": "Ta bort",
+  "contacts_discoveredNearby": "Upptäckt i närheten ({count})",
+  "@contacts_discoveredNearby": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contacts_noContactsDiscoveredHint": "Noder som din radio hör men ännu inte har lagt till visas under Upptäckta kontakter",
+  "channels_hashtag": "Hashtag",
+  "channels_addSectionJoin": "Gå med i befintlig",
+  "channels_addSectionCreate": "Skapa ny",
+  "channels_dragToReorder": "Dra för att ordna om",
+  "channels_regionDefaultSuffix": "(standard)",
+  "channels_regionSelectExplanation": "Flood-meddelanden i den här kanalen vidarebefordras bara av repeatrar i den valda regionen.",
+  "channels_regionEmpty": "Inga regioner ännu.",
+  "channels_manageRegions": "Hantera regioner",
+  "chat_removeGif": "Ta bort GIF",
+  "chat_cancelReply": "Avbryt svar",
+  "chat_viewPathOnMap": "Visa rutt på kartan",
+  "chat_today": "Idag",
+  "chat_yesterday": "Igår",
+  "map_centerOnMe": "Centrera på min plats",
+  "map_noNodesLocationHint": "Inga noder med en aktuell plats. Widga tidsfiltret eller ange din egen plats i Inställningar.",
+  "map_clusterNodes": "Gruppera noder i närheten",
+  "map_groupChip": "Grupp",
+  "map_clusterNodesSubtitle": "Visa noder i närheten som en numrerad cirkel när du zoomar ut",
+  "map_manageServer": "Hantera server",
+  "login_showPassword": "Visa lösenord",
+  "login_hidePassword": "Dölj lösenord",
+  "login_advanced": "Avancerat",
+  "common_clearSearch": "Rensa sökning",
+  "repeater_roleAdmin": "ADMIN",
+  "repeater_roleGuest": "GÄST",
+  "repeater_refreshAll": "Uppdatera alla",
+  "repeater_settingsNotLoaded": "Inställningarna har ännu inte hämtats från den här repeatern.",
+  "repeater_settingsLoadIncomplete": "Vissa inställningar kunde inte hämtas. Använd uppdateringsknapparna för att försöka igen.",
+  "contacts_scanQrCode": "Skanna QR-kod",
+  "contacts_scanQrInstructions": "Rikta kameran mot en QR-kod för en MeshCore-kontakt",
+  "contacts_qrFromGallery": "Skanna QR från galleriet",
+  "contacts_noQrCodeFound": "Ingen QR-kod hittades i den valda bilden.",
+  "contacts_qrGalleryFailed": "Kunde inte öppna galleriet.",
+  "notification_actionReply": "Svara",
+  "notification_actionMarkRead": "Markera som läst",
+  "notification_actionMuteChannel": "Tysta kanalen",
+  "notification_replyHint": "Meddelande",
+  "notification_you": "Du",
+  "notification_replyFailedTitle": "Svaret skickades inte",
+  "notification_replyNotConnected": "Ingen anslutning till en radio. Anslut igen i MeshCore Open och skicka ditt svar igen.",
+  "notification_replyTooLong": "Ditt svar är för långt för att skickas från en notis. Skicka det från MeshCore Open i stället.",
+  "notification_replyUnavailable": "Det här samtalet finns inte längre på den anslutna radion.",
+  "notification_replySendFailed": "Ditt svar har kanske inte skickats. Kontrollera i MeshCore Open och försök igen.",
+  "notification_replyAppNotRunning": "MeshCore Open är inte igång. Öppna appen och skicka ditt svar igen.",
+  "snrIndicator_nearByRepeatersDescription": "Repeatrar som din radio hörde direkt, senast hörda först.",
+  "radioStats_sectionSignal": "Signal",
+  "radioStats_sectionAirtime": "Sändningstid",
+  "imageSend_lossyNote": "Komprimerat till ungefär {bytes} byte. Mottagarens modell rekonstruerar bilden, så detaljerna skiljer sig.",
+  "@imageSend_lossyNote": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "imageSend_viewOriginal": "Original",
+  "imageSend_viewReconstruction": "Vad mottagarna ser",
+  "imageSend_reconstructionUnavailable": "Enheten kan inte förhandsgranska rekonstruktionen.",
+  "imageSend_modelNotDownloaded": "Bildmodellen har ännu inte laddats ner. Ladda ner den i Inställningar för att skicka bilder.",
+  "receivedImage_save": "Spara bild",
+  "receivedImage_shareCaption": "AI-rekonstruerad från {bytes} byte; finstyrkan genereras och överförs inte.",
+  "@receivedImage_shareCaption": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_packetInfo": "Paketinformation",
+  "receivedImage_parityRecovered": "Ett paket återskapades från återställningspaketet.",
+  "receivedImage_decodeTime": "Rekonstruerad på {ms} ms",
+  "@receivedImage_decodeTime": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_saveFailed": "Kunde inte spara bilden",
+  "reviewMode_dialogTitle": "Aktivera granskningsläge?",
+  "reviewMode_dialogBody": "Granskningsläget ansluter till en simulerad radio med exempelkontakter, kanaler och meddelanden. Ingen riktig radio behövs.",
+  "reviewMode_confirm": "Aktivera",
+  "reviewMode_cancel": "Avbryt",
+  "reviewMode_banner": "Granskningsläge — simulerad data",
+  "reviewMode_sendTest": "Skicka testmeddelande",
+  "reviewMode_testSent": "Ett testmeddelande kommer snart.",
+  "reviewMode_exit": "Avsluta",
+  "reviewMode_connectFailed": "Det gick inte att starta granskningsläget: {error}"
 }

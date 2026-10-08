@@ -105,11 +105,11 @@
   "settings_locationIntervalInvalid": "间隔时间必须至少为 60 秒，但不超过 86400 秒。",
   "settings_latitude": "纬度",
   "settings_longitude": "经度",
-  "settings_autoZeroHopAdvertOnGpsUpdate": "GPS 更新时自动发送零跳广告",
-  "settings_autoZeroHopAdvertOnGpsUpdateSubtitle": "当 GPS 位置变化时，发送零跳广告（需要在广告中包含位置）。",
+  "settings_autoZeroHopAdvertOnGpsUpdate": "GPS 更新时自动发送零跳广播",
+  "settings_autoZeroHopAdvertOnGpsUpdateSubtitle": "当 GPS 位置变化时，发送零跳广播（需要在广播中包含位置）。",
   "settings_privacyMode": "隐私模式",
-  "settings_privacyModeSubtitle": "在广告中隐藏姓名/位置",
-  "settings_privacyModeToggle": "切换隐私模式以在广告中隐藏姓名和位置，保护个人信息。",
+  "settings_privacyModeSubtitle": "在广播中隐藏姓名/位置",
+  "settings_privacyModeToggle": "切换隐私模式以在广播中隐藏姓名和位置，保护个人信息。",
   "settings_privacyModeEnabled": "隐私模式已启用",
   "settings_privacyModeDisabled": "隐私模式已关闭",
   "settings_actions": "操作",
@@ -1180,7 +1180,7 @@
   "repeater_refreshMultiAcks": "刷新多个确认",
   "repeater_networkHealth": "网络健康",
   "repeater_loopDetect": "循环检测",
-  "repeater_loopDetectHelper": "创建看起来像路由环的“洪水包”",
+  "repeater_loopDetectHelper": "创建看起来像路由环的“泛洪包”",
   "repeater_loopDetectOff": "离开",
   "repeater_loopDetectMinimal": "最少",
   "repeater_loopDetectModerate": "适度的",
@@ -1198,14 +1198,14 @@
   "repeater_ownerInfo": "运营商信息",
   "repeater_ownerInfoHelper": "此复播器的公共元数据",
   "repeater_refreshOwnerInfo": "刷新操作员信息",
-  "repeater_floodMax": "最大跳跃次数",
-  "repeater_floodMaxHelper": "一个洪水包中，最大可以传输的跳数 (0-64)",
+  "repeater_floodMax": "最大跳数",
+  "repeater_floodMaxHelper": "一个泛洪包中，最大可以传输的跳数 (0-64)",
   "repeater_advancedSettings": "高级",
   "repeater_advancedSettingsSubtitle": "高级操作员使用的调节旋钮",
   "repeater_pathHashMode": "路径哈希模式",
   "repeater_pathHashModeHelper": "用于在洪泛路径/环路检测标签中编码此中继器 ID 的字节数。0=1 字节（256 个 ID，最多 64 跳），1=2 字节（65K 个 ID，最多 32 跳），2=3 字节（16M 个 ID，最多 21 跳）。v1.14 之前的固件始终使用 1 字节路径；v1.14 及更新版本可配置为 2 或 3 字节路径。",
-  "repeater_txDelay": "洪水（德克萨斯州）延误",
-  "repeater_txDelayHelper": "对于洪水流量，重新传输间隔应设置为包的传输时间（0-2，默认值为0.5）的倍数。 较高的值意味着更少的冲突，但传输速度会变慢。",
+  "repeater_txDelay": "泛洪 TX 延迟",
+  "repeater_txDelayHelper": "对于泛洪流量，重新传输间隔应设置为包的传输时间（0-2，默认值为0.5）的倍数。 较高的值意味着更少的冲突，但传输速度会变慢。",
   "repeater_directTxDelay": "直接的 TX 延迟",
   "repeater_directTxDelayHelper": "对于直接（非广播）流量，重新传输间隔应设置为包的传输时间（0-2，默认值为0.3）的倍数。",
   "repeater_intThresh": "干扰阈值",
@@ -1213,10 +1213,10 @@
   "repeater_agcResetInterval": "AGC 恢复间隔",
   "repeater_agcResetIntervalHelper": "为了从失控的增益状态中恢复，应该多久重置收音机的自动增益控制？设置为“秒”，每次重置间隔为4秒。将此选项设置为“0”将禁用周期性重置。",
   "repeater_actionsTitle": "行动",
-  "repeater_sendAdvert": "发布防洪广告",
-  "repeater_sendAdvertSubtitle": "通过网络播放防洪广告",
-  "repeater_sendAdvertZeroHop": "发送零跳广告",
-  "repeater_sendAdvertZeroHopSubtitle": "进行单跳广告广播（不使用中继）",
+  "repeater_sendAdvert": "发送泛洪广播",
+  "repeater_sendAdvertSubtitle": "向整个网络发送泛洪广播",
+  "repeater_sendAdvertZeroHop": "发送零跳广播",
+  "repeater_sendAdvertZeroHopSubtitle": "发送单跳广播（不使用中继）",
   "repeater_clockSync": "现在同步时钟",
   "repeater_clockSyncSubtitle": "将手机的时间设置为与中继器同步",
   "repeater_actionSucceeded": "{action} 成功",
@@ -2102,8 +2102,8 @@
   "settings_privacySettingsDescription": "选择您的设备与他人共享的信息。",
   "settings_telemetryBaseMode": "遥测基础模式",
   "settings_telemetryLocationMode": "遥测位置模式",
-  "settings_advertLocation": "广告位置",
-  "settings_advertLocationSubtitle": "在广告中包含位置",
+  "settings_advertLocation": "广播位置",
+  "settings_advertLocationSubtitle": "在广播中包含位置",
   "settings_allowByContact": "按联系人标志允许",
   "settings_denyAll": "拒绝所有",
   "settings_privacy": "隐私设置",
@@ -2273,7 +2273,7 @@
   "repeater_sensors": "传感器",
   "repeater_cliHelpPowerOff": "关闭设备。（不应有任何响应）",
   "repeater_cliHelpClkReboot": "将时钟重置为已知的时间点，并重启设备。",
-  "repeater_cliHelpAdvertZeroHop": "发送无中继广告（仅限于邻居）。",
+  "repeater_cliHelpAdvertZeroHop": "发送无中继广播（仅限于邻居）。",
   "repeater_cliHelpStartOta": "在支持的板上启动通过空中进行固件更新。",
   "repeater_cliHelpTime": "将设备时钟设置为给定的 Unix 纪元秒。时钟不能倒退。",
   "repeater_cliHelpBoard": "显示制造商/硬件标识。",
@@ -2284,7 +2284,7 @@
   "repeater_cliHelpSetDutyCycle": "设定允许的最大传输时段百分比（1-100）。内部调整空闲时间因子。",
   "repeater_cliHelpSetPrvKey": "（仅适用于序列号）替换设备身份私钥。需要重启才能应用。生成一个新的公钥。",
   "repeater_cliHelpSetRadioRxGain": "（仅适用于 SX126x 芯片） 启用增强型 RX 增益，以在较高电流下提高灵敏度。",
-  "repeater_cliHelpSetOwnerInfo": "设置广告中包含的联系人信息字符串。使用 '|' 作为换行符。",
+  "repeater_cliHelpSetOwnerInfo": "设置广播中包含的联系人信息字符串。使用 '|' 作为换行符。",
   "repeater_cliHelpSetPathHashMode": "设置路径哈希模式。 0 = 传统模式，1 = 标准模式，2 = 严格模式。 影响路由路径的匹配方式。",
   "repeater_cliHelpSetLoopDetect": "设置路由环检测的灵敏度：关闭、低、中、或高。",
   "repeater_cliHelpSetFreq": "（仅限串行模式）快速设置频率。需要重启。 建议使用“设置收音机参数”功能，以便设置完整的收音机参数。",
@@ -2304,15 +2304,15 @@
   "repeater_cliHelpGetAgcResetInterval": "显示 AGC 重置的间隔时间（以秒为单位）。",
   "repeater_cliHelpGetMultiAcks": "显示双重确认模式是否已启用（1）或已禁用（0）。",
   "repeater_cliHelpGetAllowReadOnly": "显示是否允许访客仅限查看权限。",
-  "repeater_cliHelpGetAdvertInterval": "显示本地广告的时间间隔，单位为分钟。",
-  "repeater_cliHelpGetFloodAdvertInterval": "显示洪水广告的播放时间间隔，以小时为单位。",
+  "repeater_cliHelpGetAdvertInterval": "显示本地广播的时间间隔，单位为分钟。",
+  "repeater_cliHelpGetFloodAdvertInterval": "显示泛洪广播的播放时间间隔，以小时为单位。",
   "repeater_cliHelpGetGuestPassword": "显示已配置的访客密码。",
   "repeater_cliHelpGetLat": "显示已配置的纬度。",
   "repeater_cliHelpGetLon": "显示已配置的经度。",
   "repeater_cliHelpGetRxDelay": "显示 rxdelay 的基本值。",
-  "repeater_cliHelpGetTxDelay": "显示洪水模式下的传输延迟系数。",
+  "repeater_cliHelpGetTxDelay": "显示泛洪模式下的传输延迟系数。",
   "repeater_cliHelpGetDirectTxDelay": "显示直接模式下的时延系数。",
-  "repeater_cliHelpGetFloodMax": "显示最大洪水传播次数。",
+  "repeater_cliHelpGetFloodMax": "显示最大泛洪跳数。",
   "repeater_cliHelpGetOwnerInfo": "显示所有者的联系信息。",
   "repeater_cliHelpGetPathHashMode": "显示哈希模式（0/1/2）。",
   "repeater_cliHelpGetLoopDetect": "显示循环检测的灵敏度。",
@@ -2334,8 +2334,8 @@
   "repeater_cliHelpSensorList": "列出所有自定义传感器设置，并按可选的起始索引进行分页显示。",
   "repeater_cliHelpRegionDefault": "显示当前默认的区域范围。",
   "repeater_cliHelpRegionDefaultSet": "设置默认的区域范围。使用 \"<null>\" 可以清除。",
-  "repeater_cliHelpRegionListAllowed": "列出允许洪水交通的区域。",
-  "repeater_cliHelpRegionListDenied": "列出禁止洪水交通的区域。",
+  "repeater_cliHelpRegionListAllowed": "列出允许泛洪交通的区域。",
+  "repeater_cliHelpRegionListDenied": "列出禁止泛洪交通的区域。",
   "repeater_cliHelpStatsPackets": "（仅显示序列信息）显示数据包级别的统计信息。",
   "repeater_cliHelpStatsRadio": "（仅显示序列信息）显示收音机相关统计数据。",
   "repeater_cliHelpStatsCore": "（仅显示序列号）显示核心固件统计信息。",
@@ -2474,9 +2474,9 @@
   "contacts_searchClose": "高级搜索",
   "routing_title": "路由",
   "routing_modeAuto": "汽车",
-  "routing_modeFlood": "洪水",
+  "routing_modeFlood": "泛洪",
   "routing_modeManual": "手册",
-  "routing_modeAutoHint": "自动选择已知最佳路径，当没有已知路径时，则进行“洪水”搜索。",
+  "routing_modeAutoHint": "自动选择已知最佳路径，当没有已知路径时，则进行“泛洪”搜索。",
   "routing_modeFloodHint": "通过所有中继站进行广播。 这种方式最可靠，但占用更多的时间。",
   "routing_modeManualHint": "总是按照您设置的路径进行导航。",
   "routing_currentRoute": "当前路线",
@@ -2492,22 +2492,22 @@
   "routing_qualityGood": "不错的开端",
   "routing_qualityFair": "第一次尝试，结果良好",
   "routing_qualityWorked": "已完成",
-  "routing_qualityFlood": "通过新闻报道",
+  "routing_qualityFlood": "通过泛洪收到",
   "routing_qualityUntested": "未经测试",
   "routing_lastWorked": "工作于 {when}",
   "routing_neverWorked": "从未得到证实",
-  "routing_floodDelivery": "洪水配送",
+  "routing_floodDelivery": "泛洪配送",
   "pathEditor_title": "构建路径",
-  "pathEditor_noHops": "目前还没有添加任何啤酒花。点击下面的“添加”按钮，按顺序添加，或者直接保存，不添加任何啤酒花。",
-  "pathEditor_addHops": "按照顺序添加啤酒花",
+  "pathEditor_noHops": "目前还没有添加任何跳点。点击下面的“添加”按钮，按顺序添加，或者直接保存，不添加任何跳点。",
+  "pathEditor_addHops": "按照顺序添加跳点",
   "pathEditor_searchRepeaters": "重复搜索",
   "pathEditor_advancedHex": "高级：原始十六进制路径",
   "pathEditor_hexLabel": "十六进制前缀",
-  "pathEditor_hexHelper": "每次跳跃，使用两个十六进制字符，用逗号分隔。",
+  "pathEditor_hexHelper": "每跳使用两个十六进制字符，用逗号分隔。",
   "pathEditor_invalidTokens": "无效：{tokens}",
-  "pathEditor_tooManyHops": "最多 64 个跳跃",
+  "pathEditor_tooManyHops": "最多 64 跳",
   "pathEditor_usePath": "请使用此路径",
-  "pathEditor_removeHop": "去除啤酒花",
+  "pathEditor_removeHop": "去除跳点",
   "routing_deliveryCounts": "{successes} delivered, {failures} failed",
   "pathEditor_hopCounter": "{count} of 64 hops",
   "pathEditor_unknownHop": "未知的重复器",
@@ -2803,7 +2803,7 @@
   "imageSend_radioUnknownBody": "连接设备以计算播出时间。",
   "imageSend_longSendTitle": "长距离传输",
   "imageSend_longSendBody": "这将维持频道大约 {duration} 时间。",
-  "imageSend_floodNote": "洪水路由：每个中继站都会转发每个数据包，因此信道比这段时间更长地处于繁忙状态。",
+  "imageSend_floodNote": "泛洪路由：每个中继站都会转发每个数据包，因此信道比这段时间更长地处于繁忙状态。",
   "imageSend_parityTitle": "恢复包",
   "imageSend_paritySubtitle": "多一个数据包。群发消息不被确认，因此如果某个数据包丢失，接收方可以重新构建图像。",
   "imageSend_send": "发送",
@@ -2833,5 +2833,237 @@
   "receivedImage_tapToProcess": "点击处理",
   "receivedImage_awaiting": "{bytes} 字节 · {packets} {packets, plural, =1{个数据包} other{个数据包}}",
   "imageSend_secondsValue": "{seconds} 秒",
-  "imageSend_minutesSecondsValue": "{minutes} 分 {seconds} 秒"
+  "imageSend_minutesSecondsValue": "{minutes} 分 {seconds} 秒",
+  "channels_noFreeSlots": "所有频道插槽都已被占用",
+  "chat_longMessageRetryNote": "超过158字节：最多发送 {count} 次",
+  "reaction_report": "表情反应",
+  "repeater_bridgeNote": "仅支持带有桥接功能（RS232 或 ESP-NOW）的固件。",
+  "repeater_cliHelpGetFloodMaxAdvert": "显示泛洪广播包的最大跳数。",
+  "repeater_cliHelpGetFloodMaxUnscoped": "显示无区域范围的泛洪数据包的最大跳数。",
+  "repeater_cliHelpGetRadioFemRxGain": "显示 LoRa 前端模块的 RX 增益是否已开启。",
+  "repeater_cliHelpGetRadioFemTxGain": "显示 LoRa 前端模块的 TX 增益是否已开启。",
+  "repeater_cliHelpRegionDef": "在一条命令中定义一条区域链：每个名称都添加在上一个名称之下；“name,parent”会添加该名称，然后在指定的父级下继续。回复区域列表。",
+  "repeater_cliHelpSetFloodMaxAdvert": "设置转发泛洪广播包时的最大跳数(0-64)。",
+  "repeater_cliHelpSetFloodMaxUnscoped": "设置转发无区域范围的泛洪数据包时的最大跳数(0-64)。",
+  "repeater_cliHelpSetRadioFemRxGain": "切换 LoRa 前端模块的 RX 增益（LNA）。不支持此功能的板卡会回复“Error: unsupported”。",
+  "repeater_cliHelpSetRadioFemTxGain": "切换 LoRa 前端模块的 TX 增益（PA）。不支持此功能的板卡会回复“Error: unsupported”。",
+  "repeater_cliRegionLoadActive": "区域加载模式：每行发送一个区域名称，并用空格缩进表示其位于父级之下（在名称后添加 F 可允许泛洪）。每行不会有回复。发送空行以结束，然后发送“region save”以保存结果。",
+  "repeater_cliRegionLoadEnd": "（区域加载结束）",
+  "repeater_cliRegionLoadHint": "区域行，或留空以结束",
+  "repeater_frequencyInvalid": "无效频率（150-2500 MHz）",
+  "repeater_frequencyRangeHelper": "150-2500 MHz",
+  "repeater_recvErrors": "接收错误",
+  "repeater_txPowerRangeHelper": "-9 至 30 dBm",
+  "room_postsPushed": "已推送的帖子",
+  "room_postsStored": "帖子",
+  "settings_publicKeyCopied": "公钥已复制",
+  "settings_radioSettingsNotApplied": "收音机未应用这些设置",
+  "urlImage_enable": "启用URL图片",
+  "urlImage_possible": "可能是URL图片，请在设置中启用。",
+  "@chat_longMessageRetryNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_failedChannel": "此无线电无法发送这条消息。",
+  "messageStatus_resending": "还没有从足够多的中继器听到。已重发 {resends} 次，共 {maxResends} 次。",
+  "@messageStatus_resending": {
+    "placeholders": {
+      "resends": {
+        "type": "int"
+      },
+      "maxResends": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_hopsNotReached": "已发送，但只有 {hops} 个中继器（共 {required} 个）回传。它可能已经到达你的无线电收不到的范围之外。",
+  "@messageStatus_hopsNotReached": {
+    "placeholders": {
+      "hops": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_sentChannel": "已发送。频道不确认送达，因此这只表示你的无线电已发出。",
+  "messageStatus_sentDirect": "已发送。正在等待联系人确认。",
+  "messageStatus_heardRepeatedCount": "重复听到 {count, plural, =1{1 次} other{{count} 次}}。附近的中继器转发了它。",
+  "@messageStatus_heardRepeatedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_regionEmptyExplanation": "地区可将泛洪消息限制在该区域内的中继器。可从附近的中继器获取，或按名称添加。",
+  "settings_regionFetchFromRepeaters": "从中继器获取",
+  "settings_regionDefault": "默认地区",
+  "settings_regionDefaultSubtitle": "用于未设置自己地区的频道",
+  "settings_regionDefaultNone": "无",
+  "settings_telemetryPerContactHint": "要允许某个联系人，请打开其聊天并从菜单中选择“联系人设置”。",
+  "settings_multiAckSubtitle": "发送额外的 ACK 以提高送达率；会占用更多空中时间",
+  "settings_presetCustom": "自定义",
+  "settings_radioMatchWarning": "你通信的所有节点必须使用相同的频率、带宽、扩频因子和编码速率。",
+  "settings_txPowerRangeHelper": "{min} 至 {max} dBm",
+  "@settings_txPowerRangeHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_clientRepeatFrequencyNote": "为离网重复设置的频率：{freq} MHz",
+  "@settings_clientRepeatFrequencyNote": {
+    "placeholders": {
+      "freq": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_pathHashModeHelper": "此无线电发送的泛洪数据包在路径中记录的每个节点 ID 的大小：1 字节（256 个 ID，最多 64 跳）、2 字节（6.5 万个 ID，最多 32 跳）、3 字节（1600 万个 ID，最多 21 跳）。ID 越大冲突越少，但固件低于 v1.14 的中继器会丢弃带 2 或 3 字节 ID 的数据包。",
+  "settings_requiresFirmware": "需要固件 {version} 或更高版本",
+  "@settings_requiresFirmware": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "appSettings_channelMinHops": "重发频道消息，直到传得足够远",
+  "appSettings_channelMinHopsSubtitle": "如果消息没有从足够多的中继器回传，就重新发送。会占用更多空中时间。",
+  "appSettings_channelMinHopsCount": "所需跳数：{count}",
+  "@appSettings_channelMinHopsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_channelMinHopsRetries": "最多重发 {count, plural, =1{1 次} other{{count} 次}}",
+  "@appSettings_channelMinHopsRetries": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_batteryOptimization": "后台活动",
+  "appSettings_batteryOptimizationSubtitle": "在电池设置中将 MeshCore Open 设为“不优化”，这样后台也能继续接收消息",
+  "contacts_storageFull": "节点上的联系人存储已满。在删除联系人之前无法添加新节点。",
+  "contacts_removeFromContacts": "从联系人中移除",
+  "contacts_removeFromContactsConfirm": "{contactName} 将移至已发现的联系人。聊天记录将被删除。",
+  "@contacts_removeFromContactsConfirm": {
+    "placeholders": {
+      "contactName": {
+        "type": "String"
+      }
+    }
+  },
+  "contacts_keepChatHistory": "保留聊天记录",
+  "contacts_remove": "移除",
+  "contacts_discoveredNearby": "附近发现的（{count}）",
+  "@contacts_discoveredNearby": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contacts_noContactsDiscoveredHint": "你的无线电能听到但尚未添加的节点会列在“已发现的联系人”中",
+  "channels_hashtag": "标签",
+  "channels_addSectionJoin": "加入现有频道",
+  "channels_addSectionCreate": "创建新频道",
+  "channels_dragToReorder": "拖动以重新排序",
+  "channels_regionDefaultSuffix": "（默认）",
+  "channels_regionSelectExplanation": "此频道的泛洪消息只会由所选地区内的中继器转发。",
+  "channels_regionEmpty": "还没有地区。",
+  "channels_manageRegions": "管理地区",
+  "chat_removeGif": "移除 GIF",
+  "chat_cancelReply": "取消回复",
+  "chat_viewPathOnMap": "在地图上查看路径",
+  "chat_today": "今天",
+  "chat_yesterday": "昨天",
+  "map_centerOnMe": "以我的位置为中心",
+  "map_noNodesLocationHint": "没有最近位置的节点。请放宽时间筛选，或在设置中设置自己的位置。",
+  "map_clusterNodes": "将附近节点分组",
+  "map_groupChip": "分组",
+  "map_clusterNodesSubtitle": "缩小地图时，将附近节点显示为一个带编号的圆圈",
+  "map_manageServer": "管理服务器",
+  "login_showPassword": "显示密码",
+  "login_hidePassword": "隐藏密码",
+  "login_advanced": "高级",
+  "common_clearSearch": "清除搜索",
+  "repeater_roleAdmin": "管理员",
+  "repeater_roleGuest": "访客",
+  "repeater_refreshAll": "全部刷新",
+  "repeater_settingsNotLoaded": "尚未从此中继器加载设置。",
+  "repeater_settingsLoadIncomplete": "部分设置无法加载。请使用刷新按钮重试。",
+  "contacts_scanQrCode": "扫描二维码",
+  "contacts_scanQrInstructions": "将摄像头对准 MeshCore 联系人二维码",
+  "contacts_qrFromGallery": "从相册扫描二维码",
+  "contacts_noQrCodeFound": "所选图片中未找到二维码。",
+  "contacts_qrGalleryFailed": "无法打开相册。",
+  "notification_actionReply": "回复",
+  "notification_actionMarkRead": "标为已读",
+  "notification_actionMuteChannel": "静音频道",
+  "notification_replyHint": "消息",
+  "notification_you": "我",
+  "notification_replyFailedTitle": "回复未发送",
+  "notification_replyNotConnected": "未连接到无线电。请在 MeshCore Open 中重新连接后再次发送回复。",
+  "notification_replyTooLong": "回复太长，无法从通知中发送。请改为在 MeshCore Open 中发送。",
+  "notification_replyUnavailable": "此对话已不在所连接的无线电上。",
+  "notification_replySendFailed": "回复可能未发送。请在 MeshCore Open 中检查后重试。",
+  "notification_replyAppNotRunning": "MeshCore Open 未在运行。请打开它并再次发送回复。",
+  "snrIndicator_nearByRepeatersDescription": "你的无线电直接听到的中继器，最近听到的排在前面。",
+  "radioStats_sectionSignal": "信号",
+  "radioStats_sectionAirtime": "空中时间",
+  "imageSend_lossyNote": "压缩到约 {bytes} 字节。接收方的模型会重建它，因此细节会有所不同。",
+  "@imageSend_lossyNote": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "imageSend_viewOriginal": "原图",
+  "imageSend_viewReconstruction": "收件人看到的",
+  "imageSend_reconstructionUnavailable": "此设备无法预览重建结果。",
+  "imageSend_modelNotDownloaded": "图像模型尚未下载。在设置中下载后才能发送图像。",
+  "receivedImage_save": "保存图片",
+  "receivedImage_shareCaption": "由 {bytes} 字节经 AI 重建；细节为生成内容，并非传输而来。",
+  "@receivedImage_shareCaption": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_packetInfo": "数据包信息",
+  "receivedImage_parityRecovered": "已从恢复包重建了一个数据包。",
+  "receivedImage_decodeTime": "在 {ms} 毫秒内重建",
+  "@receivedImage_decodeTime": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_saveFailed": "无法保存图片",
+  "reviewMode_dialogTitle": "进入审核模式？",
+  "reviewMode_dialogBody": "审核模式会连接到模拟设备，其中包含示例联系人、频道和消息。无需真实设备。",
+  "reviewMode_confirm": "进入",
+  "reviewMode_cancel": "取消",
+  "reviewMode_banner": "审核模式 — 模拟数据",
+  "reviewMode_sendTest": "发送测试消息",
+  "reviewMode_testSent": "测试消息即将送达。",
+  "reviewMode_exit": "退出",
+  "reviewMode_connectFailed": "无法启动审核模式：{error}"
 }

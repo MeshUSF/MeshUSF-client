@@ -167,21 +167,21 @@
   "settings_locationIntervalInvalid": "間隔は少なくとも60秒で、86400秒未満でなければなりません。",
   "settings_latitude": "緯度",
   "settings_longitude": "経度",
-  "settings_autoZeroHopAdvertOnGpsUpdate": "GPS更新時にゼロホップ広告を自動送信",
-  "settings_autoZeroHopAdvertOnGpsUpdateSubtitle": "GPS位置が変化したときにゼロホップ広告を送信します（広告への位置情報の含有が必要）。",
+  "settings_autoZeroHopAdvertOnGpsUpdate": "GPS更新時にゼロホップアドバートを自動送信",
+  "settings_autoZeroHopAdvertOnGpsUpdateSubtitle": "GPS位置が変化したときにゼロホップアドバートを送信します（アドバートへの位置情報の含有が必要）。",
   "settings_contactSettings": "連絡先設定",
   "settings_contactSettingsSubtitle": "連絡先の追加方法に関する設定",
   "settings_privacyMode": "プライバシーモード",
-  "settings_privacyModeSubtitle": "広告に名前や位置を表示しない",
-  "settings_privacyModeToggle": "プライバシーモードを有効にすると、広告に表示される名前と位置を非表示にします。",
+  "settings_privacyModeSubtitle": "アドバートに名前や位置を表示しない",
+  "settings_privacyModeToggle": "プライバシーモードを有効にすると、アドバートに表示される名前と位置を非表示にします。",
   "settings_privacyModeEnabled": "プライバシーモードが有効になっています",
   "settings_privacyModeDisabled": "プライバシーモードは無効です",
   "settings_actions": "操作",
   "settings_deleteAllPaths": "すべての経路を削除",
   "settings_deleteAllPathsSubtitle": "連絡先からすべての経路データを消去します。",
-  "settings_sendAdvertisement": "広告を送信",
+  "settings_sendAdvertisement": "アドバートを送信",
   "settings_sendAdvertisementSubtitle": "現在の存在を送信します",
-  "settings_advertisementSent": "広告を送信しました",
+  "settings_advertisementSent": "アドバートを送信しました",
   "settings_syncTime": "時刻を同期",
   "settings_syncTimeSubtitle": "デバイスの時刻をスマートフォンに合わせます",
   "settings_timeSynchronized": "時刻を同期しました",
@@ -262,7 +262,7 @@
   "appSettings_enableMessageTracingSubtitle": "メッセージの詳細な経路とタイミングのメタデータを表示します",
   "appSettings_notifications": "通知",
   "appSettings_enableNotifications": "通知を有効にする",
-  "appSettings_enableNotificationsSubtitle": "メッセージや広告の通知を受け取ります",
+  "appSettings_enableNotificationsSubtitle": "メッセージやアドバートの通知を受け取ります",
   "appSettings_notificationPermissionDenied": "通知の許可が拒否されました",
   "appSettings_notificationsEnabled": "通知機能が有効になっています",
   "appSettings_notificationsDisabled": "通知が無効化されています",
@@ -270,7 +270,7 @@
   "appSettings_messageNotificationsSubtitle": "新しいメッセージを受信した際に、通知を表示する",
   "appSettings_channelMessageNotifications": "チャネルメッセージの通知",
   "appSettings_channelMessageNotificationsSubtitle": "チャンネルからのメッセージを受信した際に、通知を表示する",
-  "appSettings_advertisementNotifications": "広告通知",
+  "appSettings_advertisementNotifications": "アドバート通知",
   "appSettings_advertisementNotificationsSubtitle": "新しいノードが発見された場合に通知を表示する",
   "appSettings_messaging": "メッセージング",
   "appSettings_clearPathOnMaxRetry": "最大再試行時に経路を消去",
@@ -376,7 +376,7 @@
   "appSettings_appDebugLoggingDisabled": "アプリのデバッグログは無効です",
   "contacts_title": "連絡先",
   "contacts_noContacts": "まだ連絡先はありません",
-  "contacts_contactsWillAppear": "デバイスが広告を送信すると連絡先が表示されます",
+  "contacts_contactsWillAppear": "デバイスがアドバートを送信すると連絡先が表示されます",
   "contacts_unread": "未読",
   "contacts_searchContactsNoNumber": "連絡先を検索...",
   "contacts_searchContacts": "連絡先を検索... {number} 件の {str}",
@@ -1159,7 +1159,7 @@
       }
     }
   },
-  "path_tooLong": "経路が長すぎる。最大64回のジャンプのみ許可。",
+  "path_tooLong": "経路が長すぎる。最大64回のホップのみ許可。",
   "path_setPath": "パスを設定",
   "repeater_management": "リピータ管理",
   "room_management": "ルームサーバーの管理",
@@ -1296,9 +1296,9 @@
   "repeater_guestAccess": "ゲストへのアクセス",
   "repeater_guestAccessSubtitle": "ゲストへの読み取り専用アクセスを許可する",
   "repeater_privacyMode": "プライバシーモード",
-  "repeater_privacyModeSubtitle": "広告に名前/場所を記載しない",
-  "repeater_advertisementSettings": "広告設定",
-  "repeater_localAdvertInterval": "地域広告掲載期間",
+  "repeater_privacyModeSubtitle": "アドバートに名前/場所を記載しない",
+  "repeater_advertisementSettings": "アドバート設定",
+  "repeater_localAdvertInterval": "地域アドバート掲載期間",
   "repeater_localAdvertIntervalMinutes": "{minutes} 分",
   "@repeater_localAdvertIntervalMinutes": {
     "placeholders": {
@@ -1307,7 +1307,7 @@
       }
     }
   },
-  "repeater_floodAdvertInterval": "フラッドに関する広告の表示間隔",
+  "repeater_floodAdvertInterval": "フラッドに関するアドバートの表示間隔",
   "repeater_floodAdvertIntervalHours": "{hours} 時間",
   "@repeater_floodAdvertIntervalHours": {
     "placeholders": {
@@ -1316,7 +1316,7 @@
       }
     }
   },
-  "repeater_encryptedAdvertInterval": "暗号化された広告表示間",
+  "repeater_encryptedAdvertInterval": "暗号化されたアドバート表示間",
   "repeater_dangerZone": "危険区域",
   "repeater_rebootRepeater": "リピータを再起動する",
   "repeater_rebootRepeaterSubtitle": "リピータデバイスを再起動する",
@@ -1387,10 +1387,10 @@
   "repeater_agcResetInterval": "AGCのリセット間隔",
   "repeater_agcResetIntervalHelper": "ラジオの自動ゲイン制御をリセットする頻度について：ゲインが固定状態になった場合に、回復するために、何度リセットするかを設定します。4の倍数でリセットする場合、0を設定すると、定期的なリセットは停止します。",
   "repeater_actionsTitle": "操作",
-  "repeater_sendAdvert": "フラッド広告を送信",
-  "repeater_sendAdvertSubtitle": "ネットワーク全体にフラッド広告をブロードキャストします",
-  "repeater_sendAdvertZeroHop": "ゼロホップ広告を送信",
-  "repeater_sendAdvertZeroHopSubtitle": "1 ホップ広告を送信します（リピータなし）",
+  "repeater_sendAdvert": "フラッドアドバートを送信",
+  "repeater_sendAdvertSubtitle": "ネットワーク全体にフラッドアドバートをブロードキャストします",
+  "repeater_sendAdvertZeroHop": "ゼロホップアドバートを送信",
+  "repeater_sendAdvertZeroHopSubtitle": "1 ホップアドバートを送信します（リピータなし）",
   "repeater_clockSync": "時刻を同期",
   "repeater_clockSyncSubtitle": "スマートフォンの時刻をデバイスに設定します",
   "repeater_actionSucceeded": "{action} が成功しました",
@@ -1475,9 +1475,9 @@
   "repeater_cliQuickGetTx": "TX を取得",
   "repeater_cliQuickNeighbors": "近隣",
   "repeater_cliQuickVersion": "バージョン",
-  "repeater_cliQuickAdvertise": "広告送信",
+  "repeater_cliQuickAdvertise": "アドバート送信",
   "repeater_cliQuickClock": "時刻",
-  "repeater_cliHelpAdvert": "広告用資料を送る",
+  "repeater_cliHelpAdvert": "アドバートパケットを送信します",
   "repeater_cliHelpReboot": "デバイスを再起動します。(注：通常は「タイムアウト」が表示されますが、これは正常です)",
   "repeater_cliHelpClock": "各デバイスの時計で現在の時刻を表示します。",
   "repeater_cliHelpPassword": "デバイス用の新しい管理者パスワードを設定します。",
@@ -1491,15 +1491,15 @@
   "repeater_cliHelpSetIntThresh": "干渉閾値を設定します（dB単位）。デフォルト値は14です。0に設定すると、チャンネル間の干渉を検出する機能を無効にします。",
   "repeater_cliHelpSetAgcResetInterval": "オートゲインコントローラーのリセット間隔を設定します。 0 に設定すると無効化されます。",
   "repeater_cliHelpSetMultiAcks": "「ダブルACK」機能の有効化または無効化を可能にします。",
-  "repeater_cliHelpSetAdvertInterval": "ローカル（ホップなし）の広告パケットを送信する間隔を分単位で設定します。 0 に設定すると、機能を無効にします。",
-  "repeater_cliHelpSetFloodAdvertInterval": "フラッド広告の送信間隔を時間単位で設定します。0に設定すると、送信を停止します。",
+  "repeater_cliHelpSetAdvertInterval": "ローカル（ホップなし）のアドバートパケットを送信する間隔を分単位で設定します。 0 に設定すると、機能を無効にします。",
+  "repeater_cliHelpSetFloodAdvertInterval": "フラッドアドバートの送信間隔を時間単位で設定します。0に設定すると、送信を停止します。",
   "repeater_cliHelpSetGuestPassword": "ゲストのパスワードを設定/更新します。（繰り返し利用の場合、ゲストのログインは「統計情報を取得」のリクエストを送信できます）",
-  "repeater_cliHelpSetName": "広告の名前を設定します。",
-  "repeater_cliHelpSetLat": "広告表示の地図の緯度を設定します。（度分秒表記）",
-  "repeater_cliHelpSetLon": "広告表示の地図の経度を設定します。（度数、分）",
+  "repeater_cliHelpSetName": "アドバートの名前を設定します。",
+  "repeater_cliHelpSetLat": "アドバート表示の地図の緯度を設定します。（度分秒表記）",
+  "repeater_cliHelpSetLon": "アドバート表示の地図の経度を設定します。（度数、分）",
   "repeater_cliHelpSetRadio": "完全に新しいラジオパラメータを設定し、設定として保存します。適用するには、「再起動」コマンドが必要です。",
   "repeater_cliHelpSetRxDelay": "（実験用）遅延時間を設定するためのベース（1以上の値に設定する必要）\n受信パケットに対して、信号強度/スコアに基づいてわずかな遅延を適用します。 0に設定すると無効化されます。",
-  "repeater_cliHelpSetTxDelay": "時間経過に応じた「フラッシュモード」パケットの送信遅延を設定します。この遅延は、ランダムなスロットシステムと組み合わせて使用され、パケットの衝突を減らすことを目的としています。",
+  "repeater_cliHelpSetTxDelay": "時間経過に応じた「フラッドモード」パケットの送信遅延を設定します。この遅延は、ランダムなスロットシステムと組み合わせて使用され、パケットの衝突を減らすことを目的としています。",
   "repeater_cliHelpSetDirectTxDelay": "txdelayと同様ですが、ダイレクトモードのパケット転送にランダムな遅延を適用する場合に使用します。",
   "repeater_cliHelpSetBridgeEnabled": "ブリッジを有効化/無効化",
   "repeater_cliHelpSetBridgeDelay": "パケットを再送信する前に、遅延を設定する。",
@@ -1513,7 +1513,7 @@
   "repeater_cliHelpLogStart": "パケットのログ記録を開始し、ファイルシステムに保存する。",
   "repeater_cliHelpLogStop": "ファイルシステムへのパケットログの記録を停止する。",
   "repeater_cliHelpLogErase": "ファイルシステムからパケットログを削除する。",
-  "repeater_cliHelpNeighbors": "ゼロホップ広告を通じて受信した他のリピータノードの一覧を表示します。各行は、IDプレフィックス（16進数）、タイムスタンプ、SNR（シグナル強度）の情報を4つ含みます。",
+  "repeater_cliHelpNeighbors": "ゼロホップアドバートを通じて受信した他のリピータノードの一覧を表示します。各行は、IDプレフィックス（16進数）、タイムスタンプ、SNR（シグナル強度）の情報を4つ含みます。",
   "repeater_cliHelpNeighborRemove": "隣接リストから、最初に一致するエントリ（pubkeyプレフィックス（16進数）で特定）を削除します。",
   "repeater_cliHelpRegion": "（特定のシリーズのみ）定義されたすべての地域と、現在のフラッド許可状況を一覧表示します。",
   "repeater_cliHelpRegionLoad": "注：これは特殊な複数コマンドの呼び出しです。その後の各コマンドは、地域名であり（スペースを使用して親階層を示し、少なくとも1つのスペースが必要です）、空行/コマンドで終了します。",
@@ -1529,8 +1529,8 @@
   "repeater_cliHelpGpsOnOff": "GPS の電源状態を切り替えます。",
   "repeater_cliHelpGpsSync": "ノードの時刻をGPSクロックと同期する。",
   "repeater_cliHelpGpsSetLoc": "ノードの位置をGPS座標に設定し、設定を保存する。",
-  "repeater_cliHelpGpsAdvert": "ノードの広告設定における場所情報の指定:\n- none: 広告に場所情報を含まない\n- share: GPS位置情報を共有 (SensorManagerから取得)\n- prefs: プリファレンスに保存された場所情報を広告",
-  "repeater_cliHelpGpsAdvertSet": "場所に関する広告設定を行います。",
+  "repeater_cliHelpGpsAdvert": "ノードのアドバート設定における場所情報の指定:\n- none: アドバートに場所情報を含まない\n- share: GPS位置情報を共有 (SensorManagerから取得)\n- prefs: プリファレンスに保存された場所情報をアドバートする",
+  "repeater_cliHelpGpsAdvertSet": "場所に関するアドバート設定を行います。",
   "repeater_commandsListTitle": "コマンド一覧",
   "repeater_commandsListNote": "注：さまざまな「set ...」コマンドには、「get ...」コマンドも存在します。",
   "repeater_general": "一般的な",
@@ -2154,16 +2154,16 @@
   "contacts_invalidAdvertFormat": "無効な連絡先情報",
   "contacts_contactImported": "連絡先が登録されました。",
   "contacts_contactImportFailed": "連絡先のインポートに失敗しました。",
-  "contacts_zeroHopAdvert": "ゼロホップ広告",
-  "contacts_floodAdvert": "フラッドに関する広告",
-  "contacts_copyAdvertToClipboard": "広告をクリップボードにコピー",
+  "contacts_zeroHopAdvert": "ゼロホップアドバート",
+  "contacts_floodAdvert": "フラッドアドバート",
+  "contacts_copyAdvertToClipboard": "アドバートをクリップボードにコピー",
   "contacts_addContactFromClipboard": "クリップボードから連絡先を追加する",
   "contacts_ShareContact": "連絡先をクリップボードにコピー",
-  "contacts_ShareContactZeroHop": "広告を通じて連絡先を共有する",
-  "contacts_zeroHopContactAdvertSent": "広告を通じて連絡先を得た。",
+  "contacts_ShareContactZeroHop": "アドバートを通じて連絡先を共有する",
+  "contacts_zeroHopContactAdvertSent": "アドバートを通じて連絡先を得た。",
   "contacts_zeroHopContactAdvertFailed": "連絡を送信できませんでした。",
-  "contacts_contactAdvertCopied": "広告がクリップボードにコピーされました。",
-  "contacts_contactAdvertCopyFailed": "広告のコピーがクリップボードにコピーできませんでした。",
+  "contacts_contactAdvertCopied": "アドバートがクリップボードにコピーされました。",
+  "contacts_contactAdvertCopyFailed": "アドバートのコピーがクリップボードにコピーできませんでした。",
   "notification_activityTitle": "メッシュコアの活動",
   "notification_messagesCount": "{count} {count, plural, =1{message} other{messages}}",
   "@notification_messagesCount": {
@@ -2309,8 +2309,8 @@
   "settings_telemetryBaseMode": "テレメトリ基本モード",
   "settings_telemetryLocationMode": "テレメトリ位置特定モード",
   "settings_telemetryEnvironmentMode": "テレメトリ環境モード",
-  "settings_advertLocation": "広告掲載場所",
-  "settings_advertLocationSubtitle": "広告に場所を記載してください。",
+  "settings_advertLocation": "アドバート位置",
+  "settings_advertLocationSubtitle": "アドバートに位置情報を含めてください。",
   "settings_telemetryModeUpdated": "テレメトリモードが更新されました",
   "contact_info": "連絡先",
   "contact_settings": "連絡設定",
@@ -2400,7 +2400,7 @@
   "repeater_sensors": "センサー",
   "repeater_cliHelpPowerOff": "デバイスをシャットダウンします。（応答は期待されていません）",
   "repeater_cliHelpClkReboot": "時計を既知の基準時点にリセットし、デバイスを再起動します。",
-  "repeater_cliHelpAdvertZeroHop": "近隣のデバイスのみに、ゼロホップの広告を送信します。",
+  "repeater_cliHelpAdvertZeroHop": "近隣のデバイスのみに、ゼロホップのアドバートを送信します。",
   "repeater_cliHelpStartOta": "サポートされているボードに対して、無線でファームウェアのアップデートを開始します。",
   "repeater_cliHelpTime": "デバイスのクロックを、指定されたUnixエポックの秒数に設定します。クロックは逆方向に進むことはできません。",
   "repeater_cliHelpBoard": "製造元の名前/ハードウェア識別子を表示します。",
@@ -2411,7 +2411,7 @@
   "repeater_cliHelpSetDutyCycle": "送信可能な最大デューティサイクルをパーセントで設定します（1〜100）。内部で、空き時間の要素を調整します。",
   "repeater_cliHelpSetPrvKey": "（シリアル番号のみ）デバイスのプライベートキーを置き換えます。適用には再起動が必要です。新しいパブリックキーを生成します。",
   "repeater_cliHelpSetRadioRxGain": "（SX126xのみ）高電流での使用時に、感度を向上させるために、増幅されたRXのゲインを切り替えることができます。",
-  "repeater_cliHelpSetOwnerInfo": "広告に記載されている所有者連絡先情報を設定します。改行には'|'を使用してください。",
+  "repeater_cliHelpSetOwnerInfo": "アドバートに記載されている所有者連絡先情報を設定します。改行には'|'を使用してください。",
   "repeater_cliHelpSetPathHashMode": "パスハッシュモードを設定します。 0 = 従来のモード、1 = 標準モード、2 = 厳格モード。ルーティングパスのマッチング方法に影響します。",
   "repeater_cliHelpSetLoopDetect": "ルーティングループ検出の感度を設定します：オフ、最小、中程度、または厳格。",
   "repeater_cliHelpSetFreq": "（シリアル設定のみ）特定の周波数のみを素早く設定できます。再起動が必要です。「ラジオ設定」を使用すると、ラジオのすべてのパラメータを設定できます。",
@@ -2431,8 +2431,8 @@
   "repeater_cliHelpGetAgcResetInterval": "AGCのリセット間隔を秒単位で表示します。",
   "repeater_cliHelpGetMultiAcks": "ダブルACKモードが有効 (1) か無効 (0) かを示す。",
   "repeater_cliHelpGetAllowReadOnly": "ゲストによる読み取り専用アクセスが許可されているかどうかを示す。",
-  "repeater_cliHelpGetAdvertInterval": "ローカル広告の時間を分単位で表示します。",
-  "repeater_cliHelpGetFloodAdvertInterval": "フラッドに関する広告の放送時間を時間単位で表示します。",
+  "repeater_cliHelpGetAdvertInterval": "ローカルアドバートの時間を分単位で表示します。",
+  "repeater_cliHelpGetFloodAdvertInterval": "フラッドに関するアドバートの放送時間を時間単位で表示します。",
   "repeater_cliHelpGetGuestPassword": "設定されたゲストパスワードを表示します。",
   "repeater_cliHelpGetLat": "設定された緯度を表示します。",
   "repeater_cliHelpGetLon": "設定された経度を表示します。",
@@ -2932,7 +2932,7 @@
   "imageSend_radioUnknownBody": "放送時間の計算ができるように、デバイスに接続してください。",
   "imageSend_longSendTitle": "長距離伝送",
   "imageSend_longSendBody": "このチャンネルは約 {duration} 間保持されます。",
-  "imageSend_floodNote": "洪水ルーティング：範囲内の各リピーターが各パケットを再送信するため、チャネルはこれよりも長く占有されたままになります。",
+  "imageSend_floodNote": "フラッドルーティング：範囲内の各リピーターが各パケットを再送信するため、チャネルはこれよりも長く占有されたままになります。",
   "imageSend_parityTitle": "回復パケット",
   "imageSend_paritySubtitle": "追加のパケットが1つあります。グループメッセージは確認されないため、1つのパケットが失われても受信者が画像を再構築できます。",
   "imageSend_send": "送る",
@@ -2962,5 +2962,237 @@
   "receivedImage_tapToProcess": "処理するにはタップしてください",
   "receivedImage_awaiting": "{bytes} バイト・{packets} {packets, plural, =1{パケット} other{パケット}}",
   "imageSend_secondsValue": "{seconds}秒",
-  "imageSend_minutesSecondsValue": "{minutes}分 {seconds}秒"
+  "imageSend_minutesSecondsValue": "{minutes}分 {seconds}秒",
+  "channels_noFreeSlots": "すべてのチャンネルスロットが使用中です",
+  "chat_longMessageRetryNote": "158バイトを超える場合：最大 {count} 回まで送信されます",
+  "reaction_report": "絵文字リアクション",
+  "repeater_bridgeNote": "RS232またはESP-NOWのブリッジ機能を備えたファームウェアでのみ利用可能です。",
+  "repeater_cliHelpGetFloodMaxAdvert": "フラッドアドバートの最大ホップ数を表示します。",
+  "repeater_cliHelpGetFloodMaxUnscoped": "地域スコープのないフラッドパケットの最大ホップ数を表示します。",
+  "repeater_cliHelpGetRadioFemRxGain": "LoRaフロントエンドモジュールのRXゲインが有効になっているかどうかを表示します。",
+  "repeater_cliHelpGetRadioFemTxGain": "LoRaフロントエンドモジュールのTXゲインが有効になっているかどうかを表示します。",
+  "repeater_cliHelpRegionDef": "1つのコマンドで地域のチェーンを定義します。各名前は直前の名前の下に追加されます。「name,parent」を指定すると、その名前を追加した後、指定した親の下に続けます。地域リストを返信します。",
+  "repeater_cliHelpSetFloodMaxAdvert": "フラッドアドバートを転送する際の最大ホップ数を設定します(0-64)。",
+  "repeater_cliHelpSetFloodMaxUnscoped": "地域スコープを持たないフラッドパケットを転送する際の最大ホップ数を設定します(0-64)。",
+  "repeater_cliHelpSetRadioFemRxGain": "LoRaフロントエンドモジュールのRXゲイン（LNA）の有効/無効を切り替えます。対応していない基板は「Error: unsupported」と返信します。",
+  "repeater_cliHelpSetRadioFemTxGain": "LoRaフロントエンドモジュールのTXゲイン（PA）の有効/無効を切り替えます。対応していない基板は「Error: unsupported」と返信します。",
+  "repeater_cliRegionLoadActive": "地域読み込みモード：1行に1つの地域名を送信し、親の下にスペースでインデントします（フラッドを許可する場合は名前の後にFを追加）。各行に返信はありません。空行を送信して終了し、その後「region save」を送信すると結果が保存されます。",
+  "repeater_cliRegionLoadEnd": "（地域読み込み終了）",
+  "repeater_cliRegionLoadHint": "地域行、または空欄で終了",
+  "repeater_frequencyInvalid": "無効な周波数 (150-2500 MHz)",
+  "repeater_frequencyRangeHelper": "150-2500 MHz",
+  "repeater_recvErrors": "受信エラー",
+  "repeater_txPowerRangeHelper": "-9～30 dBm",
+  "room_postsPushed": "プッシュされた投稿",
+  "room_postsStored": "投稿",
+  "settings_publicKeyCopied": "公開鍵がコピーされました",
+  "settings_radioSettingsNotApplied": "ラジオがこれらの設定を適用しませんでした",
+  "urlImage_enable": "URL画像を有効にする",
+  "urlImage_possible": "URL画像の可能性があります。設定で有効にしてください。",
+  "@chat_longMessageRetryNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_failedChannel": "ラジオはこのメッセージを送信できませんでした。",
+  "messageStatus_resending": "まだ十分に多くのリピータから確認できていません。{maxResends} 回中 {resends} 回再送信しました。",
+  "@messageStatus_resending": {
+    "placeholders": {
+      "resends": {
+        "type": "int"
+      },
+      "maxResends": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_hopsNotReached": "送信しましたが、{required} 個中 {hops} 個のリピータからのみ返答を確認できました。ラジオが受信できる範囲より先まで届いている可能性があります。",
+  "@messageStatus_hopsNotReached": {
+    "placeholders": {
+      "hops": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_sentChannel": "送信しました。チャンネルは配信を確認しないため、ラジオが送信したのみを意味します。",
+  "messageStatus_sentDirect": "送信しました。連絡先の確認を待っています。",
+  "messageStatus_heardRepeatedCount": "{count, plural, =1{1 回} other{{count} 回}} 聞かれました。近くのリピータが転送しました。",
+  "@messageStatus_heardRepeatedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_regionEmptyExplanation": "地域を設定すると、フラッドメッセージはその地域内のリピータだけが転送します。近くのリピータから取得するか、名前を指定して追加してください。",
+  "settings_regionFetchFromRepeaters": "リピータから取得",
+  "settings_regionDefault": "既定の地域",
+  "settings_regionDefaultSubtitle": "地域が設定されていないチャンネルで使用されます",
+  "settings_regionDefaultNone": "なし",
+  "settings_telemetryPerContactHint": "連絡先に許可するには、そのチャットを開いてメニューから「連絡先設定」を選択してください。",
+  "settings_multiAckSubtitle": "配信を確実にするため ACK を追加送信します。放送時間が長くなります",
+  "settings_presetCustom": "カスタム",
+  "settings_radioMatchWarning": "通信するすべてのノードで、周波数・帯域幅・伝播係数・コーディング速度を揃える必要があります。",
+  "settings_txPowerRangeHelper": "{min}～{max} dBm",
+  "@settings_txPowerRangeHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_clientRepeatFrequencyNote": "オフグリッド中継用に周波数を {freq} MHz に設定",
+  "@settings_clientRepeatFrequencyNote": {
+    "placeholders": {
+      "freq": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_pathHashModeHelper": "このラジオが送信するフラッドパケットの経路に記録される各ノード ID のサイズ：1 バイト（256 個の ID、最大 64 ホップ）、2 バイト（65,000 個の ID、最大 32 ホップ）、3 バイト（160 万個の ID、最大 21 ホップ）。ID が大きいほど衝突が減りますが、v1.14 より古いファームウェアのリピータは 2 バイトまたは 3 バイトの ID を含むパケットを破棄します。",
+  "settings_requiresFirmware": "ファームウェア {version} 以降が必要です",
+  "@settings_requiresFirmware": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "appSettings_channelMinHops": "十分遠くまで届くまでチャンネルメッセージを再送信",
+  "appSettings_channelMinHopsSubtitle": "メッセージが十分な数のリピータから返ってこない場合は、再送信します。放送時間が長くなります。",
+  "appSettings_channelMinHopsCount": "必要なホップ数：{count}",
+  "@appSettings_channelMinHopsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_channelMinHopsRetries": "{count, plural, =1{1 回} other{{count} 回}}まで再送信",
+  "@appSettings_channelMinHopsRetries": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_batteryOptimization": "バックグラウンド動作",
+  "appSettings_batteryOptimizationSubtitle": "バッテリー設定で MeshCore Open を「最適化しない」に設定すると、バックグラウンドでもメッセージを受信し続けられます",
+  "contacts_storageFull": "ノードの連絡先ストレージが満杯です。連絡先を削除するまで、新しいノードを追加できません。",
+  "contacts_removeFromContacts": "連絡先から削除",
+  "contacts_removeFromContactsConfirm": "{contactName} は発見された連絡先に移動します。チャット履歴は削除されます。",
+  "@contacts_removeFromContactsConfirm": {
+    "placeholders": {
+      "contactName": {
+        "type": "String"
+      }
+    }
+  },
+  "contacts_keepChatHistory": "チャット履歴を保持",
+  "contacts_remove": "削除",
+  "contacts_discoveredNearby": "近くで発見された連絡先（{count}）",
+  "@contacts_discoveredNearby": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contacts_noContactsDiscoveredHint": "ラジオが受信したものの、まだ追加していないノードは「発見された連絡先」に表示されます",
+  "channels_hashtag": "ハッシュタグ",
+  "channels_addSectionJoin": "既存のチャンネルに参加",
+  "channels_addSectionCreate": "新規作成",
+  "channels_dragToReorder": "ドラッグして並べ替え",
+  "channels_regionDefaultSuffix": "（デフォルト）",
+  "channels_regionSelectExplanation": "このチャンネルのフラッドメッセージは、選択した地域内のリピータだけが転送します。",
+  "channels_regionEmpty": "まだ地域がありません。",
+  "channels_manageRegions": "地域を管理",
+  "chat_removeGif": "GIFを削除",
+  "chat_cancelReply": "返信を取り消す",
+  "chat_viewPathOnMap": "地図で経路を表示",
+  "chat_today": "今日",
+  "chat_yesterday": "昨日",
+  "map_centerOnMe": "現在地を中心に表示",
+  "map_noNodesLocationHint": "最近の位置情報を持つノードがありません。時間フィルターを広げるか、設定で現在地を設定してください。",
+  "map_clusterNodes": "近くのノードをグループ化",
+  "map_groupChip": "グループ",
+  "map_clusterNodesSubtitle": "縮小表示時に、近くのノードを番号付きの 1 つの円にまとめて表示します",
+  "map_manageServer": "サーバーを管理",
+  "login_showPassword": "パスワードを表示",
+  "login_hidePassword": "パスワードを非表示",
+  "login_advanced": "高度な",
+  "common_clearSearch": "検索をクリア",
+  "repeater_roleAdmin": "管理者",
+  "repeater_roleGuest": "ゲスト",
+  "repeater_refreshAll": "すべて更新",
+  "repeater_settingsNotLoaded": "このリピータからまだ設定を読み込んでいません。",
+  "repeater_settingsLoadIncomplete": "一部の設定を読み込めませんでした。更新ボタンから再試行してください。",
+  "contacts_scanQrCode": "QRコードをスキャン",
+  "contacts_scanQrInstructions": "カメラを MeshCore の連絡先 QR コードに向けてください",
+  "contacts_qrFromGallery": "ギャラリーからQRをスキャン",
+  "contacts_noQrCodeFound": "選択した画像にQRコードが見つかりませんでした。",
+  "contacts_qrGalleryFailed": "ギャラリーを開けませんでした。",
+  "notification_actionReply": "返信",
+  "notification_actionMarkRead": "既読にする",
+  "notification_actionMuteChannel": "チャンネルをミュート",
+  "notification_replyHint": "メッセージ",
+  "notification_you": "自分",
+  "notification_replyFailedTitle": "返信を送信できませんでした",
+  "notification_replyNotConnected": "ラジオに接続されていません。MeshCore Open で再接続してから、もう一度返信を送信してください。",
+  "notification_replyTooLong": "返信が長すぎて通知から送信できません。MeshCore Open から送信してください。",
+  "notification_replyUnavailable": "この会話は接続中のラジオにありません。",
+  "notification_replySendFailed": "返信が送信されていない可能性があります。MeshCore Open で確認してから再試行してください。",
+  "notification_replyAppNotRunning": "MeshCore Open が起動していません。起動してから、もう一度返信を送信してください。",
+  "snrIndicator_nearByRepeatersDescription": "ラジオが直接受信したリピータ（最近受信した順）",
+  "radioStats_sectionSignal": "信号",
+  "radioStats_sectionAirtime": "放送時間",
+  "imageSend_lossyNote": "約 {bytes} バイトに圧縮されます。受信側のモデルが復元するため、細部は異なります。",
+  "@imageSend_lossyNote": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "imageSend_viewOriginal": "オリジナル",
+  "imageSend_viewReconstruction": "受信者の表示",
+  "imageSend_reconstructionUnavailable": "このデバイスでは復元結果をプレビューできません。",
+  "imageSend_modelNotDownloaded": "画像モデルがまだダウンロードされていません。設定でダウンロードすると画像を送信できます。",
+  "receivedImage_save": "画像を保存",
+  "receivedImage_shareCaption": "{bytes} バイトから AI で復元。細部は送信されたものではなく、生成されたものです。",
+  "@receivedImage_shareCaption": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_packetInfo": "パケット情報",
+  "receivedImage_parityRecovered": "1 つのパケットを回復パケットから再構築しました。",
+  "receivedImage_decodeTime": "{ms} ミリ秒で再構築",
+  "@receivedImage_decodeTime": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_saveFailed": "画像を保存できませんでした",
+  "reviewMode_dialogTitle": "レビューモードに入りますか？",
+  "reviewMode_dialogBody": "レビューモードでは、サンプルの連絡先、チャンネル、メッセージを備えたシミュレートされたデバイスに接続します。実際のデバイスは不要です。",
+  "reviewMode_confirm": "開始",
+  "reviewMode_cancel": "キャンセル",
+  "reviewMode_banner": "レビューモード — シミュレーションデータ",
+  "reviewMode_sendTest": "テストメッセージを送信",
+  "reviewMode_testSent": "まもなくテストメッセージが届きます。",
+  "reviewMode_exit": "終了",
+  "reviewMode_connectFailed": "レビューモードを開始できませんでした: {error}"
 }

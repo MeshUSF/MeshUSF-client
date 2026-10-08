@@ -77,8 +77,8 @@
   "settings_locationIntervalInvalid": "Интервал должен составлять не менее 60 секунд и не более 86400 секунд.",
   "settings_latitude": "Широта",
   "settings_longitude": "Долгота",
-  "settings_autoZeroHopAdvertOnGpsUpdate": "Авто-объявление без хопов при обновлении GPS",
-  "settings_autoZeroHopAdvertOnGpsUpdateSubtitle": "Когда GPS-местоположение меняется, отправлять объявление без хопов (требуется геопозиция в объявлении).",
+  "settings_autoZeroHopAdvertOnGpsUpdate": "Авто-анонс без хопов при обновлении GPS",
+  "settings_autoZeroHopAdvertOnGpsUpdateSubtitle": "Когда GPS-местоположение меняется, отправлять анонс без хопов (требуется геопозиция в анонсе).",
   "settings_privacyMode": "Режим конфиденциальности",
   "settings_privacyModeSubtitle": "Скрыть имя/позицию в анонсировании",
   "settings_privacyModeToggle": "Включите режим конфиденциальности, чтобы скрыть свое имя и местоположение в анонсировании.",
@@ -149,7 +149,7 @@
   "appSettings_languageRu": "Русский",
   "appSettings_notifications": "Уведомления",
   "appSettings_enableNotifications": "Включить уведомления",
-  "appSettings_enableNotificationsSubtitle": "Получать уведомления о сообщениях и оповещениях",
+  "appSettings_enableNotificationsSubtitle": "Получать уведомления о сообщениях и анонсах",
   "appSettings_notificationPermissionDenied": "Разрешение на уведомления отклонено",
   "appSettings_notificationsEnabled": "Уведомления включены",
   "appSettings_notificationsDisabled": "Уведомления отключены",
@@ -215,7 +215,7 @@
   "appSettings_appDebugLoggingDisabled": "Журнал отладки приложения отключён",
   "contacts_title": "Контакты",
   "contacts_noContacts": "Контактов пока нет",
-  "contacts_contactsWillAppear": "Контакты появятся, когда устройства начнут рассылать оповещения",
+  "contacts_contactsWillAppear": "Контакты появятся, когда устройства начнут рассылать анонсы",
   "contacts_searchContacts": "Поиск контактов...",
   "contacts_noUnreadContacts": "Нет непрочитанных контактов",
   "contacts_noContactsFound": "Контакты или группы не найдены",
@@ -623,7 +623,7 @@
   "repeater_guestAccess": "Гостевой доступ",
   "repeater_guestAccessSubtitle": "Разрешить гостевой доступ только для чтения",
   "repeater_privacyMode": "Режим конфиденциальности",
-  "repeater_privacyModeSubtitle": "Скрывать имя/местоположение в оповещениях",
+  "repeater_privacyModeSubtitle": "Скрывать имя/местоположение в анонсах",
   "repeater_advertisementSettings": "Настройки анонсирования",
   "repeater_localAdvertInterval": "Интервал локальных анонсирований",
   "repeater_localAdvertIntervalMinutes": "{minutes} минут",
@@ -692,9 +692,9 @@
   "repeater_cliHelpSetAdvertInterval": "Устанавливает интервал (в минутах) отправки локального (нулевой хоп) анонсирования. Установите 0, чтобы отключить.",
   "repeater_cliHelpSetFloodAdvertInterval": "Устанавливает интервал (в часах) отправки анонсирований рассылкой. Установите 0, чтобы отключить.",
   "repeater_cliHelpSetGuestPassword": "Устанавливает/обновляет гостевой пароль. (для репитеров гости могут отправлять запрос «Get Stats»)",
-  "repeater_cliHelpSetName": "Устанавливает имя в оповещениях.",
-  "repeater_cliHelpSetLat": "Устанавливает широту для карты в оповещениях. (десятичные градусы)",
-  "repeater_cliHelpSetLon": "Устанавливает долготу для карты в оповещениях. (десятичные градусы)",
+  "repeater_cliHelpSetName": "Устанавливает имя анонса.",
+  "repeater_cliHelpSetLat": "Устанавливает широту для карты анонса. (десятичные градусы)",
+  "repeater_cliHelpSetLon": "Устанавливает долготу для карты анонса. (десятичные градусы)",
   "repeater_cliHelpSetRadio": "Устанавливает полностью новые параметры радио и сохраняет их в настройки. Требуется команда «reboot» для применения.",
   "repeater_cliHelpSetRxDelay": "Устанавливает (экспериментально) базовую задержку (>1 для эффекта) для принятых пакетов на основе качества сигнала. Установите 0, чтобы отключить.",
   "repeater_cliHelpSetTxDelay": "Устанавливает множитель времени в эфире для пакета в режиме рассылки и применяет случайную задержку перед пересылкой (чтобы уменьшить коллизии).",
@@ -711,7 +711,7 @@
   "repeater_cliHelpLogStart": "Начинает запись пакетов в файловую систему.",
   "repeater_cliHelpLogStop": "Останавливает запись пакетов в файловую систему.",
   "repeater_cliHelpLogErase": "Удаляет журналы пакетов из файловой системы.",
-  "repeater_cliHelpNeighbors": "Показывает список других репитеров, услышанных через оповещения нулевого хопа. Каждая строка: префикс-id-в-hex:временная-метка:snr×4",
+  "repeater_cliHelpNeighbors": "Показывает список других репитеров, услышанных через анонсы нулевого хопа. Каждая строка: префикс-id-в-hex:временная-метка:snr×4",
   "repeater_cliHelpNeighborRemove": "Удаляет первую подходящую запись (по префиксу публичного ключа в hex) из списка соседей.",
   "repeater_cliHelpRegion": "(только через последовательный порт) Показывает все определённые регионы и текущие права на рассылку.",
   "repeater_cliHelpRegionLoad": "ПРИМЕЧАНИЕ: это специальная многострочная команда. Каждая следующая строка — имя региона (с отступом пробелами для указания иерархии, минимум один пробел). Завершается пустой строкой.",
@@ -925,20 +925,20 @@
   "contacts_contactImported": "Контакт был импортирован",
   "contacts_contactImportFailed": "Контакт не удалось импортировать",
   "contacts_invalidAdvertFormat": "Недействительные контактные данные",
-  "contacts_zeroHopAdvert": "Реклама Zero Hop",
+  "contacts_zeroHopAdvert": "Анонс без хопов",
   "appSettings_languageUk": "Українська",
   "appSettings_enableMessageTracing": "Включить трассировку сообщений",
   "appSettings_enableMessageTracingSubtitle": "Показывать подробные метаданные о маршрутизации и времени для сообщений",
-  "contacts_floodAdvert": "Рекламный поток",
+  "contacts_floodAdvert": "Анонс рассылкой",
   "contacts_clipboardEmpty": "Буфер обмена пуст.",
-  "contacts_copyAdvertToClipboard": "Копировать рекламу в буфер обмена",
+  "contacts_copyAdvertToClipboard": "Копировать анонс в буфер обмена",
   "contacts_ShareContact": "Копировать контакт в буфер обмена",
   "contacts_zeroHopContactAdvertFailed": "Не удалось отправить контакт.",
-  "contacts_contactAdvertCopied": "Реклама скопирована в буфер обмена.",
-  "contacts_contactAdvertCopyFailed": "Копирование рекламы в буфер обмена не удалось.",
+  "contacts_contactAdvertCopied": "Анонс скопирован в буфер обмена.",
+  "contacts_contactAdvertCopyFailed": "Копирование анонса в буфер обмена не удалось.",
   "contacts_addContactFromClipboard": "Добавить контакт из буфера обмена",
-  "contacts_ShareContactZeroHop": "Поделиться контактом по объявлению",
-  "contacts_zeroHopContactAdvertSent": "Отправлено сообщение по объявлению.",
+  "contacts_ShareContactZeroHop": "Поделиться контактом по анонсу",
+  "contacts_zeroHopContactAdvertSent": "Контакт отправлен анонсом.",
   "notification_activityTitle": "Активность MeshCore",
   "notification_messagesCount": "{count} {count, plural, =1{сообщение} few{сообщения} many{сообщений} other{сообщений}}",
   "notification_channelMessagesCount": "{count} {count, plural, =1{сообщение канала} few{сообщения канала} many{сообщений канала} other{сообщений канала}}",
@@ -960,7 +960,7 @@
   "settings_gpxExportNoContacts": "Нет контактов для экспорта.",
   "settings_gpxExportShareText": "Данные карты экспортированы из meshcore-open",
   "settings_gpxExportShareSubject": "meshcore-open экспорт данных карты GPX",
-  "pathTrace_someHopsNoLocation": "Одному или нескольким хмелям не указано местоположение!",
+  "pathTrace_someHopsNoLocation": "У одного или нескольких хопов не указано местоположение!",
   "map_tapToAdd": "Нажимайте на узлы, чтобы добавить их в путь.",
   "map_removeLast": "Удалить последний",
   "map_pathTraceCancelled": "Отмена трассировки пути",
@@ -1266,8 +1266,8 @@
   "settings_privacySubtitle": "Контролируйте, какую информацию делиться.",
   "settings_telemetryLocationMode": "Режим местоположения телеметрии",
   "settings_telemetryEnvironmentMode": "Режим среды телеметрии",
-  "settings_advertLocation": "Местоположение рекламы",
-  "settings_advertLocationSubtitle": "Включить местоположение в объявление",
+  "settings_advertLocation": "Местоположение анонса",
+  "settings_advertLocationSubtitle": "Включить местоположение в анонс",
   "settings_allowAll": "Разрешить все",
   "settings_privacySettingsDescription": "Выберите, какую информацию ваше устройство будет делиться с другими.",
   "settings_denyAll": "Отклонить все",
@@ -1539,14 +1539,14 @@
   "repeater_ownerInfo": "Информация о операторе",
   "repeater_ownerInfoHelper": "Общая метаинформация для этого ретранслятора",
   "repeater_refreshOwnerInfo": "Обновить информацию о операторе",
-  "repeater_floodMax": "Максимальное количество прыжков при наводнении",
+  "repeater_floodMax": "Максимальное количество хопов при рассылке",
   "repeater_floodMaxHelper": "Максимальное количество пакетов, которые могут быть отправлены в одном потоке (0-64)",
   "repeater_advancedSettings": "Продвинутый",
   "repeater_advancedSettingsSubtitle": "Регуляторы для опытных операторов",
   "repeater_pathHashMode": "Режим хеширования пути",
-  "repeater_pathHashModeHelper": "Байты, используемые для кодирования идентификатора этого ретранслятора в тегах flood-маршрута/обнаружения циклов. 0 = 1 байт (256 идентификаторов, до 64 переходов), 1 = 2 байта (65 000 идентификаторов, до 32 переходов), 2 = 3 байта (16 миллионов идентификаторов, до 21 перехода). Прошивки до v1.14 всегда использовали 1-байтовые маршруты; v1.14 и новее можно настроить на 2- или 3-байтовые маршруты.",
+  "repeater_pathHashModeHelper": "Байты, используемые для кодирования идентификатора этого ретранслятора в тегах flood-маршрута/обнаружения циклов. 0 = 1 байт (256 идентификаторов, до 64 хопов), 1 = 2 байта (65 000 идентификаторов, до 32 хопов), 2 = 3 байта (16 миллионов идентификаторов, до 21 хопа). Прошивки до v1.14 всегда использовали 1-байтовые маршруты; v1.14 и новее можно настроить на 2- или 3-байтовые маршруты.",
   "repeater_txDelay": "Задержка в работе системы Flood TX",
-  "repeater_txDelayHelper": "Передача с увеличенным интервалом для трафика во время наводнения, в качестве коэффициента, умножающего время передачи пакета (от 0 до 2, по умолчанию 0,5). Более высокое значение означает меньшее количество столкновений, но более медленную передачу.",
+  "repeater_txDelayHelper": "Задержка повторной передачи для трафика при рассылке (flood), в качестве коэффициента, умножающего время передачи пакета (от 0 до 2, по умолчанию 0,5). Более высокое значение означает меньшее количество столкновений, но более медленную передачу.",
   "repeater_directTxDelay": "Прямая задержка сигнала TX",
   "repeater_directTxDelayHelper": "Передача промежуточных данных для прямого (немассового) трафика, в качестве коэффициента, равного времени передачи пакета (от 0 до 2, по умолчанию 0,3).",
   "repeater_intThresh": "Пороговое значение помех",
@@ -1554,10 +1554,10 @@
   "repeater_agcResetInterval": "Интервал сброса AGC",
   "repeater_agcResetIntervalHelper": "Как часто следует сбрасывать автоматическую регулировку усиления радио, чтобы вернуться к нормальному состоянию после заклинивания? Интервал сброса составляет несколько секунд, кратный 4. Отключение периодического сброса осуществляется с помощью параметра 0.",
   "repeater_actionsTitle": "Действия",
-  "repeater_sendAdvert": "Отправить объявление о наводнении",
-  "repeater_sendAdvertSubtitle": "Разместите рекламу о наводнении в эфире по всей сети.",
-  "repeater_sendAdvertZeroHop": "Опубликуйте рекламу, не требующую промежуточного распространения.",
-  "repeater_sendAdvertZeroHopSubtitle": "Разместите рекламу, распространяемую одним способом (без использования ретрансляторов).",
+  "repeater_sendAdvert": "Отправить анонс рассылкой",
+  "repeater_sendAdvertSubtitle": "Разошлите анонс рассылкой по всей сети.",
+  "repeater_sendAdvertZeroHop": "Опубликуйте анонс, не требующий промежуточного распространения.",
+  "repeater_sendAdvertZeroHopSubtitle": "Разместите анонс, распространяемый одним способом (без использования ретрансляторов).",
   "repeater_clockSync": "Синхронизировать время сейчас",
   "repeater_clockSyncSubtitle": "Установите время на вашем телефоне, чтобы оно совпадало со временем ретранслятора.",
   "repeater_actionSucceeded": "{action} succeeded",
@@ -1654,7 +1654,7 @@
   "repeater_sensors": "Датчики",
   "repeater_cliHelpPowerOff": "Отключает устройство. (ожидается отсутствие ответа).",
   "repeater_cliHelpClkReboot": "Сбрасывает часы до известной эпохи и перезапускает устройство.",
-  "repeater_cliHelpAdvertZeroHop": "Отправляет рекламу, распространяемую только среди ближайших соседей (без промежуточных узлов).",
+  "repeater_cliHelpAdvertZeroHop": "Отправляет анонс, распространяемый только среди ближайших соседей (без промежуточных узлов).",
   "repeater_cliHelpStartOta": "Запускает обновление прошивки по воздуху на поддерживаемых устройствах.",
   "repeater_cliHelpTime": "Устанавливает время устройства в соответствии с заданными секундами от начала эпохи Unix. Время не может сброситься назад.",
   "repeater_cliHelpBoard": "Отображает информацию о производителе платы / идентификатор аппаратного обеспечения.",
@@ -1665,7 +1665,7 @@
   "repeater_cliHelpSetDutyCycle": "Устанавливает максимальный допустимый цикл передачи данных в процентах (от 1 до 100). Внутренне корректирует коэффициент времени передачи.",
   "repeater_cliHelpSetPrvKey": "(Только для серийного использования) Заменяет приватный ключ, идентифицирующий устройство. Требуется перезагрузка для применения. Генерирует новый публичный ключ.",
   "repeater_cliHelpSetRadioRxGain": "(Только для SX126x) Переключает усиление RX для повышения чувствительности при больших токах потребления.",
-  "repeater_cliHelpSetOwnerInfo": "Указывает строку с контактной информацией владельца, которая должна быть включена в объявления. Используйте '|' для переносов строк.",
+  "repeater_cliHelpSetOwnerInfo": "Указывает строку с контактной информацией владельца, которая должна быть включена в анонсы. Используйте '|' для переносов строк.",
   "repeater_cliHelpSetPathHashMode": "Устанавливает режим хеширования пути. 0 = устаревший, 1 = стандартный, 2 = строгий. Влияет на то, как определяются маршруты.",
   "repeater_cliHelpSetLoopDetect": "Устанавливает чувствительность обнаружения циклов маршрутизации: \"выключено\", \"минимальная\", \"умеренная\" или \"строгая\".",
   "repeater_cliHelpSetFreq": "(Только для настройки) Быстро устанавливает только частоту. Требуется перезагрузка. Рекомендуется использовать функцию \"настройка радио\" для полного набора параметров.",
@@ -1685,15 +1685,15 @@
   "repeater_cliHelpGetAgcResetInterval": "Отображает интервал сброса автоматической регулировки усиления в секундах.",
   "repeater_cliHelpGetMultiAcks": "Показывает, включен ли режим двойной подтверждения (1) или выключен (0).",
   "repeater_cliHelpGetAllowReadOnly": "Отображает, разрешен ли доступ для чтения только для гостей.",
-  "repeater_cliHelpGetAdvertInterval": "Отображает продолжительность рекламного блока в минутах.",
-  "repeater_cliHelpGetFloodAdvertInterval": "Отображает интервал времени показа рекламного ролика в часах.",
+  "repeater_cliHelpGetAdvertInterval": "Отображает интервал локального анонсирования в минутах.",
+  "repeater_cliHelpGetFloodAdvertInterval": "Отображает интервал анонсирования рассылкой (flood) в часах.",
   "repeater_cliHelpGetGuestPassword": "Отображает установленный пароль для гостя.",
   "repeater_cliHelpGetLat": "Отображает заданную широту.",
   "repeater_cliHelpGetLon": "Отображает заданную долготу.",
   "repeater_cliHelpGetRxDelay": "Отображает базовое значение задержки.",
-  "repeater_cliHelpGetTxDelay": "Отображает коэффициент задержки при работе в режиме затопления.",
+  "repeater_cliHelpGetTxDelay": "Отображает коэффициент задержки при работе в режиме рассылки (flood).",
   "repeater_cliHelpGetDirectTxDelay": "Отображает коэффициент задержки в режиме прямого подключения.",
-  "repeater_cliHelpGetFloodMax": "Отображает максимальное количество переходов при затоплении.",
+  "repeater_cliHelpGetFloodMax": "Отображает максимальное количество хопов при рассылке.",
   "repeater_cliHelpGetOwnerInfo": "Отображает строку с контактной информацией владельца.",
   "repeater_cliHelpGetPathHashMode": "Отображает режим работы с хэшем пути (0/1/2).",
   "repeater_cliHelpGetLoopDetect": "Отображает чувствительность к обнаружению циклов.",
@@ -1715,8 +1715,8 @@
   "repeater_cliHelpSensorList": "Перечисляет все пользовательские настройки датчиков, разбитые на страницы с возможностью указания начального индекса.",
   "repeater_cliHelpRegionDefault": "Отображает текущий область действия по умолчанию.",
   "repeater_cliHelpRegionDefaultSet": "Устанавливает значение региона по умолчанию. Используйте \"<null>\", чтобы сбросить значение.",
-  "repeater_cliHelpRegionListAllowed": "Перечисляет регионы, где разрешено движение транспорта во время наводнений.",
-  "repeater_cliHelpRegionListDenied": "Перечисляет регионы, где запрещено движение транспорта во время наводнений.",
+  "repeater_cliHelpRegionListAllowed": "Перечисляет регионы, где разрешена рассылка (flood).",
+  "repeater_cliHelpRegionListDenied": "Перечисляет регионы, где запрещена рассылка (flood).",
   "repeater_cliHelpStatsPackets": "(Только для серийной версии) Отображает статистику на уровне пакетов.",
   "repeater_cliHelpStatsRadio": "(Только для серий) Отображает статистику радио.",
   "repeater_cliHelpStatsCore": "(Только для серийного оборудования) Отображает основные статистические данные прошивки.",
@@ -1772,7 +1772,7 @@
   "contacts_searchClose": "Закрыть поиск",
   "routing_title": "Маршрутизация",
   "routing_modeAuto": "Авто",
-  "routing_modeFlood": "Наводнение",
+  "routing_modeFlood": "Рассылка",
   "routing_modeManual": "Инструкция",
   "routing_modeAutoHint": "Автоматически выбирает наиболее известный путь, и если такой путь неизвестен, использует алгоритм поиска пути.",
   "routing_modeFloodHint": "Передача сигнала через все ретрансляторы. Самый надежный способ, но требует больше времени на передачу.",
@@ -1786,18 +1786,18 @@
   "routing_knownPaths": "Известные маршруты",
   "routing_knownPathsHint": "Создайте маршрут для переключения на этот пункт.",
   "routing_inUse": "В эксплуатации",
-  "routing_qualityStrong": "Сильный первый скачок",
+  "routing_qualityStrong": "Сильный первый хоп",
   "routing_qualityGood": "Хорошее начало",
   "routing_qualityFair": "Первый хороший урожай",
   "routing_qualityWorked": "Осуществлено",
   "routing_qualityFlood": "Узнал из новостей, распространяющихся в интернете.",
   "routing_qualityUntested": "Непроверенный",
   "routing_neverWorked": "никогда не было подтверждено",
-  "routing_floodDelivery": "Доставка при затоплении",
+  "routing_floodDelivery": "Доставка рассылкой",
   "pathEditor_title": "Создать маршрут",
-  "pathEditor_hopCounter": "{count} из 64 хмеля",
-  "pathEditor_noHops": "На данный момент хмель еще не добавлен. Чтобы добавить его, нажмите на соответствующие кнопки ниже в нужном порядке, или сохраните рецепт без хмеля, чтобы отправить его напрямую.",
-  "pathEditor_addHops": "Добавляйте хмель в соответствии с указанным порядком.",
+  "pathEditor_hopCounter": "{count} из 64 хопов",
+  "pathEditor_noHops": "Пока не добавлено ни одного хопа. Нажимайте на репитеры ниже, чтобы добавлять их по порядку, или сохраните маршрут без хопов, чтобы отправить напрямую.",
+  "pathEditor_addHops": "Добавляйте хопы по порядку",
   "pathEditor_searchRepeaters": "Поиск повторителей",
   "pathEditor_advancedHex": "Продвинутый уровень: прямой путь в шестнадцатеричном формате",
   "pathEditor_hexLabel": "Префиксы шестнадцатеричной системы",
@@ -1807,7 +1807,7 @@
   "routing_deliveryCounts": "{successes} delivered, {failures} failed",
   "pathEditor_tooManyHops": "Максимальное количество ингредиентов – 64",
   "pathEditor_usePath": "Используйте этот путь",
-  "pathEditor_removeHop": "Удалить хмель",
+  "pathEditor_removeHop": "Удалить хоп",
   "pathEditor_unknownHop": "Неизвестный ретранслятор",
   "map_zoomIn": "Увеличить масштаб",
   "map_zoomOut": "Увеличить масштаб",
@@ -2131,5 +2131,237 @@
   "receivedImage_tapToProcess": "Нажмите для обработки",
   "receivedImage_awaiting": "{bytes} байт · {packets} {packets, plural, =1{пакет} other{пакетов}}",
   "imageSend_secondsValue": "{seconds} секунд",
-  "imageSend_minutesSecondsValue": "{minutes} м {seconds} с"
+  "imageSend_minutesSecondsValue": "{minutes} м {seconds} с",
+  "channels_noFreeSlots": "Нет свободных слотов для каналов",
+  "chat_longMessageRetryNote": "Более 158 байт: отправляется не более {count} раз",
+  "reaction_report": "Реакции",
+  "repeater_bridgeNote": "Доступно только на прошивке, собранной с мостом (RS232 или ESP-NOW).",
+  "repeater_cliHelpGetFloodMaxAdvert": "Показывает максимальное число хопов для анонсов, рассылаемых по сети (flood).",
+  "repeater_cliHelpGetFloodMaxUnscoped": "Показывает максимальное число хопов для пакетов рассылки (flood) без региональной области.",
+  "repeater_cliHelpGetRadioFemRxGain": "Показывает, включено ли усиление RX на входном модуле LoRa.",
+  "repeater_cliHelpGetRadioFemTxGain": "Показывает, включено ли усиление TX на входном модуле LoRa.",
+  "repeater_cliHelpRegionDef": "Задаёт цепочку регионов одной командой: каждое имя добавляется под предыдущим; \"name,parent\" добавляет имя и продолжает под указанным родителем. В ответ возвращается список регионов.",
+  "repeater_cliHelpSetFloodMaxAdvert": "Задаёт максимальное число хопов для пересылки анонсов, рассылаемых по сети (flood) (0-64).",
+  "repeater_cliHelpSetFloodMaxUnscoped": "Задаёт максимальное число хопов для пересылки пакетов рассылки (flood) без региональной области (0-64).",
+  "repeater_cliHelpSetRadioFemRxGain": "Переключает усиление RX (LNA) входного модуля LoRa. Платы без него отвечают \"Error: unsupported\".",
+  "repeater_cliHelpSetRadioFemTxGain": "Переключает усиление TX (PA) входного модуля LoRa. Платы без него отвечают \"Error: unsupported\".",
+  "repeater_cliRegionLoadActive": "Режим загрузки регионов: отправляйте по одному имени региона на строку, с отступом пробелами под родителем (добавьте F после имени, чтобы разрешить рассылку по сети). Строки не получают ответа. Отправьте пустую строку, чтобы завершить, затем \"region save\", чтобы сохранить результат.",
+  "repeater_cliRegionLoadEnd": "(конец загрузки регионов)",
+  "repeater_cliRegionLoadHint": "Строка региона или пусто для завершения",
+  "repeater_frequencyInvalid": "Недопустимая частота (150-2500 МГц)",
+  "repeater_frequencyRangeHelper": "150-2500 МГц",
+  "repeater_recvErrors": "Ошибки приёма",
+  "repeater_txPowerRangeHelper": "от -9 до 30 dBm",
+  "room_postsPushed": "Отправлено публикаций",
+  "room_postsStored": "Публикации",
+  "settings_publicKeyCopied": "Публичный ключ скопирован",
+  "settings_radioSettingsNotApplied": "Радиомодуль не применил эти настройки",
+  "urlImage_enable": "Показывать изображения по URL",
+  "urlImage_possible": "Возможно изображение по URL; включите это в настройках.",
+  "@chat_longMessageRetryNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_failedChannel": "Ваше радио не смогло отправить это сообщение.",
+  "messageStatus_resending": "Пока не услышано через достаточное число ретрансляторов. Повторно отправлено {resends} из {maxResends} раз.",
+  "@messageStatus_resending": {
+    "placeholders": {
+      "resends": {
+        "type": "int"
+      },
+      "maxResends": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_hopsNotReached": "Отправлено, но в ответ услышано только через {hops} из {required} ретрансляторов. Возможно, сообщение дошло дальше, чем может услышать ваше радио.",
+  "@messageStatus_hopsNotReached": {
+    "placeholders": {
+      "hops": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_sentChannel": "Отправлено. Каналы не подтверждают доставку, поэтому это означает лишь то, что сообщение отправлено вашим радио.",
+  "messageStatus_sentDirect": "Отправлено. Ожидание подтверждения от контакта.",
+  "messageStatus_heardRepeatedCount": "Услышано повторений: {count, plural, =1{1} other{{count}}}. Ближние ретрансляторы передали сообщение дальше.",
+  "@messageStatus_heardRepeatedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_regionEmptyExplanation": "Регионы ограничивают рассылку сообщений только ретрансляторами в заданной области. Получите их с ближних ретрансляторов или добавьте по названию.",
+  "settings_regionFetchFromRepeaters": "Получить с ретрансляторов",
+  "settings_regionDefault": "Регион по умолчанию",
+  "settings_regionDefaultSubtitle": "Используется каналами без собственного региона",
+  "settings_regionDefaultNone": "Нет",
+  "settings_telemetryPerContactHint": "Чтобы разрешить контакт, откройте его чат и выберите «Настройки контактов» в меню.",
+  "settings_multiAckSubtitle": "Отправлять дополнительные ACK для лучшей доставки; расходует больше времени в эфире",
+  "settings_presetCustom": "Пользовательский",
+  "settings_radioMatchWarning": "Все узлы, с которыми вы общаетесь, должны использовать одинаковые частоту, полосу пропускания, SF и CR.",
+  "settings_txPowerRangeHelper": "от {min} до {max} dBm",
+  "@settings_txPowerRangeHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_clientRepeatFrequencyNote": "Частота {freq} МГц для повторения вне сети",
+  "@settings_clientRepeatFrequencyNote": {
+    "placeholders": {
+      "freq": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_pathHashModeHelper": "Размер каждого идентификатора узла, записываемого в маршрут flood-пакетов, отправляемых этим радио: 1 байт (256 идентификаторов, до 64 хопов), 2 байта (65 тыс. идентификаторов, до 32 хопов), 3 байта (16 млн идентификаторов, до 21 хопа). Более длинные идентификаторы уменьшают число коллизий, но ретрансляторы с прошивкой старше v1.14 отбрасывают пакеты с 2- или 3-байтовыми идентификаторами.",
+  "settings_requiresFirmware": "Требуется прошивка {version} или новее",
+  "@settings_requiresFirmware": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "appSettings_channelMinHops": "Повторно отправлять сообщения канала, пока они не пройдут достаточно далеко",
+  "appSettings_channelMinHopsSubtitle": "Если ваше сообщение не услышано в ответ через достаточное число ретрансляторов, отправьте его снова. Расходует больше времени в эфире.",
+  "appSettings_channelMinHopsCount": "Требуется хопов: {count}",
+  "@appSettings_channelMinHopsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_channelMinHopsRetries": "Повторять до {count, plural, =1{1 раза} other{{count} раз}}",
+  "@appSettings_channelMinHopsRetries": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_batteryOptimization": "Работа в фоне",
+  "appSettings_batteryOptimizationSubtitle": "Задайте для MeshCore Open значение «Не оптимизировать» в настройках батареи, чтобы сообщения продолжали приходить в фоне",
+  "contacts_storageFull": "Хранилище контактов на узле заполнено. Новые узлы нельзя добавить, пока контакты не удалены.",
+  "contacts_removeFromContacts": "Убрать из контактов",
+  "contacts_removeFromContactsConfirm": "{contactName} будет перемещён в «Обнаруженные контакты». История чата будет удалена.",
+  "@contacts_removeFromContactsConfirm": {
+    "placeholders": {
+      "contactName": {
+        "type": "String"
+      }
+    }
+  },
+  "contacts_keepChatHistory": "Сохранить историю чата",
+  "contacts_remove": "Убрать",
+  "contacts_discoveredNearby": "Обнаружены поблизости ({count})",
+  "@contacts_discoveredNearby": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contacts_noContactsDiscoveredHint": "Узлы, которые слышит ваше радио, но которые ещё не добавлены, перечислены в разделе «Обнаруженные контакты»",
+  "channels_hashtag": "Хэштег",
+  "channels_addSectionJoin": "Присоединиться",
+  "channels_addSectionCreate": "Создать новый",
+  "channels_dragToReorder": "Перетащите, чтобы изменить порядок",
+  "channels_regionDefaultSuffix": "(по умолчанию)",
+  "channels_regionSelectExplanation": "Сообщения рассылки в этом канале будут пересылаться только ретрансляторами в выбранном регионе.",
+  "channels_regionEmpty": "Регионов пока нет.",
+  "channels_manageRegions": "Управление регионами",
+  "chat_removeGif": "Удалить GIF",
+  "chat_cancelReply": "Отменить ответ",
+  "chat_viewPathOnMap": "Показать маршрут на карте",
+  "chat_today": "Сегодня",
+  "chat_yesterday": "Вчера",
+  "map_centerOnMe": "Центрировать на моём местоположении",
+  "map_noNodesLocationHint": "Нет узлов с недавним местоположением. Расширьте фильтр по времени или задайте своё местоположение в настройках.",
+  "map_clusterNodes": "Объединять близкие узлы",
+  "map_groupChip": "Группа",
+  "map_clusterNodesSubtitle": "При уменьшении показывать близкие узлы одним кругом с номером",
+  "map_manageServer": "Управление сервером",
+  "login_showPassword": "Показать пароль",
+  "login_hidePassword": "Скрыть пароль",
+  "login_advanced": "Продвинутый",
+  "common_clearSearch": "Очистить поиск",
+  "repeater_roleAdmin": "Админ",
+  "repeater_roleGuest": "Гость",
+  "repeater_refreshAll": "Обновить все",
+  "repeater_settingsNotLoaded": "Настройки ещё не загружены с этого ретранслятора.",
+  "repeater_settingsLoadIncomplete": "Некоторые настройки не удалось загрузить. Используйте кнопки обновления, чтобы повторить попытку.",
+  "contacts_scanQrCode": "Сканировать QR-код",
+  "contacts_scanQrInstructions": "Наведите камеру на QR-код контакта MeshCore",
+  "contacts_qrFromGallery": "Сканировать QR-код из галереи",
+  "contacts_noQrCodeFound": "QR-код на выбранном изображении не найден.",
+  "contacts_qrGalleryFailed": "Не удалось открыть галерею.",
+  "notification_actionReply": "Ответить",
+  "notification_actionMarkRead": "Отметить как прочитанное",
+  "notification_actionMuteChannel": "Отключить уведомления канала",
+  "notification_replyHint": "Сообщение",
+  "notification_you": "Вы",
+  "notification_replyFailedTitle": "Ответ не отправлен",
+  "notification_replyNotConnected": "Нет соединения с радио. Восстановите подключение в MeshCore Open и отправьте ответ снова.",
+  "notification_replyTooLong": "Ваш ответ слишком длинный для отправки из уведомления. Отправьте его из MeshCore Open.",
+  "notification_replyUnavailable": "Этот чат больше недоступен на подключённом радио.",
+  "notification_replySendFailed": "Возможно, ваш ответ не был отправлен. Проверьте в MeshCore Open и повторите попытку.",
+  "notification_replyAppNotRunning": "MeshCore Open не запущен. Откройте его и отправьте ответ снова.",
+  "snrIndicator_nearByRepeatersDescription": "Ретрансляторы, услышанные вашим радио напрямую, сначала самые недавние.",
+  "radioStats_sectionSignal": "Сигнал",
+  "radioStats_sectionAirtime": "Время в эфире",
+  "imageSend_lossyNote": "Сжато примерно до {bytes} байт. Модель на получателе реконструирует изображение, поэтому детали будут отличаться.",
+  "@imageSend_lossyNote": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "imageSend_viewOriginal": "Оригинал",
+  "imageSend_viewReconstruction": "Что увидят получатели",
+  "imageSend_reconstructionUnavailable": "Это устройство не может показать реконструкцию.",
+  "imageSend_modelNotDownloaded": "Модель изображения ещё не загружена. Загрузите её в настройках, чтобы отправлять изображения.",
+  "receivedImage_save": "Сохранить изображение",
+  "receivedImage_shareCaption": "Реконструировано ИИ по {bytes} байтам; мелкие детали генерируются, а не передаются.",
+  "@receivedImage_shareCaption": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_packetInfo": "Информация о пакете",
+  "receivedImage_parityRecovered": "Один пакет восстановлен из пакета восстановления.",
+  "receivedImage_decodeTime": "Реконструировано за {ms} мс",
+  "@receivedImage_decodeTime": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_saveFailed": "Не удалось сохранить изображение",
+  "reviewMode_dialogTitle": "Войти в режим проверки?",
+  "reviewMode_dialogBody": "Режим проверки подключается к имитируемому радио с примерами контактов, каналов и сообщений. Реальное радио не требуется.",
+  "reviewMode_confirm": "Войти",
+  "reviewMode_cancel": "Отмена",
+  "reviewMode_banner": "Режим проверки — имитация данных",
+  "reviewMode_sendTest": "Тестовое сообщение",
+  "reviewMode_testSent": "Скоро придёт тестовое сообщение.",
+  "reviewMode_exit": "Выйти",
+  "reviewMode_connectFailed": "Не удалось запустить режим проверки: {error}"
 }

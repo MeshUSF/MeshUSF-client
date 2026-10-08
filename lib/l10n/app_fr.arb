@@ -1305,7 +1305,7 @@
   "repeater_cliHelpSetTx": "Définit la puissance de transmission LoRa en dBm (réinitialisation requise pour appliquer).",
   "repeater_cliHelpSetRepeat": "Active ou désactive le rôle du répéteur pour ce nœud.",
   "repeater_cliHelpSetAllowReadOnly": "(Room server) Si \"activé\", alors un mot de passe vide permettra la connexion, mais ne permettra pas de publier dans la pièce. (lecture seule uniquement)",
-  "repeater_cliHelpSetFloodMax": "Définit le nombre maximal de sauts pour les paquets de balayage entrants (si >= max, le paquet n'est pas acheminé).",
+  "repeater_cliHelpSetFloodMax": "Définit le nombre maximal de sauts pour les paquets flood entrants (si >= max, le paquet n'est pas acheminé).",
   "repeater_cliHelpSetIntThresh": "Définit le seuil d'interférence (en dB). La valeur par défaut est de 14. Définir sur 0 désactive la détection des interférences de canal.",
   "repeater_cliHelpSetAgcResetInterval": "Définit l'intervalle pour réinitialiser le contrôleur de gain automatique. Mettez à 0 pour désactiver.",
   "repeater_cliHelpSetMultiAcks": "Active ou désactive la fonctionnalité « double ACKs ».",
@@ -1338,7 +1338,7 @@
   "repeater_cliHelpRegionGet": "Recherche la région avec le préfixe de nom donné (ou \"\" pour l'étendue globale). Répond avec \"-> nom-de-région (nom-parent) 'F'\"",
   "repeater_cliHelpRegionPut": "Ajoute ou met à jour une définition de région avec le nom donné.",
   "repeater_cliHelpRegionRemove": "Supprime une définition de région avec le nom donné.",
-  "repeater_cliHelpRegionAllowf": "Définit les autorisations de \"Flot\" pour la région donnée. ('' pour la portée globale/héritée)",
+  "repeater_cliHelpRegionAllowf": "Définit les autorisations de 'F'lood pour la région donnée. ('' pour la portée globale/héritée)",
   "repeater_cliHelpRegionDenyf": "Supprime l'autorisation 'F'lood' pour la région donnée. (NOTE : à ce stade, il n'est pas conseillé de l'utiliser sur l'étendue globale/héritée !! )",
   "repeater_cliHelpRegionHome": "Répond avec la région 'maison' actuelle. (Note appliquée nulle part pour l'instant, réservée à une utilisation future)",
   "repeater_cliHelpRegionHomeSet": "Définit la région 'maison'.",
@@ -2394,7 +2394,7 @@
   "repeater_sensors": "Capteurs",
   "repeater_cliHelpPowerOff": "Éteint l'appareil. (aucune réponse n'est attendue)",
   "repeater_cliHelpClkReboot": "Réinitialise l'horloge à une époque connue et redémarre l'appareil.",
-  "repeater_cliHelpAdvertZeroHop": "Envoie une publicité sans intermédiaire (uniquement aux voisins immédiats).",
+  "repeater_cliHelpAdvertZeroHop": "Envoie une annonce zéro saut (uniquement aux voisins immédiats).",
   "repeater_cliHelpStartOta": "Démarre une mise à jour du firmware par voie radio sur les cartes prises en charge.",
   "repeater_cliHelpTime": "Définit l'heure de l'appareil sur les secondes de l'époque Unix spécifiée. L'heure ne peut pas reculer.",
   "repeater_cliHelpBoard": "Indique le fabricant du panneau / l'identifiant du matériel.",
@@ -2425,8 +2425,8 @@
   "repeater_cliHelpGetAgcResetInterval": "Indique l'intervalle de réinitialisation de l'AGC en secondes.",
   "repeater_cliHelpGetMultiAcks": "Indique si le mode \"double ACK\" est activé (1) ou désactivé (0).",
   "repeater_cliHelpGetAllowReadOnly": "Indique si l'accès en lecture seule pour les invités est autorisé.",
-  "repeater_cliHelpGetAdvertInterval": "Indique l'intervalle publicitaire local en minutes.",
-  "repeater_cliHelpGetFloodAdvertInterval": "Indique l'intervalle publicitaire pour la diffusion de l'annonce en heures.",
+  "repeater_cliHelpGetAdvertInterval": "Indique l'intervalle d'annonce locale en minutes.",
+  "repeater_cliHelpGetFloodAdvertInterval": "Indique l'intervalle des annonces flood, en heures.",
   "repeater_cliHelpGetGuestPassword": "Affiche le mot de passe invité configuré.",
   "repeater_cliHelpGetLat": "Affiche la latitude configurée.",
   "repeater_cliHelpGetLon": "Affiche la longitude configurée.",
@@ -2932,7 +2932,7 @@
   "imageSend_radioUnknownBody": "Connectez-vous à un appareil afin que l'heure de diffusion puisse être calculée.",
   "imageSend_longSendTitle": "Longue transmission",
   "imageSend_longSendBody": "Cela maintiendra la chaîne pendant environ {duration}.",
-  "imageSend_floodNote": "Routage des inondations : chaque répéteur dans la zone retransmet chaque paquet, de sorte que le canal reste occupé plus longtemps que cela.",
+  "imageSend_floodNote": "Routage flood : chaque répéteur dans la zone retransmet chaque paquet, de sorte que le canal reste occupé plus longtemps que cela.",
   "imageSend_parityTitle": "Paquet de récupération",
   "imageSend_paritySubtitle": "Un paquet supplémentaire. Les messages de groupe ne sont pas reconnus, ce qui permet au destinataire de reconstruire l'image si un seul paquet est perdu.",
   "imageSend_send": "Envoyer",
@@ -2962,5 +2962,237 @@
   "receivedImage_tapToProcess": "Tapez pour traiter",
   "receivedImage_awaiting": "{bytes} octets · {packets} {packets, plural, =1{paquet} other{paquets}}",
   "imageSend_secondsValue": "{seconds} s",
-  "imageSend_minutesSecondsValue": "{minutes} minutes {seconds} secondes"
+  "imageSend_minutesSecondsValue": "{minutes} minutes {seconds} secondes",
+  "channels_noFreeSlots": "Tous les emplacements de canaux sont utilisés",
+  "chat_longMessageRetryNote": "Plus de 158 octets : envoi au maximum {count} fois",
+  "reaction_report": "Réactions emoji",
+  "repeater_bridgeNote": "Disponible uniquement sur un firmware compilé avec un pont (RS232 ou ESP-NOW).",
+  "repeater_cliHelpGetFloodMaxAdvert": "Affiche le nombre maximal de sauts pour les annonces flood.",
+  "repeater_cliHelpGetFloodMaxUnscoped": "Affiche le nombre maximal de sauts pour les paquets flood sans portée régionale.",
+  "repeater_cliHelpGetRadioFemRxGain": "Indique si le gain RX du module frontal LoRa est activé.",
+  "repeater_cliHelpGetRadioFemTxGain": "Indique si le gain TX du module frontal LoRa est activé.",
+  "repeater_cliHelpRegionDef": "Définit une chaîne de régions en une seule commande : chaque nom est ajouté sous le précédent ; \"name,parent\" ajoute le nom, puis continue sous le parent indiqué. Répond avec la liste des régions.",
+  "repeater_cliHelpSetFloodMaxAdvert": "Définit le nombre maximal de sauts pour la retransmission des annonces flood (0-64).",
+  "repeater_cliHelpSetFloodMaxUnscoped": "Définit le nombre maximal de sauts pour la retransmission des paquets flood sans portée régionale (0-64).",
+  "repeater_cliHelpSetRadioFemRxGain": "Active ou désactive le gain RX (LNA) du module frontal LoRa. Les cartes qui n'en ont pas répondent \"Error: unsupported\".",
+  "repeater_cliHelpSetRadioFemTxGain": "Active ou désactive le gain TX (PA) du module frontal LoRa. Les cartes qui n'en ont pas répondent \"Error: unsupported\".",
+  "repeater_cliRegionLoadActive": "Mode de chargement des régions : envoyez un nom de région par ligne, indenté avec des espaces sous sa région parente (ajoutez F après le nom pour autoriser le flood). Les lignes ne reçoivent pas de réponse. Envoyez une ligne vide pour terminer, puis \"region save\" pour conserver le résultat.",
+  "repeater_cliRegionLoadEnd": "(fin du chargement des régions)",
+  "repeater_cliRegionLoadHint": "Ligne de région, ou vide pour terminer",
+  "repeater_frequencyInvalid": "Fréquence invalide (150-2500 MHz)",
+  "repeater_frequencyRangeHelper": "150-2500 MHz",
+  "repeater_recvErrors": "Erreurs de réception",
+  "repeater_txPowerRangeHelper": "-9 à 30 dBm",
+  "room_postsPushed": "Publications envoyées",
+  "room_postsStored": "Publications",
+  "settings_publicKeyCopied": "Clé publique copiée",
+  "settings_radioSettingsNotApplied": "La radio n'a pas appliqué ces paramètres",
+  "urlImage_enable": "Activer les images URL",
+  "urlImage_possible": "Image URL possible ; activez-la dans les Paramètres.",
+  "@chat_longMessageRetryNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_failedChannel": "Votre radio n'a pas pu envoyer ce message.",
+  "messageStatus_resending": "Pas encore entendu par assez de répéteurs. Renvoyé {resends} fois sur {maxResends}.",
+  "@messageStatus_resending": {
+    "placeholders": {
+      "resends": {
+        "type": "int"
+      },
+      "maxResends": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_hopsNotReached": "Envoyé, mais entendu en retour via seulement {hops} répéteurs sur {required}. Le message a pu aller plus loin que ce que votre radio peut entendre.",
+  "@messageStatus_hopsNotReached": {
+    "placeholders": {
+      "hops": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "messageStatus_sentChannel": "Envoyé. Les canaux ne confirment pas la livraison : cela signifie seulement que votre radio l'a envoyé.",
+  "messageStatus_sentDirect": "Envoyé. En attente de la confirmation du contact.",
+  "messageStatus_heardRepeatedCount": "Entendu {count, plural, =1{une fois} other{{count} fois}}. Les répéteurs proches l'ont relayé.",
+  "@messageStatus_heardRepeatedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_regionEmptyExplanation": "Les régions limitent les messages flood aux répéteurs d'une zone. Récupérez-les à partir des répéteurs proches ou ajoutez-en une par son nom.",
+  "settings_regionFetchFromRepeaters": "Récupérer depuis les répéteurs",
+  "settings_regionDefault": "Région par défaut",
+  "settings_regionDefaultSubtitle": "Utilisée par les canaux qui n'ont pas leur propre région",
+  "settings_regionDefaultNone": "Aucune",
+  "settings_telemetryPerContactHint": "Pour autoriser un contact, ouvrez son chat et choisissez Paramètres de contact dans le menu.",
+  "settings_multiAckSubtitle": "Envoyer des ACK supplémentaires pour une meilleure livraison ; utilise plus de temps d'antenne",
+  "settings_presetCustom": "Personnalisé",
+  "settings_radioMatchWarning": "Tous les nœuds avec lesquels vous communiquez doivent utiliser la même fréquence, la même bande passante, le même SF et le même CR.",
+  "settings_txPowerRangeHelper": "{min} à {max} dBm",
+  "@settings_txPowerRangeHelper": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settings_clientRepeatFrequencyNote": "Fréquence réglée sur {freq} MHz pour la répétition hors réseau",
+  "@settings_clientRepeatFrequencyNote": {
+    "placeholders": {
+      "freq": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_pathHashModeHelper": "Taille de chaque ID de nœud enregistré dans le chemin des paquets flood envoyés par cette radio : 1 octet (256 ID, jusqu'à 64 sauts), 2 octets (65 000 ID, jusqu'à 32 sauts), 3 octets (16 millions d'ID, jusqu'à 21 sauts). Des ID plus grands réduisent les collisions, mais les répéteurs exécutant un firmware antérieur à la v1.14 ignorent les paquets avec des ID de 2 ou 3 octets.",
+  "settings_requiresFirmware": "Nécessite le firmware {version} ou une version ultérieure",
+  "@settings_requiresFirmware": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "appSettings_channelMinHops": "Renvoyer les messages de canal jusqu'à ce qu'ils passent par assez de répéteurs",
+  "appSettings_channelMinHopsSubtitle": "Si votre message n'est pas entendu au retour via assez de répéteurs, renvoyez-le. Utilise plus de temps d'antenne.",
+  "appSettings_channelMinHopsCount": "Sauts requis : {count}",
+  "@appSettings_channelMinHopsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_channelMinHopsRetries": "Renvoyer jusqu'à {count, plural, =1{1 fois} other{{count} fois}}",
+  "@appSettings_channelMinHopsRetries": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appSettings_batteryOptimization": "Activité en arrière-plan",
+  "appSettings_batteryOptimizationSubtitle": "Définissez MeshCore Open sur « Ne pas optimiser » dans les paramètres de batterie pour que les messages continuent d'arriver en arrière-plan",
+  "contacts_storageFull": "Le stockage des contacts sur le nœud est plein. Impossible d'ajouter de nouveaux nœuds tant que des contacts ne sont pas supprimés.",
+  "contacts_removeFromContacts": "Retirer des contacts",
+  "contacts_removeFromContactsConfirm": "{contactName} sera déplacé vers Contacts découverts. L'historique du chat sera supprimé.",
+  "@contacts_removeFromContactsConfirm": {
+    "placeholders": {
+      "contactName": {
+        "type": "String"
+      }
+    }
+  },
+  "contacts_keepChatHistory": "Conserver l'historique du chat",
+  "contacts_remove": "Supprimer",
+  "contacts_discoveredNearby": "Découverts à proximité ({count})",
+  "@contacts_discoveredNearby": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contacts_noContactsDiscoveredHint": "Les nœuds que votre radio entend sans les avoir encore ajoutés sont listés dans Contacts découverts",
+  "channels_hashtag": "Hashtag",
+  "channels_addSectionJoin": "Rejoindre un canal existant",
+  "channels_addSectionCreate": "Créer un nouveau",
+  "channels_dragToReorder": "Faites glisser pour réorganiser",
+  "channels_regionDefaultSuffix": "(par défaut)",
+  "channels_regionSelectExplanation": "Les messages flood de ce canal ne seront relayés que par les répéteurs de la région sélectionnée.",
+  "channels_regionEmpty": "Aucune région pour le moment.",
+  "channels_manageRegions": "Gérer les régions",
+  "chat_removeGif": "Supprimer le GIF",
+  "chat_cancelReply": "Annuler la réponse",
+  "chat_viewPathOnMap": "Voir le chemin sur la carte",
+  "chat_today": "Aujourd'hui",
+  "chat_yesterday": "Hier",
+  "map_centerOnMe": "Centrer sur ma localisation",
+  "map_noNodesLocationHint": "Aucun nœud avec une localisation récente. Élargissez le filtre temporel ou définissez votre localisation dans Paramètres.",
+  "map_clusterNodes": "Grouper les nœuds à proximité",
+  "map_groupChip": "Grouper",
+  "map_clusterNodesSubtitle": "En zoom arrière, afficher les nœuds à proximité dans un seul cercle numéroté",
+  "map_manageServer": "Gérer le room server",
+  "login_showPassword": "Afficher le mot de passe",
+  "login_hidePassword": "Masquer le mot de passe",
+  "login_advanced": "Avancé",
+  "common_clearSearch": "Effacer la recherche",
+  "repeater_roleAdmin": "ADMIN",
+  "repeater_roleGuest": "INVITÉ",
+  "repeater_refreshAll": "Tout rafraîchir",
+  "repeater_settingsNotLoaded": "Les paramètres n'ont pas encore été chargés depuis ce répéteur.",
+  "repeater_settingsLoadIncomplete": "Certains paramètres n'ont pas pu être chargés. Utilisez les boutons de rafraîchissement pour réessayer.",
+  "contacts_scanQrCode": "Scanner un QR code",
+  "contacts_scanQrInstructions": "Pointez l'appareil photo sur le QR code d'un contact MeshCore",
+  "contacts_qrFromGallery": "Scanner un QR depuis la galerie",
+  "contacts_noQrCodeFound": "Aucun QR code trouvé dans l'image sélectionnée.",
+  "contacts_qrGalleryFailed": "Impossible d'ouvrir la galerie.",
+  "notification_actionReply": "Répondre",
+  "notification_actionMarkRead": "Marquer comme lu",
+  "notification_actionMuteChannel": "Désactiver le son du canal",
+  "notification_replyHint": "Message",
+  "notification_you": "Vous",
+  "notification_replyFailedTitle": "Réponse non envoyée",
+  "notification_replyNotConnected": "Non connecté à une radio. Reconnectez-vous dans MeshCore Open et renvoyez votre réponse.",
+  "notification_replyTooLong": "Votre réponse est trop longue pour être envoyée depuis une notification. Envoyez-la depuis MeshCore Open.",
+  "notification_replyUnavailable": "Cette conversation n'est plus disponible sur la radio connectée.",
+  "notification_replySendFailed": "Votre réponse n'a peut-être pas été envoyée. Vérifiez dans MeshCore Open et réessayez.",
+  "notification_replyAppNotRunning": "MeshCore Open n'est pas actif. Ouvrez l'application et renvoyez votre réponse.",
+  "snrIndicator_nearByRepeatersDescription": "Les répéteurs entendus directement par votre radio, du plus récent au plus ancien.",
+  "radioStats_sectionSignal": "Signal",
+  "radioStats_sectionAirtime": "Temps d'antenne",
+  "imageSend_lossyNote": "Compressé à environ {bytes} octets. Le modèle du récepteur le reconstruit, les détails seront donc différents.",
+  "@imageSend_lossyNote": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "imageSend_viewOriginal": "Original",
+  "imageSend_viewReconstruction": "Ce que voient les destinataires",
+  "imageSend_reconstructionUnavailable": "Cet appareil ne peut pas prévisualiser la reconstitution.",
+  "imageSend_modelNotDownloaded": "Le modèle d'image n'est pas encore téléchargé. Téléchargez-le dans Paramètres pour envoyer des images.",
+  "receivedImage_save": "Enregistrer l'image",
+  "receivedImage_shareCaption": "Reconstruit par IA à partir de {bytes} octets ; les détails fins sont générés, pas transmis.",
+  "@receivedImage_shareCaption": {
+    "placeholders": {
+      "bytes": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_packetInfo": "Informations sur le paquet",
+  "receivedImage_parityRecovered": "Un paquet a été reconstitué à partir du paquet de récupération.",
+  "receivedImage_decodeTime": "Reconstitué en {ms} ms",
+  "@receivedImage_decodeTime": {
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "receivedImage_saveFailed": "Impossible d'enregistrer l'image",
+  "reviewMode_dialogTitle": "Activer le mode revue ?",
+  "reviewMode_dialogBody": "Le mode revue se connecte à une radio simulée avec des contacts, canaux et messages d'exemple. Aucune radio réelle n'est nécessaire.",
+  "reviewMode_confirm": "Activer",
+  "reviewMode_cancel": "Annuler",
+  "reviewMode_banner": "Mode revue — données simulées",
+  "reviewMode_sendTest": "Envoyer un message test",
+  "reviewMode_testSent": "Un message test arrivera sous peu.",
+  "reviewMode_exit": "Quitter",
+  "reviewMode_connectFailed": "Impossible de démarrer le mode revue : {error}"
 }

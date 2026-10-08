@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meshcore_open/connector/meshcore_protocol.dart';
 import 'package:meshcore_open/models/channel_message.dart';
@@ -146,6 +147,25 @@ void main() {
       final message = ChannelMessage.fromFrame(frame);
       expect(message, isNull);
     });
+  });
+
+  test('flood transport code uses the scope key HMAC', () {
+    final scopeKey = floodScopeKeyForRegion('Europe');
+    final payload = Uint8List.fromList([0xA1, 0xB2, 0xC3]);
+
+    expect(
+      floodTransportCode(
+        scopeKey: scopeKey,
+        payloadType: 0x05,
+        payload: payload,
+      ),
+      orderedEquals(
+        crypto.Hmac(
+          crypto.sha256,
+          scopeKey,
+        ).convert([0x05, ...payload]).bytes.sublist(0, 2),
+      ),
+    );
   });
 
   group('Contact.fromFrame — pathLen mapping', () {
@@ -621,7 +641,8 @@ void main() {
     test(
       'ContactDiscoveryStore decodes and migrates legacy mode-encoded paths',
       () async {
-        final store = ContactDiscoveryStore();
+        final store = ContactDiscoveryStore()
+          ..setPublicKeyHex = 'AABBCCDDEEFF00112233';
 
         final rawPath = Uint8List(64)
           ..[0] = 0x11
@@ -646,6 +667,8 @@ void main() {
         expect(contacts, hasLength(1));
         expect(contacts.first.pathLength, equals(1));
         expect(contacts.first.path, equals(Uint8List.fromList([0x11, 0x22])));
+        expect(prefs.getString('discovered_contacts'), isNull);
+        expect(prefs.getString(store.keyFor), isNotNull);
       },
     );
   });

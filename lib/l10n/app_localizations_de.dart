@@ -111,6 +111,39 @@ class AppLocalizationsDe extends AppLocalizations {
   String get messageStatus_repeated => 'Mehrfach gehört';
 
   @override
+  String get messageStatus_failedChannel =>
+      'Ihr Funkgerät konnte diese Nachricht nicht senden.';
+
+  @override
+  String messageStatus_resending(int resends, int maxResends) {
+    return 'Noch nicht über genügend Repeater gehört. $resends von $maxResends Malen erneut gesendet.';
+  }
+
+  @override
+  String messageStatus_hopsNotReached(int hops, int required) {
+    return 'Gesendet, aber nur über $hops von $required Repeatern zurückgehört. Möglicherweise ist sie weiter gelangt, als Ihr Funkgerät hören kann.';
+  }
+
+  @override
+  String get messageStatus_sentChannel =>
+      'Gesendet. Kanäle bestätigen keine Zustellung, das bedeutet also nur, dass Ihr Funkgerät sie gesendet hat.';
+
+  @override
+  String get messageStatus_sentDirect =>
+      'Gesendet. Warten auf die Bestätigung des Kontakts.';
+
+  @override
+  String messageStatus_heardRepeatedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count-mal',
+      one: 'einmal',
+    );
+    return 'Gehört $_temp0. Repeater in der Nähe haben sie weitergeleitet.';
+  }
+
+  @override
   String get urlImage_enable => 'URL-Bilder anzeigen';
 
   @override
@@ -377,11 +410,32 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settings_radioSettingsUpdated => 'Funkparameter aktualisiert';
 
   @override
+  String get settings_radioSettingsNotApplied =>
+      'Das Funkgerät hat diese Einstellungen nicht übernommen';
+
+  @override
   String get settings_regionSettings => 'Regionen';
 
   @override
   String get settings_regionSettingsSubtitle =>
       'Gespeicherte Regionen verwalten';
+
+  @override
+  String get settings_regionEmptyExplanation =>
+      'Regionen begrenzen Flood-Nachrichten auf die Repeater eines Gebiets. Rufen Sie sie von Repeatern in der Nähe ab oder fügen Sie eine nach Namen hinzu.';
+
+  @override
+  String get settings_regionFetchFromRepeaters => 'Von Repeatern abrufen';
+
+  @override
+  String get settings_regionDefault => 'Standardregion';
+
+  @override
+  String get settings_regionDefaultSubtitle =>
+      'Wird von Kanälen ohne eigene Region verwendet';
+
+  @override
+  String get settings_regionDefaultNone => 'Keine';
 
   @override
   String get settings_regionManagement_screenTitle => 'Regions-Verwaltung';
@@ -508,6 +562,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settings_telemetryEnvironmentMode => 'Telemetrie-Umgebungsmodus';
 
   @override
+  String get settings_telemetryPerContactHint =>
+      'Um einen Kontakt zuzulassen, öffnen Sie den zugehörigen Chat und wählen Sie im Menü Kontakteinstellungen aus.';
+
+  @override
   String get settings_advertLocation => 'Standort in Ankündigung';
 
   @override
@@ -524,6 +582,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settings_multiAck => 'Mehrfach-ACKs';
+
+  @override
+  String get settings_multiAckSubtitle =>
+      'Zusätzliche ACKs für eine bessere Zustellung senden; erhöht die Sendezeit';
 
   @override
   String get settings_telemetryModeUpdated => 'Telemetriemodus aktualisiert';
@@ -626,7 +688,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settings_infoPublicKey => 'Öffentlicher Schlüssel';
 
   @override
-  String get settings_publicKeyCopied => 'Public key copied';
+  String get settings_publicKeyCopied => 'Öffentlicher Schlüssel kopiert';
 
   @override
   String get settings_infoContactsCount => 'Kontakte';
@@ -642,6 +704,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settings_presets => 'Voreinstellungen';
+
+  @override
+  String get settings_presetCustom => 'Benutzerdefiniert';
+
+  @override
+  String get settings_radioMatchWarning =>
+      'Alle Knoten, mit denen Sie kommunizieren, müssen dieselbe Frequenz, Bandbreite, SF und CR verwenden.';
 
   @override
   String get settings_frequency => 'Frequenz (MHz)';
@@ -665,13 +734,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settings_txPower => 'Sendeleistung (dBm)';
 
   @override
-  String get settings_txPowerHelper => '0 – 22';
+  String settings_txPowerRangeHelper(int min, int max) {
+    return '$min bis $max dBm';
+  }
 
   @override
   String get settings_txPowerInvalid => 'Ungültige Sendeleistung (0-22 dBm)';
 
   @override
   String get settings_clientRepeat => 'Weiterleitung ohne Netzstrom';
+
+  @override
+  String settings_clientRepeatFrequencyNote(String freq) {
+    return 'Frequenz für die Weiterleitung ohne Netzstrom auf $freq MHz gesetzt';
+  }
 
   @override
   String get settings_clientRepeatSubtitle =>
@@ -768,6 +844,39 @@ class AppLocalizationsDe extends AppLocalizations {
   String get repeater_pathHashModeOption3 => '3 - 4 Bytes';
 
   @override
+  String get settings_pathHashModeHelper =>
+      'Größe der einzelnen Knoten-ID, die im Pfad der von diesem Funkgerät gesendeten Flood-Pakete aufgezeichnet wird: 1 Byte (256 IDs, bis zu 64 Hops), 2 Bytes (65.000 IDs, bis zu 32 Hops), 3 Bytes (16 Millionen IDs, bis zu 21 Hops). Größere IDs verringern Kollisionen, aber Repeater mit einer Firmware älter als v1.14 verwerfen Pakete mit 2- oder 3-Byte-IDs.';
+
+  @override
+  String settings_requiresFirmware(String version) {
+    return 'Erfordert Firmware $version oder neuer';
+  }
+
+  @override
+  String get appSettings_channelMinHops =>
+      'Kanalnachrichten erneut senden, bis sie weit genug gelangen';
+
+  @override
+  String get appSettings_channelMinHopsSubtitle =>
+      'Wenn Ihre Nachricht nicht über genügend Repeater zurückgehört wird, senden Sie sie erneut. Erhöht die Sendezeit.';
+
+  @override
+  String appSettings_channelMinHopsCount(int count) {
+    return 'Erforderliche Hops: $count';
+  }
+
+  @override
+  String appSettings_channelMinHopsRetries(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count-mal',
+      one: '1-mal',
+    );
+    return 'Bis zu $_temp0 erneut senden';
+  }
+
+  @override
   String get appSettings_enableMessageTracing =>
       'Nachrichtenverfolgung aktivieren';
 
@@ -803,6 +912,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get appSettings_messageNotificationsSubtitle =>
       'Benachrichtigung anzeigen, wenn neue Direktnachrichten eingehen';
+
+  @override
+  String get appSettings_batteryOptimization => 'Hintergrundaktivität';
+
+  @override
+  String get appSettings_batteryOptimizationSubtitle =>
+      'Setzen Sie MeshCore Open in den Akkueinstellungen auf „Nicht optimieren“, damit Nachrichten auch im Hintergrund ankommen';
 
   @override
   String get appSettings_channelMessageNotifications =>
@@ -1085,12 +1201,39 @@ class AppLocalizationsDe extends AppLocalizations {
       'Keine Kontakte oder Gruppen gefunden.';
 
   @override
+  String get contacts_storageFull =>
+      'Der Kontaktspeicher auf dem Knoten ist voll. Neue Knoten lassen sich erst wieder hinzufügen, wenn Kontakte entfernt wurden.';
+
+  @override
   String get contacts_deleteContact => 'Kontakt löschen';
 
   @override
   String contacts_removeConfirm(String contactName) {
     return '$contactName aus den Kontakten entfernen?';
   }
+
+  @override
+  String get contacts_removeFromContacts => 'Aus Kontakten entfernen';
+
+  @override
+  String contacts_removeFromContactsConfirm(String contactName) {
+    return '$contactName wird zu „Entdeckte Kontakte“ verschoben. Der Chatverlauf wird gelöscht.';
+  }
+
+  @override
+  String get contacts_keepChatHistory => 'Chatverlauf behalten';
+
+  @override
+  String get contacts_remove => 'Entfernen';
+
+  @override
+  String contacts_discoveredNearby(int count) {
+    return 'In der Nähe entdeckt ($count)';
+  }
+
+  @override
+  String get contacts_noContactsDiscoveredHint =>
+      'Knoten, die Ihr Funkgerät hört, aber noch nicht hinzugefügt hat, stehen unter „Entdeckte Kontakte“.';
 
   @override
   String get contacts_manageRepeater => 'Repeater verwalten';
@@ -1242,6 +1385,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get channels_private => 'Privat';
 
   @override
+  String get channels_hashtag => 'Hashtag';
+
+  @override
+  String get channels_addSectionJoin => 'Bestehendem beitreten';
+
+  @override
+  String get channels_addSectionCreate => 'Neuen erstellen';
+
+  @override
+  String get channels_dragToReorder => 'Zum Umsortieren ziehen';
+
+  @override
   String get channels_editChannel => 'Kanal bearbeiten';
 
   @override
@@ -1375,6 +1530,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get channels_publicChannelAdded => 'Öffentlicher Kanal hinzugefügt';
 
   @override
+  String get channels_noFreeSlots => 'Alle Kanal-Slots sind belegt';
+
+  @override
   String get channels_sortBy => 'Sortieren nach';
 
   @override
@@ -1446,6 +1604,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get channels_clearRegion => 'Region zurücksetzen';
 
   @override
+  String get channels_regionDefaultSuffix => '(Standard)';
+
+  @override
+  String get channels_regionSelectExplanation =>
+      'Flood-Nachrichten in diesem Kanal werden nur von Repeatern in der ausgewählten Region weitergeleitet.';
+
+  @override
+  String get channels_regionEmpty => 'Noch keine Regionen.';
+
+  @override
+  String get channels_manageRegions => 'Regionen verwalten';
+
+  @override
   String get chat_noMessages => 'Noch keine Nachrichten.';
 
   @override
@@ -1505,6 +1676,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get chat_sendGif => 'GIF senden';
 
   @override
+  String get chat_removeGif => 'GIF entfernen';
+
+  @override
+  String get chat_cancelReply => 'Antwort abbrechen';
+
+  @override
   String get chat_sendImageLora => 'Bild über MeshCore senden';
 
   @override
@@ -1523,7 +1700,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get chat_me => 'Ich';
 
   @override
-  String get reaction_report => 'Emoji Reactions';
+  String get reaction_report => 'Emoji-Reaktionen';
 
   @override
   String get emojiCategorySmileys => 'Emoticons';
@@ -1671,14 +1848,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get routing_modeAuto => 'Automatisch';
 
   @override
-  String get routing_modeFlood => 'Flut';
+  String get routing_modeFlood => 'Flood';
 
   @override
   String get routing_modeManual => 'Manuell';
 
   @override
   String get routing_modeAutoHint =>
-      'Wählt automatisch den besten bekannten Pfad und wechselt auf Flut, wenn keiner bekannt ist.';
+      'Wählt automatisch den besten bekannten Pfad und wechselt in den Flood-Modus, wenn keiner bekannt ist.';
 
   @override
   String get routing_modeFloodHint =>
@@ -1696,7 +1873,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get routing_noPathYet =>
-      'Noch kein Pfad gefunden. Die nächste Nachricht wird geflutet, bis eine Route entdeckt ist.';
+      'Noch kein Pfad gefunden. Die nächste Nachricht wird im Flood-Modus gesendet, bis eine Route entdeckt ist.';
 
   @override
   String get routing_floodBroadcast => 'Über alle Repeater senden';
@@ -1718,13 +1895,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get routing_inUse => 'In Verwendung';
 
   @override
-  String get routing_qualityStrong => 'Starker erster Hop';
+  String get routing_qualityStrong => 'Starker erster Sprung';
 
   @override
-  String get routing_qualityGood => 'Guter erster Hop';
+  String get routing_qualityGood => 'Guter erster Sprung';
 
   @override
-  String get routing_qualityFair => 'Ausreichender erster Hop';
+  String get routing_qualityFair => 'Ausreichender erster Sprung';
 
   @override
   String get routing_qualityWorked => 'Hat zugestellt';
@@ -1813,6 +1990,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get chat_path => 'Pfad';
 
   @override
+  String get chat_viewPathOnMap => 'Pfad auf der Karte anzeigen';
+
+  @override
   String get chat_publicKey => 'Öffentlicher Schlüssel';
 
   @override
@@ -1820,7 +2000,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Komprimieren ausgehender Nachrichten';
 
   @override
-  String get chat_floodForced => 'Geflutet (erzwungen)';
+  String get chat_floodForced => 'Flood (erzwungen)';
 
   @override
   String get chat_directForced => 'Direkt (erzwungen)';
@@ -1831,7 +2011,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get chat_floodAuto => 'Geflutet (automatisch)';
+  String get chat_floodAuto => 'Flood (automatisch)';
 
   @override
   String get chat_direct => 'Direkt';
@@ -1849,6 +2029,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get chat_newMessages => 'Neue Nachrichten';
+
+  @override
+  String get chat_today => 'Heute';
+
+  @override
+  String get chat_yesterday => 'Gestern';
 
   @override
   String get chat_openLink => 'Link öffnen?';
@@ -1896,6 +2082,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get map_centerOnNode => 'Auf Knoten zentrieren';
 
   @override
+  String get map_centerOnMe => 'Auf meinen Standort zentrieren';
+
+  @override
   String get map_details => 'Details';
 
   @override
@@ -1912,6 +2101,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get map_noNodesWithLocation => 'Keine Knoten mit Standortdaten';
+
+  @override
+  String get map_noNodesLocationHint =>
+      'Keine Knoten mit einem aktuellen Standort. Erweitern Sie den Zeitfilter oder legen Sie Ihren eigenen Standort in den Einstellungen fest.';
 
   @override
   String get map_nodesNeedGps =>
@@ -2055,6 +2248,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get map_showGuessedLocations => 'Vermutete Knotenstandorte anzeigen';
 
   @override
+  String get map_clusterNodes => 'Nahegelegene Knoten gruppieren';
+
+  @override
+  String get map_groupChip => 'Gruppe';
+
+  @override
+  String get map_clusterNodesSubtitle =>
+      'Beim Herauszoomen nahegelegene Knoten als einen nummerierten Kreis anzeigen';
+
+  @override
   String get map_showDiscoveryContacts => 'Entdeckte Kontakte anzeigen';
 
   @override
@@ -2074,6 +2277,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get map_manageRepeater => 'Repeater verwalten';
+
+  @override
+  String get map_manageServer => 'Server verwalten';
 
   @override
   String get map_tapToAdd =>
@@ -2281,6 +2487,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get login_enterPassword => 'Passwort eingeben';
 
   @override
+  String get login_showPassword => 'Passwort anzeigen';
+
+  @override
+  String get login_hidePassword => 'Passwort ausblenden';
+
+  @override
   String get login_savePassword => 'Passwort speichern';
 
   @override
@@ -2296,6 +2508,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Geben Sie das Raumkennwort ein, um auf die Einstellungen und den Status zuzugreifen.';
 
   @override
+  String get login_advanced => 'Erweitert';
+
+  @override
   String get login_routing => 'Routen';
 
   @override
@@ -2306,7 +2521,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Automatisch (gespeicherten Pfad verwenden)';
 
   @override
-  String get login_forceFloodMode => 'Flut-Modus erzwingen';
+  String get login_forceFloodMode => 'Flood-Modus erzwingen';
 
   @override
   String get login_managePaths => 'Pfadverwaltung';
@@ -2335,6 +2550,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get common_clear => 'Leeren';
 
   @override
+  String get common_clearSearch => 'Suche löschen';
+
+  @override
   String get path_currentPathLabel => 'Aktueller Pfad';
 
   @override
@@ -2360,6 +2578,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get repeater_guestTools => 'Gastwerkzeuge';
 
   @override
+  String get repeater_roleAdmin => 'ADMIN';
+
+  @override
+  String get repeater_roleGuest => 'GAST';
+
+  @override
   String get repeater_status => 'Status';
 
   @override
@@ -2383,7 +2607,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get repeater_neighbors => 'Nachbarn';
 
   @override
-  String get repeater_neighborsSubtitle => 'Anzahl der Hop-Nachbarn anzeigen.';
+  String get repeater_neighborsSubtitle =>
+      'Anzahl der Sprungnachbarn anzeigen.';
 
   @override
   String get repeater_settings => 'Einstellungen';
@@ -2746,7 +2971,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get repeater_pathHashModeHelper =>
-      'Bytes, die zur Kodierung der ID dieses Repeaters in Flood-Pfad-/Schleifen-Erkennung-Tags verwendet werden. 0 = 1 Byte (256 IDs, bis zu 64 Hops), 1 = 2 Bytes (65.000 IDs, bis zu 32 Hops), 2 = 3 Bytes (16 Millionen IDs, bis zu 21 Hops). Firmware-Versionen 1.13 und älter verwenden mehrstellige Pfade – ab Version 1.14+ wird nur ein Pfad erstellt, sobald das Netzwerk aktiv ist.';
+      'Bytes, die zur Kodierung der ID dieses Repeaters in Flood-Pfad-/Schleifen-Erkennung-Tags verwendet werden. 0 = 1 Byte (256 IDs, bis zu 64 Sprüngen), 1 = 2 Bytes (65.000 IDs, bis zu 32 Sprüngen), 2 = 3 Bytes (16 Millionen IDs, bis zu 21 Sprüngen). Firmware-Versionen 1.13 und älter verwenden mehrstellige Pfade – ab Version 1.14+ wird nur ein Pfad erstellt, sobald das Netzwerk aktiv ist.';
 
   @override
   String get repeater_keySettings => 'Identitätsschlüssel ändern';
@@ -2881,6 +3106,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get repeater_refreshPrivacyMode => 'Privatsphärenmodus aktualisieren';
+
+  @override
+  String get repeater_refreshAll => 'Alle aktualisieren';
+
+  @override
+  String get repeater_settingsNotLoaded =>
+      'Die Einstellungen wurden von diesem Repeater noch nicht geladen.';
+
+  @override
+  String get repeater_settingsLoadIncomplete =>
+      'Einige Einstellungen konnten nicht geladen werden. Verwenden Sie die Aktualisieren-Schaltflächen, um es erneut zu versuchen.';
 
   @override
   String repeater_refreshed(String label) {
@@ -3018,14 +3254,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get repeater_cliHelpSetFloodAdvertInterval =>
-      'Legt das Timer-Intervall in Stunden für den Versand eines Flut-Ankündigungspacket fest. Auf 0 setzen, um es zu deaktivieren.';
+      'Legt das Timer-Intervall in Stunden für den Versand eines Flood-Ankündigungspaket fest. Auf 0 setzen, um es zu deaktivieren.';
 
   @override
   String get repeater_cliHelpSetGuestPassword =>
       'Legt/aktualisiert das Gastpasswort fest. (für Repeater können Gast-Logins die \"Get Stats\"-Anfrage senden)';
 
   @override
-  String get repeater_cliHelpSetName => 'Legt den Anzeigenamen fest.';
+  String get repeater_cliHelpSetName => 'Legt den Ankündigungsnamen fest.';
 
   @override
   String get repeater_cliHelpSetLat =>
@@ -3128,7 +3364,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get repeater_cliHelpRegionAllowf =>
-      'Legt die \'Flut\'-Berechtigung für die angegebene Region fest. (\'\' für den globalen/legacy-Bereich)';
+      'Legt die \'Flood\'-Berechtigung für die angegebene Region fest. (\'\' für den globalen/legacy-Bereich)';
 
   @override
   String get repeater_cliHelpRegionDenyf =>
@@ -3162,11 +3398,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get repeater_cliHelpGpsAdvert =>
-      'Gibt Konfiguration für die Standortanzeige des Knotens:\n- none: Standort nicht in Anzeigen einbeziehen\n- share: GPS-Standort teilen (von SensorManager)\n- prefs: Standort aus Einstellungen anzeigen';
+      'Gibt Konfiguration für die Standort-Ankündigung des Knotens:\n- none: Standort nicht in Ankündigungen einbeziehen\n- share: GPS-Standort teilen (von SensorManager)\n- prefs: Standort aus den Einstellungen ankündigen';
 
   @override
   String get repeater_cliHelpGpsAdvertSet =>
-      'Legt die Standort-Anzeigekonfiguration fest.';
+      'Legt die Standort-Ankündigungskonfiguration fest.';
 
   @override
   String get repeater_commandsListTitle => 'Befehlsliste';
@@ -3174,6 +3410,75 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get repeater_commandsListNote =>
       'ACHTUNG: Für die verschiedenen „set ...“-Befehle gibt es auch einen „get ...“-Befehl.';
+
+  @override
+  String get repeater_frequencyRangeHelper => '150-2500 MHz';
+
+  @override
+  String get repeater_frequencyInvalid => 'Ungültige Frequenz (150-2500 MHz)';
+
+  @override
+  String get repeater_txPowerRangeHelper => '-9 bis 30 dBm';
+
+  @override
+  String get repeater_recvErrors => 'Empfangsfehler';
+
+  @override
+  String get room_postsStored => 'Beiträge';
+
+  @override
+  String get room_postsPushed => 'Gesendete Beiträge';
+
+  @override
+  String get repeater_cliRegionLoadActive =>
+      'Regions-Ladevorgang: Sende pro Zeile einen Regionsnamen, eingerückt mit Leerzeichen unter der übergeordneten Region (F nach dem Namen anhängen, um Flood zu erlauben). Zeilen erhalten keine Antwort. Sende eine Leerzeile zum Abschließen, dann \"region save\", um das Ergebnis zu speichern.';
+
+  @override
+  String get repeater_cliRegionLoadHint =>
+      'Regionszeile, oder leer zum Abschließen';
+
+  @override
+  String get repeater_cliRegionLoadEnd => '(Ende des Regions-Ladevorgangs)';
+
+  @override
+  String get repeater_cliHelpRegionDef =>
+      'Definiert in einem Befehl eine Kette von Regionen: Jeder Name wird unter dem vorherigen hinzugefügt; \"name,parent\" fügt den Namen hinzu und setzt dann unter der angegebenen übergeordneten Region fort. Antwortet mit der Regionsliste.';
+
+  @override
+  String get repeater_cliHelpSetFloodMaxUnscoped =>
+      'Legt die maximale Hop-Anzahl für die Weiterleitung von Flood-Paketen ohne Region-Scope fest (0-64).';
+
+  @override
+  String get repeater_cliHelpSetFloodMaxAdvert =>
+      'Legt die maximale Hop-Anzahl für die Weiterleitung von Flood-Ankündigungen fest (0-64).';
+
+  @override
+  String get repeater_cliHelpGetFloodMaxUnscoped =>
+      'Zeigt die maximale Hop-Anzahl für Flood-Pakete ohne Region-Scope an.';
+
+  @override
+  String get repeater_cliHelpGetFloodMaxAdvert =>
+      'Zeigt die maximale Hop-Anzahl für Flood-Ankündigungen an.';
+
+  @override
+  String get repeater_cliHelpSetRadioFemRxGain =>
+      'Schaltet den RX-Gain (LNA) des LoRa-Frontend-Moduls um. Boards ohne dieses Modul antworten mit \"Error: unsupported\".';
+
+  @override
+  String get repeater_cliHelpSetRadioFemTxGain =>
+      'Schaltet den TX-Gain (PA) des LoRa-Frontend-Moduls um. Boards ohne dieses Modul antworten mit \"Error: unsupported\".';
+
+  @override
+  String get repeater_cliHelpGetRadioFemRxGain =>
+      'Zeigt, ob der RX-Gain des LoRa-Frontend-Moduls aktiviert ist.';
+
+  @override
+  String get repeater_cliHelpGetRadioFemTxGain =>
+      'Zeigt, ob der TX-Gain des LoRa-Frontend-Moduls aktiviert ist.';
+
+  @override
+  String get repeater_bridgeNote =>
+      'Nur verfügbar bei Firmware, die mit einer Bridge (RS232 oder ESP-NOW) gebaut wurde.';
 
   @override
   String get repeater_general => 'Allgemein';
@@ -3224,7 +3529,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get repeater_cliHelpAdvertZeroHop =>
-      'Sendet eine Werbeanzeige, die nur an unmittelbare Nachbarn gesendet wird (ohne Zwischenstation).';
+      'Sendet eine Ankündigung, die nur an unmittelbare Nachbarn gesendet wird (ohne Zwischenstation).';
 
   @override
   String get repeater_cliHelpStartOta =>
@@ -3347,11 +3652,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get repeater_cliHelpGetAdvertInterval =>
-      'Zeigt die Dauer des lokalen Werbeintervalls in Minuten an.';
+      'Zeigt die Dauer des lokalen Ankündigungsintervalls in Minuten an.';
 
   @override
   String get repeater_cliHelpGetFloodAdvertInterval =>
-      'Zeigt die Dauer der Werbeunterbrechung in Stunden an.';
+      'Zeigt die Dauer des Flood-Ankündigungsintervalls in Stunden an.';
 
   @override
   String get repeater_cliHelpGetGuestPassword =>
@@ -3369,7 +3674,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get repeater_cliHelpGetTxDelay =>
-      'Zeigt den Faktor für die Übertragungsverzögerung im Notfallmodus an.';
+      'Zeigt den Faktor für die Übertragungsverzögerung im Flood-Modus an.';
 
   @override
   String get repeater_cliHelpGetDirectTxDelay =>
@@ -3757,7 +4062,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get channelPath_unknownPath => 'Unbekannt';
 
   @override
-  String get channelPath_floodPath => 'Geflutet';
+  String get channelPath_floodPath => 'Flood';
 
   @override
   String get channelPath_directPath => 'Direkt';
@@ -4250,7 +4555,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get contacts_zeroHopAdvert => 'Zero-Hop-Ankündigung';
 
   @override
-  String get contacts_floodAdvert => 'Flut-Ankündigung';
+  String get contacts_floodAdvert => 'Flood-Ankündigung';
 
   @override
   String get contacts_copyAdvertToClipboard =>
@@ -4261,14 +4566,32 @@ class AppLocalizationsDe extends AppLocalizations {
       'Kontakt aus Zwischenablage hinzufügen';
 
   @override
+  String get contacts_scanQrCode => 'QR-Code scannen';
+
+  @override
+  String get contacts_scanQrInstructions =>
+      'Richten Sie die Kamera auf einen QR-Code eines MeshCore-Kontakts';
+
+  @override
+  String get contacts_qrFromGallery => 'QR-Code aus der Galerie scannen';
+
+  @override
+  String get contacts_noQrCodeFound =>
+      'Im ausgewählten Bild wurde kein QR-Code gefunden.';
+
+  @override
+  String get contacts_qrGalleryFailed =>
+      'Die Galerie konnte nicht geöffnet werden.';
+
+  @override
   String get contacts_ShareContact => 'Kontakt in die Zwischenablage kopieren';
 
   @override
-  String get contacts_ShareContactZeroHop => 'Kontakt über Anzeige teilen';
+  String get contacts_ShareContactZeroHop => 'Kontakt über Ankündigung teilen';
 
   @override
   String get contacts_zeroHopContactAdvertSent =>
-      'Kontakt über Anzeige gesendet';
+      'Kontakt über Ankündigung gesendet';
 
   @override
   String get contacts_zeroHopContactAdvertFailed =>
@@ -4276,7 +4599,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get contacts_contactAdvertCopied =>
-      'Anzeige in die Zwischenablage kopiert.';
+      'Ankündigung in die Zwischenablage kopiert.';
 
   @override
   String get contacts_contactAdvertCopyFailed =>
@@ -4325,6 +4648,44 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notification_receivedNewMessage => 'Neue Nachricht empfangen';
+
+  @override
+  String get notification_actionReply => 'Antworten';
+
+  @override
+  String get notification_actionMarkRead => 'Als gelesen markieren';
+
+  @override
+  String get notification_actionMuteChannel => 'Kanal stummschalten';
+
+  @override
+  String get notification_replyHint => 'Nachricht';
+
+  @override
+  String get notification_you => 'Du';
+
+  @override
+  String get notification_replyFailedTitle => 'Antwort nicht gesendet';
+
+  @override
+  String get notification_replyNotConnected =>
+      'Keine Verbindung zu einem Funkgerät. Stellen Sie die Verbindung in MeshCore Open wieder her und senden Sie Ihre Antwort erneut.';
+
+  @override
+  String get notification_replyTooLong =>
+      'Ihre Antwort ist zu lang, um aus einer Benachrichtigung heraus gesendet zu werden. Senden Sie sie stattdessen aus MeshCore Open.';
+
+  @override
+  String get notification_replyUnavailable =>
+      'Diese Unterhaltung ist auf dem verbundenen Funkgerät nicht mehr vorhanden.';
+
+  @override
+  String get notification_replySendFailed =>
+      'Ihre Antwort wurde möglicherweise nicht gesendet. Prüfen Sie dies in MeshCore Open und versuchen Sie es erneut.';
+
+  @override
+  String get notification_replyAppNotRunning =>
+      'MeshCore Open wird nicht ausgeführt. Öffnen Sie die App und senden Sie Ihre Antwort erneut.';
 
   @override
   String get settings_gpxExportRepeaters =>
@@ -4385,6 +4746,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get snrIndicator_lastSeen => 'Zuletzt gesehen';
+
+  @override
+  String get snrIndicator_nearByRepeatersDescription =>
+      'Repeater, die Ihr Funkgerät direkt gehört hat, zuletzt gehört zuerst.';
 
   @override
   String get contactsSettings_title => 'Kontakteinstellungen';
@@ -4500,6 +4865,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get radioStats_screenTitle => 'Senderinformationen';
+
+  @override
+  String get radioStats_sectionSignal => 'Signal';
+
+  @override
+  String get radioStats_sectionAirtime => 'Sendezeit';
 
   @override
   String get radioStats_notConnected =>
@@ -4892,6 +5263,25 @@ class AppLocalizationsDe extends AppLocalizations {
       'Für 512 × 512 skaliert · Seitenverhältnis nicht erhalten';
 
   @override
+  String imageSend_lossyNote(int bytes) {
+    return 'Auf etwa $bytes Bytes komprimiert. Das Modell des Empfängers rekonstruiert das Bild, daher weichen Details ab.';
+  }
+
+  @override
+  String get imageSend_viewOriginal => 'Original';
+
+  @override
+  String get imageSend_viewReconstruction => 'Was die Empfänger sehen';
+
+  @override
+  String get imageSend_reconstructionUnavailable =>
+      'Dieses Gerät kann die Rekonstruktion nicht in der Vorschau anzeigen.';
+
+  @override
+  String get imageSend_modelNotDownloaded =>
+      'Das Bildmodell wurde noch nicht heruntergeladen. Laden Sie es in den Einstellungen herunter, um Bilder zu senden.';
+
+  @override
   String get imageSend_originalSize =>
       'Originaltext:\n\nThe quick brown fox jumps over the lazy dog.\n\nÜbersetzung:\n\nDer schnelle braune Fuchs springt über den faulen Hund.';
 
@@ -4952,7 +5342,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get imageSend_floodNote =>
-      'Flutweiterleitung: Jeder Repeater im Bereich leitet jedes Paket weiter, wodurch der Kanal länger als dieser Zeitraum beschäftigt bleibt.';
+      'Flood-Weiterleitung: Jeder Repeater im Bereich leitet jedes Paket weiter, wodurch der Kanal länger als dieser Zeitraum beschäftigt bleibt.';
 
   @override
   String get imageSend_parityTitle => 'Wiederherstellungspaket';
@@ -5064,6 +5454,30 @@ class AppLocalizationsDe extends AppLocalizations {
   String get receivedImage_tapToProcess => 'Klicken Sie, um fortzufahren';
 
   @override
+  String get receivedImage_save => 'Bild speichern';
+
+  @override
+  String receivedImage_shareCaption(int bytes) {
+    return 'KI-rekonstruiert aus $bytes Bytes; feine Details werden erzeugt und nicht übertragen.';
+  }
+
+  @override
+  String get receivedImage_packetInfo => 'Paketinfo';
+
+  @override
+  String get receivedImage_parityRecovered =>
+      'Ein Paket wurde aus dem Wiederherstellungspaket rekonstruiert.';
+
+  @override
+  String receivedImage_decodeTime(int ms) {
+    return 'In $ms ms rekonstruiert';
+  }
+
+  @override
+  String get receivedImage_saveFailed =>
+      'Das Bild konnte nicht gespeichert werden';
+
+  @override
   String receivedImage_awaiting(int bytes, int packets) {
     String _temp0 = intl.Intl.pluralLogic(
       packets,
@@ -5082,5 +5496,40 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String imageSend_minutesSecondsValue(String minutes, String seconds) {
     return '$minutes Min $seconds Sek';
+  }
+
+  @override
+  String chat_longMessageRetryNote(int count) {
+    return 'Über 158 Byte: wird höchstens $count Mal gesendet';
+  }
+
+  @override
+  String get reviewMode_dialogTitle => 'Prüfmodus aktivieren?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Der Prüfmodus verbindet sich mit einem simulierten Radio mit Beispielkontakten, Kanälen und Nachrichten. Es wird kein echtes Radio benötigt.';
+
+  @override
+  String get reviewMode_confirm => 'Aktivieren';
+
+  @override
+  String get reviewMode_cancel => 'Abbrechen';
+
+  @override
+  String get reviewMode_banner => 'Prüfmodus — simulierte Daten';
+
+  @override
+  String get reviewMode_sendTest => 'Testnachricht senden';
+
+  @override
+  String get reviewMode_testSent => 'Eine Testnachricht trifft in Kürze ein.';
+
+  @override
+  String get reviewMode_exit => 'Beenden';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Prüfmodus konnte nicht gestartet werden: $error';
   }
 }

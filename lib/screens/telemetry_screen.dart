@@ -22,10 +22,36 @@ import '../widgets/telemetry_location_map.dart';
 import '../theme/mesh_theme.dart';
 import '../widgets/mesh_ui.dart';
 
+/// Opens the telemetry screen for the locally connected node.
+void pushSelfTelemetryScreen(BuildContext context) {
+  final connector = Provider.of<MeshCoreConnector>(context, listen: false);
+  final selfKey = connector.selfPublicKey;
+  if (selfKey == null || selfKey.isEmpty) return;
+  final selfContact = Contact(
+    publicKey: selfKey,
+    name: connector.selfName ?? '',
+    type: advTypeChat,
+    pathLength: 0,
+    path: Uint8List(0),
+    lastSeen: DateTime.now(),
+  );
+  Navigator.push(
+    context,
+    MaterialPageRoute<void>(
+      builder: (context) => TelemetryScreen(contact: selfContact, isSelf: true),
+    ),
+  );
+}
+
 class TelemetryScreen extends StatefulWidget {
   final Contact contact;
+  final bool isSelf;
 
-  const TelemetryScreen({super.key, required this.contact});
+  const TelemetryScreen({
+    super.key,
+    required this.contact,
+    this.isSelf = false,
+  });
 
   @override
   State<TelemetryScreen> createState() => _TelemetryScreenState();
@@ -40,6 +66,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
   static const int _autoRefreshMaxQuantity = 10;
 
   int _tagData = 0;
+  bool _awaitingSent = false;
 
   bool _isLoading = false;
   bool _isLoaded = false;
@@ -101,7 +128,8 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
       final reader = BufferReader(frame);
       try {
         final cmd = reader.readByte();
-        if (cmd == respCodeSent) {
+        if (cmd == respCodeSent && _awaitingSent) {
+          _awaitingSent = false;
           reader.skipBytes(1); // Skip the reserved byte
           _tagData = reader.readUInt32LE();
           _tripTime = reader.readUInt32LE();
@@ -158,7 +186,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
   void _handleTelemetryResponse(Uint8List frame) {
     final parsedTelemetry = CayenneLpp.parseByChannel(frame);
     final batteryMv = _extractTelemetryBatteryMillivolts(parsedTelemetry);
-    if (batteryMv != null) {
+    if (batteryMv != null && !widget.isSelf) {
       final connector = Provider.of<MeshCoreConnector>(context, listen: false);
       connector.updateRepeaterBatterySnapshot(
         widget.contact.publicKeyHex,
@@ -183,6 +211,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
       );
     }
     _statusTimeout?.cancel();
+    _recordTelemetryResult(true);
     if (!mounted) return;
     setState(() {
       _isLoading = false;
@@ -204,21 +233,55 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
     });
     try {
       final connector = Provider.of<MeshCoreConnector>(context, listen: false);
-      final selection = await connector.preparePathForContactSend(
-        _resolveContact(connector),
-      );
-      _pendingStatusSelection = selection;
       Uint8List frame;
-      if (widget.contact.type != advTypeChat) {
-        frame = buildSendBinaryReq(
-          widget.contact.publicKey,
-          payload: buildTelemetryBinaryPayload(),
-        );
+      if (widget.isSelf) {
+        // ask the connected node for its own telemetry, no mesh path involved
+        frame = buildSendTelemetryReq(null);
+        final isAutoRefreshRequest = _activeTelemetryRequestIsAutoRefresh;
+        _statusTimeout?.cancel();
+        _statusTimeout = Timer(const Duration(seconds: 5), () {
+          if (!mounted) return;
+          setState(() {
+            _isLoading = false;
+            _isLoaded = false;
+            if (isAutoRefreshRequest && _isAutoRefreshEnabled) {
+              _autoRefreshLastAttemptFailed = true;
+            }
+            _activeTelemetryRequestIsAutoRefresh = false;
+          });
+          if (!isAutoRefreshRequest) {
+            showDismissibleSnackBar(
+              context,
+              content: Text(context.l10n.telemetry_requestTimeout),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            );
+          }
+          if (isAutoRefreshRequest && _isAutoRefreshEnabled) {
+            _scheduleNextAutoRefreshAttempt();
+          }
+          _recordTelemetryResult(false);
+        });
       } else {
-        frame = buildSendTelemetryReq(widget.contact.publicKey);
+        final selection = await connector.preparePathForContactSend(
+          _resolveContact(connector),
+        );
+        _pendingStatusSelection = selection;
+        if (widget.contact.type != advTypeChat) {
+          frame = buildSendBinaryReq(
+            widget.contact.publicKey,
+            payload: buildTelemetryBinaryPayload(),
+          );
+        } else {
+          frame = buildSendTelemetryReq(widget.contact.publicKey);
+        }
       }
+      // A local self request gets no respCodeSent, so any that arrives belongs
+      // to another send and must not replace the 5s self timeout.
+      _awaitingSent = !widget.isSelf;
       await connector.sendFrame(frame);
     } catch (e) {
+      _awaitingSent = false;
+      _statusTimeout?.cancel();
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -353,12 +416,13 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
         centerTitle: true,
         bottom: const SyncProgressAppBarBottom(),
         actions: [
-          IconButton(
-            icon: Icon(isFloodMode ? Icons.waves : Icons.route),
-            tooltip: l10n.repeater_routingMode,
-            onPressed: () =>
-                ContactRoutingSheet.show(context, contact: widget.contact),
-          ),
+          if (!widget.isSelf)
+            IconButton(
+              icon: Icon(isFloodMode ? Icons.waves : Icons.route),
+              tooltip: l10n.repeater_routingMode,
+              onPressed: () =>
+                  ContactRoutingSheet.show(context, contact: widget.contact),
+            ),
           IconButton(
             icon: _isLoading
                 ? const SizedBox(
@@ -495,7 +559,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
           _temperatureText(value, isImperialUnits),
         );
       case 'humidity':
-        return _TelemetryFieldDisplay(l10n.telemetry_humidityLabel, text);
+        return _TelemetryFieldDisplay(l10n.telemetry_humidityLabel, '$text%');
       case 'accelerometer':
         return _TelemetryFieldDisplay(
           l10n.telemetry_accelerometerLabel,
@@ -912,10 +976,12 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
             ),
           ),
           const SizedBox(width: 8),
-          Text(
-            value,
-            style: MeshTheme.mono(fontSize: 13, color: scheme.onSurface),
-            textAlign: TextAlign.end,
+          Flexible(
+            child: Text(
+              value,
+              style: MeshTheme.mono(fontSize: 13, color: scheme.onSurface),
+              textAlign: TextAlign.end,
+            ),
           ),
         ],
       ),

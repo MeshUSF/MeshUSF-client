@@ -4,6 +4,7 @@ import '../models/message.dart';
 import '../models/translation_support.dart';
 import '../helpers/smaz.dart';
 import '../utils/app_logger.dart';
+import 'legacy_key_migration.dart';
 import 'prefs_manager.dart';
 
 class MessageStore {
@@ -38,7 +39,8 @@ class MessageStore {
     final key = '$keyFor$contactKeyHex';
     final oldKey = '$_keyPrefix$contactKeyHex';
     String? jsonString = prefs.getString(key);
-    if (jsonString == null || jsonString.isEmpty) {
+    if ((jsonString == null || jsonString.isEmpty) &&
+        canMigrateLegacyKeys(publicKeyHex)) {
       // Attempt migration from legacy unscoped key on first load
       final legacyJsonString = prefs.getString(oldKey);
       prefs.remove(oldKey);
@@ -57,12 +59,22 @@ class MessageStore {
       return [];
     }
 
+    final List<dynamic> jsonList;
     try {
-      final jsonList = jsonDecode(jsonString) as List<dynamic>;
-      return jsonList.map((json) => _messageFromJson(json)).toList();
+      jsonList = jsonDecode(jsonString) as List<dynamic>;
     } catch (e) {
+      appLogger.warn('Stored messages for $contactKeyHex are unreadable: $e');
       return [];
     }
+    final messages = <Message>[];
+    for (final json in jsonList) {
+      try {
+        messages.add(_messageFromJson(json as Map<String, dynamic>));
+      } catch (e) {
+        appLogger.warn('Skipping malformed stored message: $e');
+      }
+    }
+    return messages;
   }
 
   Future<void> clearMessages(String contactKeyHex) async {
@@ -146,9 +158,11 @@ class MessageStore {
       senderKey: Uint8List.fromList(base64Decode(json['senderKey'] as String)),
       text: decodedText,
       timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp'] as int),
-      isOutgoing: json['isOutgoing'] as bool,
+      isOutgoing: json['isOutgoing'] as bool? ?? false,
       isCli: isCli,
-      status: MessageStatus.values[json['status'] as int],
+      status:
+          MessageStatus.values.elementAtOrNull(json['status'] as int? ?? -1) ??
+          MessageStatus.failed,
       messageId: json['messageId'] as String?,
       originalText: json['originalText'] as String?,
       translatedText: json['translatedText'] as String?,

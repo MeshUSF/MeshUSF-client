@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart' hide TextDirection;
 import 'package:provider/provider.dart';
 
 import '../connector/meshcore_connector.dart';
@@ -33,9 +32,11 @@ import '../services/image_chunk_transport.dart';
 import '../services/image_codec_service.dart';
 import '../services/received_image_store.dart';
 import '../services/translation_service.dart';
+import '../utils/image_save.dart';
 import '../utils/lora_airtime.dart';
 import '../widgets/received_image_message.dart';
 import '../widgets/byte_count_input.dart';
+import '../widgets/chat_day_separator.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/chat_zoom_wrapper.dart';
 import '../widgets/emoji_picker.dart';
@@ -77,6 +78,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   final ChatScrollController _scrollController = ChatScrollController();
   final FocusNode _textFieldFocusNode = FocusNode();
   ChannelMessage? _replyingToMessage;
+  bool _useReplyRegion = false;
   final CommunityStore _communityStore = CommunityStore();
   final CommunityPskIndex _communityIndex = CommunityPskIndex();
   final Map<String, GlobalKey> _messageKeys = {};
@@ -97,10 +99,6 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   DateTime? _lastChannelSendAt;
   bool _channelSkipNextBottomSnap = false;
   String? _unreadDividerMessageId;
-
-  String? _cachedFormatLocale;
-  late DateFormat _hmFormat;
-  late DateFormat _mdFormat;
 
   @override
   void initState() {
@@ -210,12 +208,14 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   void _setReplyingTo(ChannelMessage message) {
     setState(() {
       _replyingToMessage = message;
+      _useReplyRegion = message.region?.isNotEmpty ?? false;
     });
   }
 
   void _cancelReply() {
     setState(() {
       _replyingToMessage = null;
+      _useReplyRegion = false;
     });
   }
 
@@ -321,21 +321,32 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                     ),
                     Consumer<MeshCoreConnector>(
                       builder: (context, connector, _) {
-                        final unreadCount = connector
-                            .getUnreadCountForChannelIndex(
-                              widget.channel.index,
-                            );
-                        final privacy = widget.channel.isPublicChannel
-                            ? context.l10n.channels_public
-                            : context.l10n.channels_private;
-                        final region = connector.getChannelRegion(
+                        final privacy = switch (Channel.getChannelType(
+                          widget.channel,
+                          _communityIndex,
+                        )) {
+                          ChannelType.public => context.l10n.channels_public,
+                          ChannelType.hashtag => context.l10n.channels_hashtag,
+                          ChannelType.private => context.l10n.channels_private,
+                          ChannelType.communityPublic =>
+                            context.l10n.community_publicChannel,
+                          ChannelType.communityHashtag =>
+                            context.l10n.community_hashtagChannel,
+                        };
+                        final ownRegion = connector.getChannelRegion(
                           widget.channel.index,
                         );
+                        final region = connector.getEffectiveChannelRegion(
+                          widget.channel.index,
+                        );
+                        final defaultSuffix = ownRegion.isEmpty
+                            ? ' ${context.l10n.channels_regionDefaultSuffix}'
+                            : '';
                         final regionText = region.isNotEmpty
-                            ? ' • ${context.l10n.channels_regionSetTo(region)}'
+                            ? ' • ${context.l10n.channels_regionSetTo(region)}$defaultSuffix'
                             : '';
                         return Text(
-                          '$privacy • ${context.l10n.chat_unread(unreadCount)}$regionText',
+                          '$privacy$regionText',
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(fontSize: 12),
                         );
@@ -350,6 +361,25 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
         centerTitle: false,
         bottom: const SyncProgressAppBarBottom(),
         actions: [
+          Consumer<AppSettingsService>(
+            builder: (context, settings, _) {
+              final muteKey = widget.channel.muteKey;
+              final muted = settings.isChannelMuted(muteKey);
+              return IconButton(
+                tooltip: muted
+                    ? context.l10n.channels_unmuteChannel
+                    : context.l10n.channels_muteChannel,
+                icon: Icon(
+                  muted
+                      ? Icons.notifications_off_outlined
+                      : Icons.notifications_outlined,
+                ),
+                onPressed: () => muted
+                    ? settings.unmuteChannel(muteKey)
+                    : settings.muteChannel(muteKey),
+              );
+            },
+          ),
           IconButton(
             tooltip: context.l10n.channels_regionSelect_Title,
             icon: const Icon(Icons.landscape),
@@ -513,10 +543,22 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                                           row.image!,
                                           textScale,
                                         );
-                                  if (isUnreadAnchor) {
+                                  final startsDay =
+                                      index == reversedRows.length - 1 ||
+                                      !isSameChatDay(
+                                        reversedRows[index + 1].timestamp,
+                                        row.timestamp,
+                                      );
+                                  if (isUnreadAnchor || startsDay) {
                                     return Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      children: [const UnreadDivider(), bubble],
+                                      children: [
+                                        if (startsDay)
+                                          ChatDaySeparator(day: row.timestamp),
+                                        if (isUnreadAnchor)
+                                          const UnreadDivider(),
+                                        bubble,
+                                      ],
                                     );
                                   }
                                   return bubble;
@@ -799,7 +841,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                               buildTextContent(),
                             ],
                           ),
-                        if (enableTracing && displayPath.isNotEmpty) ...[
+                        if (displayPath.isNotEmpty) ...[
                           const SizedBox(height: 3),
                           Padding(
                             padding: gifId != null
@@ -809,25 +851,61 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                RouteChip(
-                                  isDirect: (message.pathLength ?? -1) >= 0,
-                                  hops: displayHopCount,
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    RouteChip(
+                                      isDirect: (message.pathLength ?? -1) >= 0,
+                                      hops: displayHopCount,
+                                    ),
+                                    if (message.region?.isNotEmpty ?? false)
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 2),
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 6,
+                                            vertical: 2,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: scheme.surfaceContainerHigh,
+                                            borderRadius: BorderRadius.circular(
+                                              MeshRadii.xs,
+                                            ),
+                                            border: Border.all(
+                                              color: scheme.outlineVariant,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            _displayRegion(message.region!),
+                                            style: MeshTheme.mono(
+                                              fontSize: 8.5 * textScale,
+                                              color: metaColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
-                                const SizedBox(width: 4),
-                                Flexible(
-                                  child: Text(
-                                    context.l10n.channels_via(
-                                      _formatPathPrefixes(
-                                        displayPath,
-                                        displayPathHashWidth,
+                                if (enableTracing) ...[
+                                  const SizedBox(width: 4),
+                                  Flexible(
+                                    child: Text(
+                                      context.l10n.channels_via(
+                                        _formatPathPrefixes(
+                                          displayPath,
+                                          displayPathHashWidth,
+                                        ),
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: MeshTheme.mono(
+                                        fontSize: 9.5 * textScale,
+                                        color: metaColor,
                                       ),
                                     ),
-                                    style: MeshTheme.mono(
-                                      fontSize: 9.5 * textScale,
-                                      color: metaColor,
-                                    ),
                                   ),
-                                ),
+                                ],
                               ],
                             ),
                           ),
@@ -845,13 +923,15 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                _formatTime(context, message.timestamp),
+                                formatChatTime(context, message.timestamp),
                                 style: MeshTheme.mono(
-                                  fontSize: 10 * textScale,
+                                  fontSize: 12 * textScale,
                                   color: metaColor,
                                 ),
                               ),
-                              if (enableTracing && message.repeatCount > 0) ...[
+                              if (enableTracing &&
+                                  !isOutgoing &&
+                                  message.repeatCount > 0) ...[
                                 const SizedBox(width: 6),
                                 Icon(
                                   Icons.repeat,
@@ -862,7 +942,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                                 Text(
                                   '${message.repeatCount}',
                                   style: MeshTheme.mono(
-                                    fontSize: 10 * textScale,
+                                    fontSize: 12 * textScale,
                                     color: metaColor,
                                   ),
                                 ),
@@ -870,13 +950,16 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                               if (isOutgoing) ...[
                                 const SizedBox(width: 4),
                                 MessageStatusIcon(
-                                  isAcked:
-                                      message.status ==
-                                      ChannelMessageStatus.sent,
-                                  isRepeated:
-                                      message.status ==
-                                          ChannelMessageStatus.sent &&
-                                      displayPath.isNotEmpty,
+                                  size: 16 * textScale,
+                                  isAcked: false,
+                                  isChannel: true,
+                                  repeatCount: message.repeatCount,
+                                  resendProgress: context
+                                      .read<MeshCoreConnector>()
+                                      .channelResendProgress(message.messageId),
+                                  hopShortfall: context
+                                      .read<MeshCoreConnector>()
+                                      .channelHopShortfall(message.messageId),
                                   isPending:
                                       message.status ==
                                       ChannelMessageStatus.pending,
@@ -1224,16 +1307,37 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     }
   }
 
-  /// Whether the image codec model is currently downloading.
-  ///
-  /// This must be read while [context] is building; popup item builders run
-  /// from an overlay and cannot listen to a provider.
-  bool _isImageCodecDownloading(BuildContext context) {
-    try {
-      return context.watch<ImageCodecService>().isDownloading;
-    } on ProviderNotFoundException {
-      return false;
+  void _explainImageCodecNotReady(ImageCodecService codec) {
+    final l10n = context.l10n;
+    final availability = codec.availability;
+    final String message;
+    switch (availability) {
+      case ImageCodecAvailability.downloading:
+        message = l10n.imageSend_codecDownloading;
+      case ImageCodecAvailability.unavailable:
+        message = codec.unavailableReason ?? l10n.imageSend_codecUnavailable;
+      case ImageCodecAvailability.disabled:
+        message = codec.needsModelDownload
+            ? l10n.imageSend_modelNotDownloaded
+            : codec.statusReason ?? l10n.imageSend_codecDisabled;
+      case ImageCodecAvailability.ready:
+        return;
     }
+    showDismissibleSnackBar(
+      context,
+      content: Text(message),
+      action: availability == ImageCodecAvailability.disabled
+          ? SnackBarAction(
+              label: l10n.receivedImage_openSettings,
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) =>
+                      const AppSettingsScreen(focusImageMessages: true),
+                ),
+              ),
+            )
+          : null,
+    );
   }
 
   /// Takes no [BuildContext]: it uses the [State]'s own, so the `mounted`
@@ -1241,6 +1345,10 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   Future<void> _showImageSendPreview() async {
     final codec = _imageCodec;
     if (codec == null) return;
+    if (codec.availability != ImageCodecAvailability.ready) {
+      _explainImageCodecNotReady(codec);
+      return;
+    }
     final connector = context.read<MeshCoreConnector>();
 
     // The picked bytes are kept past the preview on purpose: the sender's own
@@ -1545,7 +1653,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     final textColor = isOutgoing ? MeshPalette.meInk : scheme.onSurface;
     final metaColor = textColor.withValues(alpha: 0.65);
 
-    return Padding(
+    final bubble = Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         mainAxisAlignment: isOutgoing
@@ -1612,9 +1720,9 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                       bottom: 4,
                     ),
                     child: Text(
-                      _formatTime(context, entry.firstSeen),
+                      formatChatTime(context, entry.firstSeen),
                       style: MeshTheme.mono(
-                        fontSize: 10 * textScale,
+                        fontSize: 12 * textScale,
                         color: metaColor,
                       ),
                     ),
@@ -1622,6 +1730,123 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+    return GestureDetector(
+      onLongPress: () => _showImageActions(entry),
+      onSecondaryTap: () => _showImageActions(entry),
+      child: bubble,
+    );
+  }
+
+  void _showImageActions(ReceivedImageEntry entry) {
+    final l10n = context.l10n;
+    final canSave = entry.state == ReceivedImageState.decoded;
+    showMeshSheet(
+      context,
+      builder: (sheetContext) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BottomSheetHeader(
+              title: l10n.receivedImage_awaiting(
+                entry.bitstreamByteCount,
+                entry.totalChunks,
+              ),
+              subtitle: _imageSenderLabel(entry),
+            ),
+            if (canSave)
+              ListTile(
+                leading: const Icon(Icons.save_alt),
+                title: Text(l10n.receivedImage_save),
+                onTap: () {
+                  Navigator.pop(sheetContext);
+                  _saveImage(entry);
+                },
+              ),
+            ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: Text(l10n.receivedImage_packetInfo),
+              onTap: () {
+                Navigator.pop(sheetContext);
+                _showImagePacketInfo(entry);
+              },
+            ),
+            const Divider(height: 1),
+            ListTile(
+              leading: Icon(
+                Icons.delete_outline,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              title: Text(
+                l10n.common_delete,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+              onTap: () async {
+                Navigator.pop(sheetContext);
+                await context.read<ReceivedImageStore>().deleteImage(
+                  entry.streamId,
+                );
+                if (!mounted) return;
+                showDismissibleSnackBar(
+                  context,
+                  content: Text(l10n.chat_messageDeleted),
+                );
+              },
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _saveImage(ReceivedImageEntry entry) async {
+    final l10n = context.l10n;
+    final png = await context.read<ReceivedImageStore>().ensurePng(
+      entry.streamId,
+    );
+    if (!mounted) return;
+    final shareText = l10n.receivedImage_shareCaption(entry.bitstreamByteCount);
+    if (png == null || !await saveImagePng(png, entry, shareText: shareText)) {
+      if (!mounted) return;
+      showDismissibleSnackBar(
+        context,
+        content: Text(l10n.receivedImage_saveFailed),
+      );
+    }
+  }
+
+  void _showImagePacketInfo(ReceivedImageEntry entry) {
+    final l10n = context.l10n;
+    final decodeMs = entry.decodeMs;
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.receivedImage_packetInfo),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(_imageSenderLabel(entry)),
+            Text(formatChatTime(context, entry.firstSeen)),
+            Text(
+              l10n.receivedImage_awaiting(
+                entry.bitstreamByteCount,
+                entry.totalChunks,
+              ),
+            ),
+            if (entry.recoveredWithParity)
+              Text(l10n.receivedImage_parityRecovered),
+            if (decodeMs != null) Text(l10n.receivedImage_decodeTime(decodeMs)),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.common_close),
           ),
         ],
       ),
@@ -1670,6 +1895,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   Widget _buildReplyBanner(double textScale) {
     final message = _replyingToMessage!;
     final scheme = Theme.of(context).colorScheme;
+    final replyRegion = message.region;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -1707,8 +1933,43 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
               ],
             ),
           ),
+          if (replyRegion?.isNotEmpty ?? false)
+            InkWell(
+              borderRadius: BorderRadius.circular(MeshRadii.xs),
+              onTap: () => setState(() => _useReplyRegion = !_useReplyRegion),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                decoration: BoxDecoration(
+                  color: _useReplyRegion
+                      ? scheme.primaryContainer
+                      : scheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(MeshRadii.xs),
+                  border: Border.all(
+                    color: _useReplyRegion
+                        ? scheme.primary
+                        : scheme.outlineVariant,
+                  ),
+                ),
+                child: Text(
+                  context.l10n.channels_regionSetTo(replyRegion!),
+                  style:
+                      MeshTheme.mono(
+                        fontSize: 10 * textScale,
+                        color: _useReplyRegion
+                            ? scheme.onPrimaryContainer
+                            : scheme.onSurfaceVariant,
+                      ).copyWith(
+                        decoration: _useReplyRegion
+                            ? null
+                            : TextDecoration.lineThrough,
+                      ),
+                ),
+              ),
+            ),
+          const SizedBox(width: 4),
           IconButton(
             icon: const Icon(Icons.close, size: 18),
+            tooltip: context.l10n.chat_cancelReply,
             onPressed: _cancelReply,
             color: scheme.onSurfaceVariant,
             constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
@@ -1753,9 +2014,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     final connector = context.watch<MeshCoreConnector>();
     final maxBytes = maxChannelMessageBytes(connector.selfName);
     final settings = context.watch<AppSettingsService>().settings;
-    final imageCodecDownloading = _isImageCodecDownloading(context);
-    final showImageAction =
-        settings.imageMessagesEnabled && !imageCodecDownloading;
+    final showImageAction = settings.imageMessagesEnabled;
     final scheme = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
@@ -1811,13 +2070,6 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                       if (showImageAction)
                         PopupMenuItem(
                           value: 'meshcore-image',
-                          // Gated on the codec, not just the setting. The preview
-                          // sheet explains why a send is impossible, but a fully
-                          // live button in a build that cannot encode invites the
-                          // tap that produces that explanation.
-                          enabled:
-                              _imageCodec?.availability ==
-                              ImageCodecAvailability.ready,
                           child: Row(
                             children: [
                               const Icon(Icons.image_outlined),
@@ -1872,6 +2124,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                                 const SizedBox(width: 8),
                                 IconButton(
                                   icon: const Icon(Icons.close),
+                                  tooltip: context.l10n.chat_removeGif,
                                   onPressed: () {
                                     _textController.clear();
                                     _textFieldFocusNode.requestFocus();
@@ -2032,6 +2285,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     if (_replyingToMessage != null) {
       messageText = '@[${_replyingToMessage!.senderName}] $messageText';
     }
+    final replyRegion = _useReplyRegion ? _replyingToMessage?.region : null;
 
     final maxBytes = maxChannelMessageBytes(connector.selfName);
     final outboundText = connector.prepareChannelOutboundText(
@@ -2055,6 +2309,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     }
     // end transform
 
+    final replyTo = _replyingToMessage;
     _textController.clear();
     _cancelReply();
     _textFieldFocusNode.requestFocus();
@@ -2064,25 +2319,9 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
       originalText: originalText,
       translatedLanguageCode: translatedLanguageCode,
       translationModelId: translationModelId,
+      region: replyRegion,
+      replyTo: replyTo,
     );
-  }
-
-  String _formatTime(BuildContext context, DateTime time) {
-    final now = DateTime.now();
-    final diff = now.difference(time);
-    final locale = Localizations.localeOf(context).toString();
-    if (locale != _cachedFormatLocale) {
-      _cachedFormatLocale = locale;
-      _hmFormat = DateFormat.Hm(locale);
-      _mdFormat = DateFormat.Md(locale);
-    }
-    final hm = _hmFormat.format(time);
-
-    if (diff.inDays > 0) {
-      return '${_mdFormat.format(time)} $hm';
-    } else {
-      return hm;
-    }
   }
 
   void _showMessagePathInfo(ChannelMessage message) {
@@ -2112,8 +2351,8 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             BottomSheetHeader(
-              title: message.text.length > 40
-                  ? '${message.text.substring(0, 40)}…'
+              title: message.text.characters.length > 40
+                  ? '${message.text.characters.take(40)}…'
                   : message.text,
               subtitle: message.senderName.isNotEmpty
                   ? message.senderName
@@ -2135,6 +2374,23 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                 _showMessagePathInfo(message);
               },
             ),
+            if (message.pathBytes.isNotEmpty)
+              ListTile(
+                leading: const Icon(Icons.map_outlined),
+                title: Text(context.l10n.chat_viewPathOnMap),
+                onTap: () {
+                  Navigator.pop(sheetContext);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChannelMessagePathMapScreen(
+                        message: message,
+                        channelMessage: true,
+                      ),
+                    ),
+                  );
+                },
+              ),
             // Can't react to your own messages
             if (!message.isOutgoing)
               ListTile(
@@ -2222,6 +2478,9 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
 
   void _copyMessageText(String text) {
     Clipboard.setData(ClipboardData(text: text));
+    // Android shows its own clipboard chip; the snackbar is redundant there
+    // and lingers over the input field after the chip dismisses.
+    if (PlatformInfo.isAndroid) return;
     showDismissibleSnackBar(
       context,
       content: Text(context.l10n.chat_messageCopied),
@@ -2253,6 +2512,13 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
       context.read<MeshCoreConnector>().clearMessagesForChannel(
         widget.channel.index,
       );
+      try {
+        await context.read<ReceivedImageStore>().deleteImagesForChannel(
+          widget.channel.index,
+        );
+      } on ProviderNotFoundException {
+        return;
+      }
     }
   }
 
@@ -2280,6 +2546,10 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     if ((fallbackPathLength ?? -1) < 0) return null;
     if (pathBytes.isEmpty) return fallbackPathLength;
     return PathHelper.splitPathBytes(pathBytes, pathHashByteWidth).length;
+  }
+
+  String _displayRegion(String region) {
+    return region.startsWith('#') ? region.substring(1) : region;
   }
 
   Future<void> openRegionSelectDialog(Channel channel) async {
@@ -2337,56 +2607,76 @@ class _RegionSelectDialogState extends State<_RegionSelectDialog> {
               backgroundColor: Colors.transparent,
               title: Text(context.l10n.channels_regionSelect_Title),
               centerTitle: true,
-              actions: [
-                IconButton(
-                  tooltip: context.l10n.channels_clearRegion,
-                  icon: const Icon(Icons.backspace_outlined),
-                  onPressed: () {
-                    context.read<MeshCoreConnector>().setChannelRegion(
-                      widget.channel.index,
-                      '',
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                context.l10n.channels_regionSelectExplanation,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (regions.isEmpty)
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text(context.l10n.channels_regionEmpty),
+              )
+            else
+              Expanded(
+                child: ListView.builder(
+                  itemCount: regions.length,
+                  itemBuilder: (context, index) {
+                    final selected = selectedIndex == index;
+                    return ListTile(
+                      leading: Icon(
+                        Icons.landscape,
+                        color: selected ? MeshPalette.blue : null,
+                      ),
+                      title: Text(regions[index]),
+                      trailing: selected
+                          ? const Icon(Icons.check, color: MeshPalette.blue)
+                          : null,
+                      tileColor: selected ? MeshPalette.blueBg : null,
+                      onTap: () {
+                        // Tapping the already-selected region clears it.
+                        context.read<MeshCoreConnector>().setChannelRegion(
+                          widget.channel.index,
+                          selected ? '' : regions[index],
+                        );
+                        Navigator.pop(context);
+                      },
                     );
-                    Navigator.pop(context);
                   },
                 ),
-                IconButton(
-                  tooltip: context.l10n.settings_regionSettingsSubtitle,
-                  icon: const Icon(Icons.settings),
+              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed:
+                      context
+                          .read<MeshCoreConnector>()
+                          .getChannelRegion(widget.channel.index)
+                          .isEmpty
+                      ? null
+                      : () {
+                          context.read<MeshCoreConnector>().setChannelRegion(
+                            widget.channel.index,
+                            '',
+                          );
+                          Navigator.pop(context);
+                        },
+                  child: Text(context.l10n.common_clear),
+                ),
+                TextButton(
                   onPressed: () async {
                     await pushRegionManagementScreen(context);
                     if (!mounted) return;
                     loadRegions();
                   },
+                  child: Text(context.l10n.channels_manageRegions),
                 ),
               ],
-            ),
-            const SizedBox(height: 15),
-            Expanded(
-              child: ListView.builder(
-                itemCount: regions.length,
-                itemBuilder: (context, index) {
-                  final selected = selectedIndex == index;
-                  return ListTile(
-                    leading: Icon(
-                      Icons.landscape,
-                      color: selected ? MeshPalette.blue : null,
-                    ),
-                    title: Text(regions[index]),
-                    trailing: selected
-                        ? const Icon(Icons.check, color: MeshPalette.blue)
-                        : null,
-                    tileColor: selected ? MeshPalette.blueBg : null,
-                    onTap: () {
-                      // Tapping the already-selected region clears it.
-                      context.read<MeshCoreConnector>().setChannelRegion(
-                        widget.channel.index,
-                        selected ? '' : regions[index],
-                      );
-                      Navigator.pop(context);
-                    },
-                  );
-                },
-              ),
             ),
           ],
         ),

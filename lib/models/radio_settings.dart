@@ -525,7 +525,7 @@ class RadioSettings {
     (
       'Off-Grid 869',
       RadioSettings(
-        frequencyMHz: 869.0,
+        frequencyMHz: 869.495,
         bandwidth: LoRaBandwidth.bw250,
         spreadingFactor: LoRaSpreadingFactor.sf11,
         codingRate: LoRaCodingRate.cr4_8,

@@ -313,7 +313,7 @@ abstract class AppLocalizations {
   /// No description provided for @messageStatus_delivered.
   ///
   /// In en, this message translates to:
-  /// **'Delivered'**
+  /// **'Delivered. The contact confirmed they got it.'**
   String get messageStatus_delivered;
 
   /// No description provided for @messageStatus_pending.
@@ -333,6 +333,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Heard repeated'**
   String get messageStatus_repeated;
+
+  /// No description provided for @messageStatus_failedChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your radio couldn\'t send this message.'**
+  String get messageStatus_failedChannel;
+
+  /// No description provided for @messageStatus_resending.
+  ///
+  /// In en, this message translates to:
+  /// **'Not heard through enough repeaters yet. Resent {resends} of {maxResends} times.'**
+  String messageStatus_resending(int resends, int maxResends);
+
+  /// No description provided for @messageStatus_hopsNotReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent, but only heard back through {hops} of {required} repeaters. It may still have gone further than your radio can hear.'**
+  String messageStatus_hopsNotReached(int hops, int required);
+
+  /// No description provided for @messageStatus_sentChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent. Channels don\'t confirm delivery, so this only means your radio sent it.'**
+  String get messageStatus_sentChannel;
+
+  /// No description provided for @messageStatus_sentDirect.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent. Waiting for the contact to confirm.'**
+  String get messageStatus_sentDirect;
+
+  /// No description provided for @messageStatus_heardRepeatedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Heard repeated {count, plural, =1{once} other{{count} times}}. Nearby repeaters passed it on.'**
+  String messageStatus_heardRepeatedCount(int count);
 
   /// No description provided for @urlImage_enable.
   ///
@@ -796,6 +832,12 @@ abstract class AppLocalizations {
   /// **'Radio settings updated'**
   String get settings_radioSettingsUpdated;
 
+  /// No description provided for @settings_radioSettingsNotApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'The radio did not apply these settings'**
+  String get settings_radioSettingsNotApplied;
+
   /// No description provided for @settings_regionSettings.
   ///
   /// In en, this message translates to:
@@ -805,8 +847,38 @@ abstract class AppLocalizations {
   /// No description provided for @settings_regionSettingsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Manage stored regions'**
+  /// **'Limit channel floods to an area'**
   String get settings_regionSettingsSubtitle;
+
+  /// No description provided for @settings_regionEmptyExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Regions limit flood messages to repeaters in an area. Fetch them from nearby repeaters or add one by name.'**
+  String get settings_regionEmptyExplanation;
+
+  /// No description provided for @settings_regionFetchFromRepeaters.
+  ///
+  /// In en, this message translates to:
+  /// **'Fetch from repeaters'**
+  String get settings_regionFetchFromRepeaters;
+
+  /// No description provided for @settings_regionDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default region'**
+  String get settings_regionDefault;
+
+  /// No description provided for @settings_regionDefaultSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Used by channels without their own region'**
+  String get settings_regionDefaultSubtitle;
+
+  /// No description provided for @settings_regionDefaultNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get settings_regionDefaultNone;
 
   /// No description provided for @settings_regionManagement_screenTitle.
   ///
@@ -1003,7 +1075,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_allowByContact.
   ///
   /// In en, this message translates to:
-  /// **'Allow by contact flags'**
+  /// **'Only contacts I allow'**
   String get settings_allowByContact;
 
   /// No description provided for @settings_allowAll.
@@ -1015,20 +1087,26 @@ abstract class AppLocalizations {
   /// No description provided for @settings_telemetryBaseMode.
   ///
   /// In en, this message translates to:
-  /// **'Telemetry Base Mode'**
+  /// **'Who can request battery and status'**
   String get settings_telemetryBaseMode;
 
   /// No description provided for @settings_telemetryLocationMode.
   ///
   /// In en, this message translates to:
-  /// **'Telemetry Location Mode'**
+  /// **'Who can request my location'**
   String get settings_telemetryLocationMode;
 
   /// No description provided for @settings_telemetryEnvironmentMode.
   ///
   /// In en, this message translates to:
-  /// **'Telemetry Environment Mode'**
+  /// **'Who can request sensor data'**
   String get settings_telemetryEnvironmentMode;
+
+  /// No description provided for @settings_telemetryPerContactHint.
+  ///
+  /// In en, this message translates to:
+  /// **'To allow a contact, open their chat and choose Contact Settings from the menu.'**
+  String get settings_telemetryPerContactHint;
 
   /// No description provided for @settings_advertLocation.
   ///
@@ -1051,7 +1129,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_autoZeroHopAdvertOnGpsUpdateSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'When GPS location changes, send a zero-hop advert (requires Advert Location).'**
+  /// **'App setting: when your GPS position changes, automatically advertise your new location to nearby nodes only (requires Advert Location).'**
   String get settings_autoZeroHopAdvertOnGpsUpdateSubtitle;
 
   /// No description provided for @settings_multiAck.
@@ -1059,6 +1137,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Multi-ACKs'**
   String get settings_multiAck;
+
+  /// No description provided for @settings_multiAckSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send extra ACKs for better delivery; uses more airtime'**
+  String get settings_multiAckSubtitle;
 
   /// No description provided for @settings_telemetryModeUpdated.
   ///
@@ -1276,6 +1360,18 @@ abstract class AppLocalizations {
   /// **'Presets'**
   String get settings_presets;
 
+  /// No description provided for @settings_presetCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get settings_presetCustom;
+
+  /// No description provided for @settings_radioMatchWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'All nodes you talk to must use the same frequency, bandwidth, SF and CR.'**
+  String get settings_radioMatchWarning;
+
   /// No description provided for @settings_frequency.
   ///
   /// In en, this message translates to:
@@ -1285,13 +1381,13 @@ abstract class AppLocalizations {
   /// No description provided for @settings_frequencyHelper.
   ///
   /// In en, this message translates to:
-  /// **'300.0 - 2500.0'**
+  /// **'150.0 - 2500.0'**
   String get settings_frequencyHelper;
 
   /// No description provided for @settings_frequencyInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Invalid frequency (300-2500 MHz)'**
+  /// **'Invalid frequency (150-2500 MHz)'**
   String get settings_frequencyInvalid;
 
   /// No description provided for @settings_bandwidth.
@@ -1318,16 +1414,16 @@ abstract class AppLocalizations {
   /// **'TX Power (dBm)'**
   String get settings_txPower;
 
-  /// No description provided for @settings_txPowerHelper.
+  /// No description provided for @settings_txPowerRangeHelper.
   ///
   /// In en, this message translates to:
-  /// **'0 - 22'**
-  String get settings_txPowerHelper;
+  /// **'{min} to {max} dBm'**
+  String settings_txPowerRangeHelper(int min, int max);
 
   /// No description provided for @settings_txPowerInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Invalid TX power (0-22 dBm)'**
+  /// **'Invalid TX power'**
   String get settings_txPowerInvalid;
 
   /// No description provided for @settings_clientRepeat.
@@ -1335,6 +1431,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Off-Grid Repeat'**
   String get settings_clientRepeat;
+
+  /// No description provided for @settings_clientRepeatFrequencyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency set to {freq} MHz for off-grid repeat'**
+  String settings_clientRepeatFrequencyNote(String freq);
 
   /// No description provided for @settings_clientRepeatSubtitle.
   ///
@@ -1345,7 +1447,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_clientRepeatFreqWarning.
   ///
   /// In en, this message translates to:
-  /// **'Off-grid repeat requires 433, 869, or 918 MHz frequency'**
+  /// **'Off-grid repeat requires 433, 869.495, or 918 MHz frequency'**
   String get settings_clientRepeatFreqWarning;
 
   /// No description provided for @settings_error.
@@ -1495,37 +1597,73 @@ abstract class AppLocalizations {
   /// No description provided for @repeater_pathHashModeOption0.
   ///
   /// In en, this message translates to:
-  /// **'0 - 1 byte'**
+  /// **'1 byte'**
   String get repeater_pathHashModeOption0;
 
   /// No description provided for @repeater_pathHashModeOption1.
   ///
   /// In en, this message translates to:
-  /// **'1 - 2 bytes'**
+  /// **'2 bytes'**
   String get repeater_pathHashModeOption1;
 
   /// No description provided for @repeater_pathHashModeOption2.
   ///
   /// In en, this message translates to:
-  /// **'2 - 3 bytes'**
+  /// **'3 bytes'**
   String get repeater_pathHashModeOption2;
 
   /// No description provided for @repeater_pathHashModeOption3.
   ///
   /// In en, this message translates to:
-  /// **'3 - 4 bytes'**
+  /// **'4 bytes'**
   String get repeater_pathHashModeOption3;
+
+  /// No description provided for @settings_pathHashModeHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Size of each node ID recorded in the path of flood packets this radio sends: 1 byte (256 IDs, up to 64 hops), 2 bytes (65K IDs, up to 32 hops), 3 bytes (16M IDs, up to 21 hops). Larger IDs reduce collisions, but repeaters on firmware older than v1.14 drop packets with 2- or 3-byte IDs.'**
+  String get settings_pathHashModeHelper;
+
+  /// No description provided for @settings_requiresFirmware.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires firmware {version} or newer'**
+  String settings_requiresFirmware(String version);
+
+  /// No description provided for @appSettings_channelMinHops.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend channel messages until they travel far enough'**
+  String get appSettings_channelMinHops;
+
+  /// No description provided for @appSettings_channelMinHopsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'If your message isn\'t heard coming back through enough repeaters, send it again. Uses more airtime.'**
+  String get appSettings_channelMinHopsSubtitle;
+
+  /// No description provided for @appSettings_channelMinHopsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Required hops: {count}'**
+  String appSettings_channelMinHopsCount(int count);
+
+  /// No description provided for @appSettings_channelMinHopsRetries.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend up to {count, plural, =1{1 time} other{{count} times}}'**
+  String appSettings_channelMinHopsRetries(int count);
 
   /// No description provided for @appSettings_enableMessageTracing.
   ///
   /// In en, this message translates to:
-  /// **'Enable Message Tracing'**
+  /// **'Show full repeater path in messages'**
   String get appSettings_enableMessageTracing;
 
   /// No description provided for @appSettings_enableMessageTracingSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Show detailed routing and timing metadata for messages'**
+  /// **'Also show repeat counts and trip times. Long-press a message and choose Path for full details.'**
   String get appSettings_enableMessageTracingSubtitle;
 
   /// No description provided for @appSettings_notifications.
@@ -1575,6 +1713,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show notification when receiving new messages'**
   String get appSettings_messageNotificationsSubtitle;
+
+  /// No description provided for @appSettings_batteryOptimization.
+  ///
+  /// In en, this message translates to:
+  /// **'Background Activity'**
+  String get appSettings_batteryOptimization;
+
+  /// No description provided for @appSettings_batteryOptimizationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set MeshCore Open to \"Don\'t optimize\" in battery settings so messages keep arriving in the background'**
+  String get appSettings_batteryOptimizationSubtitle;
 
   /// No description provided for @appSettings_channelMessageNotifications.
   ///
@@ -2038,6 +2188,12 @@ abstract class AppLocalizations {
   /// **'No contacts or groups found'**
   String get contacts_noContactsFound;
 
+  /// No description provided for @contacts_storageFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact storage on the node is full. New nodes cannot be added until contacts are removed.'**
+  String get contacts_storageFull;
+
   /// No description provided for @contacts_deleteContact.
   ///
   /// In en, this message translates to:
@@ -2049,6 +2205,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove {contactName} from contacts?'**
   String contacts_removeConfirm(String contactName);
+
+  /// No description provided for @contacts_removeFromContacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from contacts'**
+  String get contacts_removeFromContacts;
+
+  /// No description provided for @contacts_removeFromContactsConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'{contactName} will move to Discovered contacts. Chat history will be deleted.'**
+  String contacts_removeFromContactsConfirm(String contactName);
+
+  /// No description provided for @contacts_keepChatHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep chat history'**
+  String get contacts_keepChatHistory;
+
+  /// No description provided for @contacts_remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get contacts_remove;
+
+  /// No description provided for @contacts_discoveredNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Discovered nearby ({count})'**
+  String contacts_discoveredNearby(int count);
+
+  /// No description provided for @contacts_noContactsDiscoveredHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Nodes your radio hears but hasn\'t added yet are listed in Discovered contacts'**
+  String get contacts_noContactsDiscoveredHint;
 
   /// No description provided for @contacts_manageRepeater.
   ///
@@ -2314,6 +2506,30 @@ abstract class AppLocalizations {
   /// **'Private'**
   String get channels_private;
 
+  /// No description provided for @channels_hashtag.
+  ///
+  /// In en, this message translates to:
+  /// **'Hashtag'**
+  String get channels_hashtag;
+
+  /// No description provided for @channels_addSectionJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join existing'**
+  String get channels_addSectionJoin;
+
+  /// No description provided for @channels_addSectionCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new'**
+  String get channels_addSectionCreate;
+
+  /// No description provided for @channels_dragToReorder.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to reorder'**
+  String get channels_dragToReorder;
+
   /// No description provided for @channels_editChannel.
   ///
   /// In en, this message translates to:
@@ -2536,6 +2752,12 @@ abstract class AppLocalizations {
   /// **'Public channel added'**
   String get channels_publicChannelAdded;
 
+  /// No description provided for @channels_noFreeSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'All channel slots are in use'**
+  String get channels_noFreeSlots;
+
   /// No description provided for @channels_sortBy.
   ///
   /// In en, this message translates to:
@@ -2662,6 +2884,30 @@ abstract class AppLocalizations {
   /// **'Clear region'**
   String get channels_clearRegion;
 
+  /// No description provided for @channels_regionDefaultSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'(default)'**
+  String get channels_regionDefaultSuffix;
+
+  /// No description provided for @channels_regionSelectExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Flood messages on this channel will only be forwarded by repeaters in the selected region.'**
+  String get channels_regionSelectExplanation;
+
+  /// No description provided for @channels_regionEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No regions yet.'**
+  String get channels_regionEmpty;
+
+  /// No description provided for @channels_manageRegions.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage regions'**
+  String get channels_manageRegions;
+
   /// No description provided for @chat_noMessages.
   ///
   /// In en, this message translates to:
@@ -2758,10 +3004,22 @@ abstract class AppLocalizations {
   /// **'Send GIF'**
   String get chat_sendGif;
 
+  /// No description provided for @chat_removeGif.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove GIF'**
+  String get chat_removeGif;
+
+  /// No description provided for @chat_cancelReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel reply'**
+  String get chat_cancelReply;
+
   /// No description provided for @chat_sendImageLora.
   ///
   /// In en, this message translates to:
-  /// **'Send image via meshcore'**
+  /// **'Send low-res image over radio'**
   String get chat_sendImageLora;
 
   /// Shown when picking or reading a photo to send fails
@@ -3292,6 +3550,12 @@ abstract class AppLocalizations {
   /// **'Path'**
   String get chat_path;
 
+  /// No description provided for @chat_viewPathOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View path on map'**
+  String get chat_viewPathOnMap;
+
   /// No description provided for @chat_publicKey.
   ///
   /// In en, this message translates to:
@@ -3357,6 +3621,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New messages'**
   String get chat_newMessages;
+
+  /// No description provided for @chat_today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get chat_today;
+
+  /// No description provided for @chat_yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get chat_yesterday;
 
   /// No description provided for @chat_openLink.
   ///
@@ -3442,6 +3718,12 @@ abstract class AppLocalizations {
   /// **'Center on node'**
   String get map_centerOnNode;
 
+  /// No description provided for @map_centerOnMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Center on my location'**
+  String get map_centerOnMe;
+
   /// No description provided for @map_details.
   ///
   /// In en, this message translates to:
@@ -3477,6 +3759,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No nodes with location data'**
   String get map_noNodesWithLocation;
+
+  /// No description provided for @map_noNodesLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No nodes with a recent location. Widen the time filter, or set your own location in Settings.'**
+  String get map_noNodesLocationHint;
 
   /// No description provided for @map_nodesNeedGps.
   ///
@@ -3742,6 +4030,24 @@ abstract class AppLocalizations {
   /// **'Show guessed node locations'**
   String get map_showGuessedLocations;
 
+  /// No description provided for @map_clusterNodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Group nearby nodes'**
+  String get map_clusterNodes;
+
+  /// No description provided for @map_groupChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get map_groupChip;
+
+  /// No description provided for @map_clusterNodesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'When zoomed out, show nearby nodes as one numbered circle'**
+  String get map_clusterNodesSubtitle;
+
   /// No description provided for @map_showDiscoveryContacts.
   ///
   /// In en, this message translates to:
@@ -3783,6 +4089,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage Repeater'**
   String get map_manageRepeater;
+
+  /// No description provided for @map_manageServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Server'**
+  String get map_manageServer;
 
   /// No description provided for @map_tapToAdd.
   ///
@@ -4113,6 +4425,18 @@ abstract class AppLocalizations {
   /// **'Enter password'**
   String get login_enterPassword;
 
+  /// No description provided for @login_showPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get login_showPassword;
+
+  /// No description provided for @login_hidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get login_hidePassword;
+
   /// No description provided for @login_savePassword.
   ///
   /// In en, this message translates to:
@@ -4128,7 +4452,7 @@ abstract class AppLocalizations {
   /// No description provided for @login_repeaterDescription.
   ///
   /// In en, this message translates to:
-  /// **'Enter the repeater password for guest or admin access.'**
+  /// **'The admin password unlocks settings and the CLI. A guest password (or blank) shows status only.'**
   String get login_repeaterDescription;
 
   /// No description provided for @login_roomDescription.
@@ -4136,6 +4460,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter the room password for guest or admin access.'**
   String get login_roomDescription;
+
+  /// No description provided for @login_advanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get login_advanced;
 
   /// No description provided for @login_routing.
   ///
@@ -4203,6 +4533,12 @@ abstract class AppLocalizations {
   /// **'Clear'**
   String get common_clear;
 
+  /// No description provided for @common_clearSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get common_clearSearch;
+
   /// No description provided for @path_currentPathLabel.
   ///
   /// In en, this message translates to:
@@ -4250,6 +4586,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Guest Tools'**
   String get repeater_guestTools;
+
+  /// No description provided for @repeater_roleAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'ADMIN'**
+  String get repeater_roleAdmin;
+
+  /// No description provided for @repeater_roleGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'GUEST'**
+  String get repeater_roleGuest;
 
   /// No description provided for @repeater_status.
   ///
@@ -4925,13 +5273,13 @@ abstract class AppLocalizations {
   /// No description provided for @repeater_pathHashMode.
   ///
   /// In en, this message translates to:
-  /// **'Path hash mode'**
+  /// **'Node ID size in paths'**
   String get repeater_pathHashMode;
 
   /// No description provided for @repeater_pathHashModeHelper.
   ///
   /// In en, this message translates to:
-  /// **'Bytes used to encode this repeater\'s ID in flood path/loop-detect tags. 0=1 byte (256 IDs, up to 64 hops), 1=2 bytes (65K IDs, up to 32 hops), 2=3 bytes (16M IDs, up to 21 hops). Firmware before v1.14 always used 1-byte paths; v1.14 and newer can be configured for 2- or 3-byte paths.'**
+  /// **'Size of this repeater\'s ID in the paths of adverts it sends: 1 byte (256 IDs, up to 64 hops), 2 bytes (65K IDs, up to 32 hops), 3 bytes (16M IDs, up to 21 hops). Does not affect forwarding; v1.14+ repeaters forward all sizes, but older firmware drops packets with 2- or 3-byte IDs.'**
   String get repeater_pathHashModeHelper;
 
   /// No description provided for @repeater_keySettings.
@@ -5149,6 +5497,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Refresh Privacy Mode'**
   String get repeater_refreshPrivacyMode;
+
+  /// No description provided for @repeater_refreshAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh all'**
+  String get repeater_refreshAll;
+
+  /// No description provided for @repeater_settingsNotLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings haven\'t been loaded from this repeater yet.'**
+  String get repeater_settingsNotLoaded;
+
+  /// No description provided for @repeater_settingsLoadIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Some settings could not be loaded. Use the refresh buttons to retry.'**
+  String get repeater_settingsLoadIncomplete;
 
   /// No description provided for @repeater_refreshed.
   ///
@@ -5624,6 +5990,120 @@ abstract class AppLocalizations {
   /// **'NOTE: for the various \"set ...\" commands, there is also a \"get ...\" command.'**
   String get repeater_commandsListNote;
 
+  /// No description provided for @repeater_frequencyRangeHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'150-2500 MHz'**
+  String get repeater_frequencyRangeHelper;
+
+  /// No description provided for @repeater_frequencyInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid frequency (150-2500 MHz)'**
+  String get repeater_frequencyInvalid;
+
+  /// No description provided for @repeater_txPowerRangeHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'-9 to 30 dBm'**
+  String get repeater_txPowerRangeHelper;
+
+  /// No description provided for @repeater_recvErrors.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive Errors'**
+  String get repeater_recvErrors;
+
+  /// No description provided for @room_postsStored.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get room_postsStored;
+
+  /// No description provided for @room_postsPushed.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts Pushed'**
+  String get room_postsPushed;
+
+  /// No description provided for @repeater_cliRegionLoadActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Region load mode: send one region name per line, indented with spaces under its parent (add F after the name to allow flood). Lines get no reply. Send an empty line to finish, then \"region save\" to keep the result.'**
+  String get repeater_cliRegionLoadActive;
+
+  /// No description provided for @repeater_cliRegionLoadHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Region line, or empty to finish'**
+  String get repeater_cliRegionLoadHint;
+
+  /// No description provided for @repeater_cliRegionLoadEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'(end of region load)'**
+  String get repeater_cliRegionLoadEnd;
+
+  /// No description provided for @repeater_cliHelpRegionDef.
+  ///
+  /// In en, this message translates to:
+  /// **'Defines a chain of regions in one command: each name is added under the previous one; \"name,parent\" adds the name, then continues under the given parent. Replies with the region list.'**
+  String get repeater_cliHelpRegionDef;
+
+  /// No description provided for @repeater_cliHelpSetFloodMaxUnscoped.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets the maximum hop count for forwarding flood packets that have no region scope (0-64).'**
+  String get repeater_cliHelpSetFloodMaxUnscoped;
+
+  /// No description provided for @repeater_cliHelpSetFloodMaxAdvert.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets the maximum hop count for forwarding flood adverts (0-64).'**
+  String get repeater_cliHelpSetFloodMaxAdvert;
+
+  /// No description provided for @repeater_cliHelpGetFloodMaxUnscoped.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows the maximum hop count for unscoped flood packets.'**
+  String get repeater_cliHelpGetFloodMaxUnscoped;
+
+  /// No description provided for @repeater_cliHelpGetFloodMaxAdvert.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows the maximum hop count for flood adverts.'**
+  String get repeater_cliHelpGetFloodMaxAdvert;
+
+  /// No description provided for @repeater_cliHelpSetRadioFemRxGain.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggles the LoRa front-end module\'s RX gain (LNA). Boards without one reply \"Error: unsupported\".'**
+  String get repeater_cliHelpSetRadioFemRxGain;
+
+  /// No description provided for @repeater_cliHelpSetRadioFemTxGain.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggles the LoRa front-end module\'s TX gain (PA). Boards without one reply \"Error: unsupported\".'**
+  String get repeater_cliHelpSetRadioFemTxGain;
+
+  /// No description provided for @repeater_cliHelpGetRadioFemRxGain.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows whether the LoRa front-end module\'s RX gain is on.'**
+  String get repeater_cliHelpGetRadioFemRxGain;
+
+  /// No description provided for @repeater_cliHelpGetRadioFemTxGain.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows whether the LoRa front-end module\'s TX gain is on.'**
+  String get repeater_cliHelpGetRadioFemTxGain;
+
+  /// No description provided for @repeater_bridgeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only available on firmware built with a bridge (RS232 or ESP-NOW).'**
+  String get repeater_bridgeNote;
+
   /// No description provided for @repeater_general.
   ///
   /// In en, this message translates to:
@@ -5783,7 +6263,7 @@ abstract class AppLocalizations {
   /// No description provided for @repeater_cliHelpSetPathHashMode.
   ///
   /// In en, this message translates to:
-  /// **'Sets the path-hash mode. 0 = legacy, 1 = standard, 2 = strict. Affects how routing paths are matched.'**
+  /// **'Sets the node ID size used in this repeater\'s adverts: 0 = 1 byte (up to 64 hops), 1 = 2 bytes (up to 32 hops), 2 = 3 bytes (up to 21 hops). 3 is reserved. Does not affect which sizes are forwarded. Requires firmware v1.14+.'**
   String get repeater_cliHelpSetPathHashMode;
 
   /// No description provided for @repeater_cliHelpSetLoopDetect.
@@ -5957,7 +6437,7 @@ abstract class AppLocalizations {
   /// No description provided for @repeater_cliHelpGetPathHashMode.
   ///
   /// In en, this message translates to:
-  /// **'Shows the path-hash mode (0/1/2).'**
+  /// **'Shows the node ID size mode used in adverts (0 = 1 byte, 1 = 2 bytes, 2 = 3 bytes).'**
   String get repeater_cliHelpGetPathHashMode;
 
   /// No description provided for @repeater_cliHelpGetLoopDetect.
@@ -7372,6 +7852,36 @@ abstract class AppLocalizations {
   /// **'Add Contact from Clipboard'**
   String get contacts_addContactFromClipboard;
 
+  /// No description provided for @contacts_scanQrCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR Code'**
+  String get contacts_scanQrCode;
+
+  /// No description provided for @contacts_scanQrInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at a MeshCore contact QR code'**
+  String get contacts_scanQrInstructions;
+
+  /// No description provided for @contacts_qrFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR from Gallery'**
+  String get contacts_qrFromGallery;
+
+  /// No description provided for @contacts_noQrCodeFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No QR code found in the selected image.'**
+  String get contacts_noQrCodeFound;
+
+  /// No description provided for @contacts_qrGalleryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the gallery.'**
+  String get contacts_qrGalleryFailed;
+
   /// No description provided for @contacts_ShareContact.
   ///
   /// In en, this message translates to:
@@ -7443,6 +7953,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Received new message'**
   String get notification_receivedNewMessage;
+
+  /// No description provided for @notification_actionReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get notification_actionReply;
+
+  /// No description provided for @notification_actionMarkRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as read'**
+  String get notification_actionMarkRead;
+
+  /// No description provided for @notification_actionMuteChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mute channel'**
+  String get notification_actionMuteChannel;
+
+  /// No description provided for @notification_replyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get notification_replyHint;
+
+  /// No description provided for @notification_you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get notification_you;
+
+  /// No description provided for @notification_replyFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply not sent'**
+  String get notification_replyFailedTitle;
+
+  /// No description provided for @notification_replyNotConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected to a radio. Reconnect in MeshCore Open and send your reply again.'**
+  String get notification_replyNotConnected;
+
+  /// No description provided for @notification_replyTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reply is too long to send from a notification. Send it from MeshCore Open instead.'**
+  String get notification_replyTooLong;
+
+  /// No description provided for @notification_replyUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This conversation is no longer on the connected radio.'**
+  String get notification_replyUnavailable;
+
+  /// No description provided for @notification_replySendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reply may not have been sent. Check in MeshCore Open and try again.'**
+  String get notification_replySendFailed;
+
+  /// No description provided for @notification_replyAppNotRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'MeshCore Open isn\'t running. Open it and send your reply again.'**
+  String get notification_replyAppNotRunning;
 
   /// No description provided for @settings_gpxExportRepeaters.
   ///
@@ -7545,6 +8121,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last seen'**
   String get snrIndicator_lastSeen;
+
+  /// No description provided for @snrIndicator_nearByRepeatersDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeaters your radio heard directly, most recently heard first.'**
+  String get snrIndicator_nearByRepeatersDescription;
 
   /// No description provided for @contactsSettings_title.
   ///
@@ -7737,6 +8319,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Radio stats'**
   String get radioStats_screenTitle;
+
+  /// No description provided for @radioStats_sectionSignal.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal'**
+  String get radioStats_sectionSignal;
+
+  /// No description provided for @radioStats_sectionAirtime.
+  ///
+  /// In en, this message translates to:
+  /// **'Airtime'**
+  String get radioStats_sectionAirtime;
 
   /// No description provided for @radioStats_notConnected.
   ///
@@ -8368,6 +8962,36 @@ abstract class AppLocalizations {
   /// **'Resized to 512 × 512 · aspect ratio not preserved'**
   String get imageSend_cropNote;
 
+  /// No description provided for @imageSend_lossyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Compressed to about {bytes} bytes. The receiver\'s model reconstructs it, so details will differ.'**
+  String imageSend_lossyNote(int bytes);
+
+  /// No description provided for @imageSend_viewOriginal.
+  ///
+  /// In en, this message translates to:
+  /// **'Original'**
+  String get imageSend_viewOriginal;
+
+  /// No description provided for @imageSend_viewReconstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'What recipients see'**
+  String get imageSend_viewReconstruction;
+
+  /// No description provided for @imageSend_reconstructionUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This device can\'t preview the reconstruction.'**
+  String get imageSend_reconstructionUnavailable;
+
+  /// No description provided for @imageSend_modelNotDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'The image model isn\'t downloaded yet. Download it in Settings to send images.'**
+  String get imageSend_modelNotDownloaded;
+
   /// No description provided for @imageSend_originalSize.
   ///
   /// In en, this message translates to:
@@ -8626,6 +9250,42 @@ abstract class AppLocalizations {
   /// **'Tap to process'**
   String get receivedImage_tapToProcess;
 
+  /// No description provided for @receivedImage_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save image'**
+  String get receivedImage_save;
+
+  /// No description provided for @receivedImage_shareCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-reconstructed from {bytes} bytes; fine detail is generated, not transmitted.'**
+  String receivedImage_shareCaption(int bytes);
+
+  /// No description provided for @receivedImage_packetInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Packet info'**
+  String get receivedImage_packetInfo;
+
+  /// No description provided for @receivedImage_parityRecovered.
+  ///
+  /// In en, this message translates to:
+  /// **'One packet was rebuilt from the recovery packet.'**
+  String get receivedImage_parityRecovered;
+
+  /// No description provided for @receivedImage_decodeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconstructed in {ms} ms'**
+  String receivedImage_decodeTime(int ms);
+
+  /// No description provided for @receivedImage_saveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save the image'**
+  String get receivedImage_saveFailed;
+
   /// No description provided for @receivedImage_awaiting.
   ///
   /// In en, this message translates to:
@@ -8643,6 +9303,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes} m {seconds} s'**
   String imageSend_minutesSecondsValue(String minutes, String seconds);
+
+  /// Shown under the DM composer when the message is too long for the firmware's later retry attempts
+  ///
+  /// In en, this message translates to:
+  /// **'Over 158 bytes: sent at most {count} times'**
+  String chat_longMessageRetryNote(int count);
+
+  /// Title of the review mode confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enter review mode?'**
+  String get reviewMode_dialogTitle;
+
+  /// Body of the review mode confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Review mode connects to a simulated radio with sample contacts, channels and messages. No real radio is needed.'**
+  String get reviewMode_dialogBody;
+
+  /// Confirm button of the review mode dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enter'**
+  String get reviewMode_confirm;
+
+  /// Cancel button of the review mode dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get reviewMode_cancel;
+
+  /// Label of the banner shown while review mode is active
+  ///
+  /// In en, this message translates to:
+  /// **'Review mode — simulated data'**
+  String get reviewMode_banner;
+
+  /// Banner action that makes the simulated radio deliver a message
+  ///
+  /// In en, this message translates to:
+  /// **'Send test message'**
+  String get reviewMode_sendTest;
+
+  /// Snackbar shown after requesting a test message
+  ///
+  /// In en, this message translates to:
+  /// **'A test message will arrive shortly.'**
+  String get reviewMode_testSent;
+
+  /// Banner action that leaves review mode
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get reviewMode_exit;
+
+  /// Snackbar shown when review mode fails to connect
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start review mode: {error}'**
+  String reviewMode_connectFailed(String error);
 }
 
 class _AppLocalizationsDelegate

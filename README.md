@@ -4,23 +4,35 @@ Open-source Flutter client for MeshCore LoRa mesh networking devices.
 
 ## Overview
 
-MeshCore Open is a cross-platform mobile application for communicating with MeshCore LoRa mesh network devices via Bluetooth Low Energy (BLE). The app enables long-range, off-grid communication through peer-to-peer messaging, public channels, and mesh networking capabilities.
+MeshCore Open is a cross-platform application for communicating with MeshCore LoRa mesh radios over Bluetooth Low Energy (BLE), USB serial, or TCP. The app enables long-range, off-grid communication through peer-to-peer messaging, public channels, and mesh networking capabilities.
 
 **Website:** [meshcoreopen.org](https://meshcoreopen.org/)
 
-<a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/zjs81/meshcore-open">
+<a href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/zjs81/meshcore-open">
         <img src="assets/badges/badge_obtainium.png" height="80" align="center" alt="Get it on Obtainium"/>
 </a>
+
+The [web client](https://meshcoreopen.org/install/web/) runs in Chrome (and Chromium browsers that identify as Chrome, such as Edge or Brave) and connects over USB via Web Serial. BLE and TCP are not available in the browser. Firefox and Safari do not support Web Serial.
+
+## Install and first use
+
+Use the [installation website](https://meshcoreopen.org/) for available downloads, Obtainium, and the web client. Building from source is covered below.
+
+1. Use a MeshCore radio running companion firmware with the transport you intend to use.
+2. Open the app, scan for BLE devices or select USB/TCP, and connect.
+3. After synchronization, open a channel to broadcast or open Contacts to send a direct message. Peers need compatible radio settings; channels need the same PSK.
+
+See the [user documentation](documentation/README.md), [connection guide](documentation/scanner-and-connection.md), and [troubleshooting](documentation/troubleshooting.md).
 
 ## Screenshots
 
 <table>
   <tr>
-    <td><img src="docs/screenshots/contacts.jpg" width="200"/><br/><p align="center"><b>Contacts</b></p></td>
-    <td><img src="docs/screenshots/chat1.jpg" width="200"/><br/><p align="center"><b>Chat</b></p></td>
-    <td><img src="docs/screenshots/chat2.jpg" width="200"/><br/><p align="center"><b>Reactions</b></p></td>
-    <td><img src="docs/screenshots/map.jpg" width="200"/><br/><p align="center"><b>Map</b></p></td>
-    <td><img src="docs/screenshots/channels.jpg" width="200"/><br/><p align="center"><b>Channels</b></p></td>
+    <td><img src="docs/screenshots/contacts.jpg" alt="Contact list" width="200"/><br/><p align="center"><b>Contacts</b></p></td>
+    <td><img src="docs/screenshots/chat1.jpg" alt="Direct message conversation" width="200"/><br/><p align="center"><b>Chat</b></p></td>
+    <td><img src="docs/screenshots/chat2.jpg" alt="Message reactions" width="200"/><br/><p align="center"><b>Reactions</b></p></td>
+    <td><img src="docs/screenshots/map.jpg" alt="Mesh node map" width="200"/><br/><p align="center"><b>Map</b></p></td>
+    <td><img src="docs/screenshots/channels.jpg" alt="Channel list" width="200"/><br/><p align="center"><b>Channels</b></p></td>
   </tr>
 </table>
 
@@ -29,11 +41,16 @@ MeshCore Open is a cross-platform mobile application for communicating with Mesh
 ### Core Functionality
 
 - **Direct Messaging**: Private encrypted conversations with individual contacts
-- **Public Channels**: Broadcast messages to channel subscribers on the mesh network
+- **Channels**: Public, hashtag, private, and community channels
+- **Mesh Images**: Send compressed images in channel chat with optional recovery packets ([guide](documentation/image-messages.md))
+- **Regions**: Scope channel floods and reply using a message’s known region ([guide](documentation/regions.md))
+- **Translation**: Optional on-device incoming and pre-send translation
 - **Contact Management**: Organize contacts, track last seen times, and manage conversation history
 - **Contact Groups**: Create custom groups to organize your mesh network contacts
 - **Message Reactions**: React to messages with emoji responses
 - **Message Replies**: Thread conversations with inline reply functionality
+- **Android Auto & Watches**: Hear messages and reply by voice in Android Auto, or reply from the notification shade and Wear OS/Galaxy watches ([guide](documentation/notifications.md#android-auto))
+- **Channel Muting**: Mute a channel from its chat screen, the channel list, or its notification
 
 ### Mesh Network
 
@@ -48,7 +65,7 @@ MeshCore Open is a cross-platform mobile application for communicating with Mesh
 - **Live Map View**: Real-time visualization of mesh network nodes on an interactive map
 - **Node Filtering**: Filter by node type (chat, repeater, sensor) and time range
 - **Location Sharing**: Share GPS coordinates and custom markers with contacts
-- **Offline Maps**: Download map tiles for offline use in remote areas (with [StadiaMaps](https://stadiamaps.com/pricing/) Free Subscription API-Key)
+- **Offline Maps**: Download map tiles for offline use in remote areas using a configured Stadia Maps source and API key; see [map setup](documentation/map-and-location.md)
 - **MGRS Coordinates**: Support for Military Grid Reference System coordinate format
 
 ### Device Management
@@ -56,7 +73,6 @@ MeshCore Open is a cross-platform mobile application for communicating with Mesh
 - **BLE, USB, TCP Connection**: Scan and connect to MeshCore devices via Bluetooth, USB or TCP
 - **Device Settings**: Configure radio parameters, power settings, and network options
 - **Battery Monitoring**: Real-time battery status with chemistry-specific voltage curves
-- **Firmware Updates**: Over-the-air firmware updates via BLE (coming soon)
 
 ### Repeater Hub
 
@@ -69,24 +85,27 @@ MeshCore Open is a cross-platform mobile application for communicating with Mesh
 
 ### Architecture
 
-- **Framework**: Flutter 3.38.5 / Dart 3.10.4
+- **Framework**: Flutter (web deployment pins 3.41.2); Dart SDK constraint `^3.9.2`
 - **State Management**: Provider pattern with ChangeNotifier
 - **BLE Protocol**: Nordic UART Service (NUS) over Bluetooth Low Energy
-- **Storage**: Local SQLite database for messages and contact data
+- **Storage**: JSON in SharedPreferences for messages and contacts; files for models, images, and map caches
 - **Encryption**: End-to-end encryption for private messages using the MeshCore protocol
 
 ### Platform Support
 
-| Feature            | Android (API 21+) | iOS (12+) | Linux | Windows | macOS |                Web                |
+| Feature            | Android (ARM64) | iOS (16.4+) | Linux | Windows | macOS |                Web                |
 |--------------------|:-----------------:|:---------:|:-----:|:-------:|:-----:|:---------------------------------:|
-| BLE companion      | ✅                | ✅        | ✅   | ✅      | ✅    | ✅                                |
-| USB companion      | ✅                | 🚧        | ✅   | ✅      | ✅    | ✅                                |
-| TCP companion      | ✅                | 🚧        | ✅   | ✅      | ✅    | ❌<br>(requires websocket bridge) |
+| BLE companion      | ✅                | ✅        | ✅   | ✅      | ✅    | ❌                                |
+| USB companion      | ✅                | ❌        | ✅   | ✅      | ✅    | ✅<br>(Web Serial, Chrome)        |
+| TCP companion      | ✅                | ✅        | ✅   | ✅      | ✅    | ❌                                |
 | Core Functionality | ✅                | ✅        | ✅   | ✅      | ✅    | ✅                                |
 | Mesh Network       | ✅                | ✅        | ✅   | ✅      | ✅    | ✅                                |
 | Map & Location     | ✅                | ✅        | ✅   | ✅      | ✅    | ✅                                |
 | Device Management  | ✅                | ✅        | ✅   | ✅      | ✅    | ✅                                |
 | Repeater Hub       | ✅                | ✅        | ✅   | ✅      | ✅    | ✅                                |
+| Notification replies | ✅<br>(incl. Android Auto, watches) | ❌ | ❌ | ❌ | ❌ | ❌                              |
+
+The matrix describes implemented functionality, not a guarantee that every feature has been tested on every device. Web device connections use Web Serial and require Chrome and a secure origin. Image inference and translation require native runtimes and are unavailable on web. Android APKs currently include only `arm64-v8a`; the minimum Android API follows the Flutter SDK used to build.
 
 ### Dependencies
 
@@ -106,11 +125,11 @@ MeshCore Open is a cross-platform mobile application for communicating with Mesh
 
 ### Prerequisites
 
-- Flutter SDK 3.38.5 or later
+- Flutter SDK; web deployment currently pins 3.41.2. The Dart SDK constraint is `^3.9.2` (see `pubspec.yaml`).
 - Android Studio / Xcode (for mobile development)
 - A MeshCore-compatible LoRa device
 
-### Installation
+### Build from source
 
 1. **Clone the repository**
 
@@ -130,6 +149,16 @@ MeshCore Open is a cross-platform mobile application for communicating with Mesh
    ```bash
    flutter run
    ```
+
+### Web (self-host)
+
+Use a Chromium browser. Device APIs are origin-gated, so serve the build over HTTPS.
+
+```bash
+flutter build web --release
+```
+
+Then serve `build/web/` from your own host. See [install/web](https://meshcoreopen.org/install/web/) for browser support and caveats.
 
 ### Building for Release
 
@@ -153,7 +182,7 @@ lib/
 ├── connector/
 │   ├── meshcore_connector.dart  # BLE communication & state management
 │   ├── meshcore_protocol.dart   # Protocol definitions & frame parsing
-│   └── meshcore_uuids.dart      # Device names and IDs (add prefixes here!)
+│   └── meshcore_uuids.dart      # NUS UUIDs; reference name prefixes (not filters)
 ├── screens/
 │   ├── scanner_screen.dart      # Device scanning (home screen)
 │   ├── contacts_screen.dart     # Contact list
@@ -167,13 +196,13 @@ lib/
 │   ├── message.dart             # Message data structure
 │   └── channel.dart             # Channel definitions
 ├── services/
-│   ├── notification_service.dart      # Push notifications
+│   ├── notification_service.dart      # Local OS notifications
 │   ├── message_retry_service.dart     # Automatic message retry
 │   ├── background_service.dart        # Background BLE connection
 │   └── map_tile_cache_service.dart    # Offline map storage
 └── storage/
     ├── message_store.dart       # Message persistence
-    ├── contact_store.dart       # Contact database
+    ├── contact_store.dart       # Contact persistence
     └── unread_store.dart        # Unread message tracking
 ```
 
@@ -187,53 +216,48 @@ lib/
 
 ### Device Discovery
 
-Devices are discovered by scanning for BLE advertisements with known MeshCore device name prefixes. These are currently:
-    - `MeshCore-`
-    - `Whisper-`
-    - `WisCore-`
-    - `HT-`
-    - `LowMesh_MC_`
-    - `NRF52`
-
-New device prefixes can be added in `lib/connector/meshcore_uuids.dart`.
-
+BLE scanning filters on the Nordic UART Service UUID, so devices with custom names can be found. Known name prefixes in `lib/connector/meshcore_uuids.dart` are reference values, not discovery filters.
 
 ### Message Format
 
-Messages are transmitted as binary frames using a custom protocol optimized for LoRa transmission. See `meshcore_protocol.dart` for frame structure definitions.
+Messages are transmitted as binary frames using a custom protocol optimized for LoRa transmission. See the [protocol reference](documentation/ble-protocol.md) for frame definitions.
 
 ## Configuration
 
 ### App Settings
 
 - **Theme**: System default, light, or dark mode
-- **Language**: Use one of 15 languages (English, Chinese, French, Spanish, Portuguese, German, Dutch, Polish, Swedish, Italian, Slovak, Slovene, Bulgarian, Russian, Ukrainian)
-- **Notifications**: Configurable for messages, channels, and node advertisements
-- **Battery Chemistry**: Support for NMC, LiFePO4, and LiPo battery types
+- **Language**: Use one of 18 languages (English, Chinese, French, Spanish, Portuguese, German, Dutch, Polish, Swedish, Italian, Slovak, Slovenian, Bulgarian, Russian, Ukrainian, Hungarian, Japanese, Korean)
+- **Notifications**: Configurable for messages, channels, and node advertisements; per-channel muting; reply, mark-as-read, and mute actions on Android notifications and watches (reply and mark-as-read in Android Auto)
+- **Battery Chemistry**: Support for NMC, LiFePO4, LiPo, and LiPo HV battery types
 - **Message Retry**: Automatic retry with configurable path clearing
 
 ### Device Settings
 
-- **Radio Power**: Transmit power adjustment (10-30 dBm)
+- **Radio Power**: Transmit power adjustment within the connected device’s supported range
 - **Frequency**: LoRa frequency configuration
 - **Bandwidth**: Channel bandwidth selection
 - **Spreading Factor**: Range vs. speed trade-off
-- **Network ID**: Mesh network identifier
+- **Flood Scope**: Region selection for channel floods
 
 ## Contributing
 
-This is an open-source project. Contributions are welcome!
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before starting a contribution. Discuss changes in an issue first and base PRs on `dev`.
 
-## SWHID and Archive badge
-[![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/zjs81/meshcore-open/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/zjs81/meshcore-open)
-[![SWH](https://archive.softwareheritage.org/badge/swh:1:dir:d37a80b06359730864150ad2aeadd46cce9abd55/)](https://archive.softwareheritage.org/swh:1:dir:d37a80b06359730864150ad2aeadd46cce9abd55;origin=https://github.com/zjs81/meshcore-open;visit=swh:1:snp:47656c4b55ab40a689ff8d2f045196725f05096b;anchor=swh:1:rev:0fe250230905fdd05dbedc0f546736990beacf53)
+Run the checks used by CI:
+
+```bash
+dart format --output=none --set-exit-if-changed .
+flutter analyze --fatal-infos --fatal-warnings
+flutter test
+```
 
 ### Development Guidelines
 
 - Follow the Flutter style guide
 - Use Material 3 design components
 - Write clear commit messages
-- Test on both Android and iOS before submitting PRs
+- Test on the platforms affected by your change before submitting PRs
 
 ### Code Style
 
@@ -261,7 +285,16 @@ If you find MeshCore Open useful and would like to support development, you can 
 
 Your support helps maintain and improve this open-source project!
 
+## License
+
+MeshCore Open is available under the [MIT License](LICENSE).
+
 ## Acknowledgments
 
 - Built with [Flutter](https://flutter.dev/)
 - Map tiles from [OpenStreetMap](https://www.openstreetmap.org/)
+
+## SWHID and Archive badge
+
+[![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/zjs81/meshcore-open/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/zjs81/meshcore-open)
+[![SWH](https://archive.softwareheritage.org/badge/swh:1:dir:d37a80b06359730864150ad2aeadd46cce9abd55/)](https://archive.softwareheritage.org/swh:1:dir:d37a80b06359730864150ad2aeadd46cce9abd55;origin=https://github.com/zjs81/meshcore-open;visit=swh:1:snp:47656c4b55ab40a689ff8d2f045196725f05096b;anchor=swh:1:rev:0fe250230905fdd05dbedc0f546736990beacf53)

@@ -25,6 +25,9 @@ class Channel {
 
   bool get isEmpty => name.isEmpty && psk.every((b) => b == 0);
 
+  /// Key used for per-channel notification muting.
+  String get muteKey => name.isEmpty ? 'Channel $index' : name;
+
   bool get isPublicChannel => pskHex == publicChannelPsk;
 
   bool get isHashtagChannel => name.startsWith('#');
@@ -107,7 +110,7 @@ class Channel {
   /// Normalize a hashtag name for consistent community PSK derivation.
   /// Strips leading #, converts to lowercase, trims whitespace.
   static String _normalizeCommunityHashtag(String hashtag) {
-    return hashtag.replaceFirst(RegExp(r'^#'), '').toLowerCase().trim();
+    return hashtag.trim().replaceFirst(RegExp(r'^#'), '').toLowerCase().trim();
   }
 
   static String formatPskHex(Uint8List psk) {

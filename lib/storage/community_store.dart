@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import '../models/community.dart';
 import '../utils/app_logger.dart';
+import 'legacy_key_migration.dart';
 import 'prefs_manager.dart';
 
 /// Persists communities to local storage using SharedPreferences.
@@ -26,7 +27,8 @@ class CommunityStore {
     }
     final prefs = PrefsManager.instance;
     String? jsonString = prefs.getString(keyFor);
-    if (jsonString == null || jsonString.isEmpty) {
+    if ((jsonString == null || jsonString.isEmpty) &&
+        canMigrateLegacyKeys(publicKeyHex)) {
       // Attempt migration from legacy unscoped key on first load
       final legacyJsonString = prefs.getString(_keyPrefix);
       prefs.remove(_keyPrefix);
@@ -45,15 +47,22 @@ class CommunityStore {
       return [];
     }
 
+    final List<dynamic> jsonList;
     try {
-      final jsonList = jsonDecode(jsonString) as List<dynamic>;
-      return jsonList
-          .map((json) => Community.fromJson(json as Map<String, dynamic>))
-          .toList();
+      jsonList = jsonDecode(jsonString) as List<dynamic>;
     } catch (e) {
-      // If JSON is corrupted, return empty list
+      appLogger.warn('Stored communities are unreadable: $e');
       return [];
     }
+    final communities = <Community>[];
+    for (final json in jsonList) {
+      try {
+        communities.add(Community.fromJson(json as Map<String, dynamic>));
+      } catch (e) {
+        appLogger.warn('Skipping malformed stored community: $e');
+      }
+    }
+    return communities;
   }
 
   /// Save all communities to storage
