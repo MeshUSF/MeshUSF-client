@@ -229,7 +229,7 @@ class AppSettings {
     this.tcpServerAddress = '',
     this.tcpServerPort = 0,
     this.jumpToOldestUnread = false,
-    this.imageMessagesEnabled = false,
+    this.imageMessagesEnabled = true,
     this.imageProcessAutomatically = false,
     this.imageCodecEnabled = false,
     this.imageCodecSelectedModelId,
