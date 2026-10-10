@@ -4794,6 +4794,15 @@ class AppLocalizationsPt extends AppLocalizations {
       'Quando a lista de contatos estiver cheia, o contato mais antigo não favoritado será substituído.';
 
   @override
+  String get contactsSettings_evictDiscoveredContactsTitle =>
+      'Remover contatos descobertos';
+
+  @override
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'Quando ativado, o aplicativo remove os contatos descobertos mais antigos assim que a lista de descobertos atingir o limite de $limit entradas.';
+  }
+
+  @override
   String get discoveredContacts_Title => 'Contatos Descobertos';
 
   @override
@@ -5478,5 +5487,35 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String chat_longMessageRetryNote(int count) {
     return 'Mais de 158 bytes: enviado no máximo $count vezes';
+  }
+
+  @override
+  String get reviewMode_dialogTitle => 'Entrar no modo de revisão?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'O modo de revisão conecta-se a um rádio simulado com contatos, canais e mensagens de exemplo. Não é necessário um rádio real.';
+
+  @override
+  String get reviewMode_confirm => 'Entrar';
+
+  @override
+  String get reviewMode_cancel => 'Cancelar';
+
+  @override
+  String get reviewMode_banner => 'Modo de revisão — dados simulados';
+
+  @override
+  String get reviewMode_sendTest => 'Enviar mensagem de teste';
+
+  @override
+  String get reviewMode_testSent => 'Uma mensagem de teste chegará em breve.';
+
+  @override
+  String get reviewMode_exit => 'Sair';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Não foi possível iniciar o modo de revisão: $error';
   }
 }

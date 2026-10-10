@@ -4805,6 +4805,15 @@ class AppLocalizationsUk extends AppLocalizations {
       'Коли список контактів заповнений, найстарший контакт без позначки улюбленого буде замінений.';
 
   @override
+  String get contactsSettings_evictDiscoveredContactsTitle =>
+      'Видаляти виявлені контакти';
+
+  @override
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'Якщо ввімкнено, застосунок видаляє найстаріші виявлені контакти, коли список виявлених контактів досягає ліміту в $limit записів.';
+  }
+
+  @override
   String get discoveredContacts_Title => 'Виявлені контакти';
 
   @override
@@ -5499,5 +5508,35 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String chat_longMessageRetryNote(int count) {
     return 'Понад 158 байтів: надсилається не більше $count разів';
+  }
+
+  @override
+  String get reviewMode_dialogTitle => 'Увійти в режим перевірки?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Режим перевірки підключається до імітованого радіо із прикладами контактів, каналів і повідомлень. Справжнє радіо не потрібне.';
+
+  @override
+  String get reviewMode_confirm => 'Увійти';
+
+  @override
+  String get reviewMode_cancel => 'Скасувати';
+
+  @override
+  String get reviewMode_banner => 'Режим перевірки — імітовані дані';
+
+  @override
+  String get reviewMode_sendTest => 'Тестове повідомлення';
+
+  @override
+  String get reviewMode_testSent => 'Незабаром надійде тестове повідомлення.';
+
+  @override
+  String get reviewMode_exit => 'Вийти';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Не вдалося запустити режим перевірки: $error';
   }
 }

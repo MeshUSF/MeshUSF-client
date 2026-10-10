@@ -4799,6 +4799,15 @@ class AppLocalizationsIt extends AppLocalizations {
       'Quando l\'elenco dei contatti è pieno, il contatto più vecchio non tra i preferiti verrà sostituito.';
 
   @override
+  String get contactsSettings_evictDiscoveredContactsTitle =>
+      'Rimuovi i contatti scoperti';
+
+  @override
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'Se abilitato, l\'app rimuove i contatti scoperti più vecchi quando l\'elenco dei contatti scoperti raggiunge il limite di $limit voci.';
+  }
+
+  @override
   String get discoveredContacts_Title => 'Contatti scoperti';
 
   @override
@@ -5488,5 +5497,35 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String chat_longMessageRetryNote(int count) {
     return 'Oltre 158 byte: inviato al massimo $count volte';
+  }
+
+  @override
+  String get reviewMode_dialogTitle => 'Entrare nella modalità revisione?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'La modalità revisione si connette a una radio simulata con contatti, canali e messaggi di esempio. Non serve una radio reale.';
+
+  @override
+  String get reviewMode_confirm => 'Entra';
+
+  @override
+  String get reviewMode_cancel => 'Annulla';
+
+  @override
+  String get reviewMode_banner => 'Modalità revisione — dati simulati';
+
+  @override
+  String get reviewMode_sendTest => 'Invia messaggio di prova';
+
+  @override
+  String get reviewMode_testSent => 'A breve arriverà un messaggio di prova.';
+
+  @override
+  String get reviewMode_exit => 'Esci';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Impossibile avviare la modalità revisione: $error';
   }
 }
