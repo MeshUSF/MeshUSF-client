@@ -3205,11 +3205,32 @@ class MeshCoreConnector extends ChangeNotifier {
           withoutResponse: canWriteWithoutResponse,
         );
       }
-    } catch (_) {
+    } catch (error, stackTrace) {
       if (pendingAck != null) {
         _pendingGenericAckQueue.remove(pendingAck);
       }
-      rethrow;
+      // A BLE link can disappear without FlutterBluePlus updating
+      // connectionState before the next write. Treat a failed transport write
+      // as authoritative so the UI stops accepting sends immediately and the
+      // normal disconnect/reconnect cleanup runs.
+      if (isConnected) {
+        _appDebugLogService?.error(
+          'Transport write failed; marking radio disconnected: $error',
+          tag: 'Connection',
+        );
+        unawaited(() async {
+          try {
+            await disconnect(manual: false);
+          } catch (disconnectError) {
+            _appDebugLogService?.error(
+              'Disconnect after transport write failure failed: '
+              '$disconnectError',
+              tag: 'Connection',
+            );
+          }
+        }());
+      }
+      Error.throwWithStackTrace(error, stackTrace);
     }
 
     if (pendingAck?.completer != null) {

@@ -94,3 +94,5 @@ keystore.properties
 
 # Claude Code local working dir (worktrees, jobs, settings)
 .claude/
+# Widget Preview related
+.widget_preview/
