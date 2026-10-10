@@ -4806,6 +4806,15 @@ class AppLocalizationsRu extends AppLocalizations {
       'Когда список контактов заполнен, будет заменен самый старый контакт, который не находится в избранном.';
 
   @override
+  String get contactsSettings_evictDiscoveredContactsTitle =>
+      'Удалять обнаруженные контакты';
+
+  @override
+  String contactsSettings_evictDiscoveredContactsSubtitle(int limit) {
+    return 'Если включено, приложение удаляет самые старые обнаруженные контакты, когда список обнаруженных достигает лимита в $limit записей.';
+  }
+
+  @override
   String get discoveredContacts_Title => 'Обнаруженные контакты';
 
   @override
@@ -5496,5 +5505,35 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String chat_longMessageRetryNote(int count) {
     return 'Более 158 байт: отправляется не более $count раз';
+  }
+
+  @override
+  String get reviewMode_dialogTitle => 'Войти в режим проверки?';
+
+  @override
+  String get reviewMode_dialogBody =>
+      'Режим проверки подключается к имитируемому радио с примерами контактов, каналов и сообщений. Реальное радио не требуется.';
+
+  @override
+  String get reviewMode_confirm => 'Войти';
+
+  @override
+  String get reviewMode_cancel => 'Отмена';
+
+  @override
+  String get reviewMode_banner => 'Режим проверки — имитация данных';
+
+  @override
+  String get reviewMode_sendTest => 'Тестовое сообщение';
+
+  @override
+  String get reviewMode_testSent => 'Скоро придёт тестовое сообщение.';
+
+  @override
+  String get reviewMode_exit => 'Выйти';
+
+  @override
+  String reviewMode_connectFailed(String error) {
+    return 'Не удалось запустить режим проверки: $error';
   }
 }
