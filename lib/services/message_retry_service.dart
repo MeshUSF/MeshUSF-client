@@ -282,7 +282,8 @@ class MessageRetryService extends ChangeNotifier {
     for (final entry in _pendingMessages.entries) {
       final message = entry.value;
       if (message.status == MessageStatus.failed ||
-          message.status == MessageStatus.delivered) {
+          message.status == MessageStatus.delivered ||
+          message.deliveryUnknown) {
         continue;
       }
       final pendingMessage = message.copyWith(status: MessageStatus.pending);
@@ -327,7 +328,8 @@ class MessageRetryService extends ChangeNotifier {
     for (final entry in _pendingMessages.entries) {
       final message = entry.value;
       if (message.status == MessageStatus.failed ||
-          message.status == MessageStatus.delivered) {
+          message.status == MessageStatus.delivered ||
+          message.deliveryUnknown) {
         continue;
       }
       _attemptGenerations[entry.key] =
@@ -605,6 +607,7 @@ class MessageRetryService extends ChangeNotifier {
 
     final updatedMessage = message.copyWith(
       status: MessageStatus.sent,
+      deliveryUnknown: false,
       expectedAckHash: ackHash,
       estimatedTimeoutMs: actualTimeout,
       sentAt: DateTime.now(),
@@ -678,6 +681,24 @@ class MessageRetryService extends ChangeNotifier {
     final shortText = message.text.length > 20
         ? '${message.text.substring(0, 20)}...'
         : message.text;
+    if (message.status == MessageStatus.sent) {
+      final unknownDeliveryMessage = message.copyWith(
+        deliveryUnknown: true,
+      );
+      _pendingMessages[messageId] = unknownDeliveryMessage;
+      config?.updateMessage(unknownDeliveryMessage);
+      config?.debugLogService?.warn(
+        'No delivery confirmation for "$shortText" to ${contact.name}; '
+        'keeping it sent with unknown delivery and stopping retries',
+        tag: 'AckHash',
+      );
+      notifyListeners();
+      _onMessageResolved(messageId, contact.publicKeyHex);
+      _timeoutTimers[messageId] = Timer(const Duration(seconds: 30), () {
+        _cleanupMessage(messageId);
+      });
+      return;
+    }
     config?.debugLogService?.warn(
       'Timeout: No ACK received for "$shortText" to ${contact.name} (attempt ${message.retryCount}) → retrying',
       tag: 'AckHash',
@@ -812,6 +833,21 @@ class MessageRetryService extends ChangeNotifier {
       matchedAttemptIndex = mapping.attemptIndex;
       matchedPathSelection = mapping.pathSelection;
     } else {
+      // A reconnect resend can be accepted by the radio and delivered before
+      // the local RESP_CODE_SENT frame is observed. The send attempt already
+      // registered its expected hash, so use that mapping when the recipient
+      // confirmation arrives without a local sent transition.
+      final expectedMessageId = _expectedHashToMessageId.remove(ackHashHex);
+      if (expectedMessageId != null) {
+        matchedMessageId = expectedMessageId;
+        config?.debugLogService?.info(
+          'PUSH_CODE_SEND_CONFIRMED: ACK hash $ackHashHex matched the pending send attempt without RESP_CODE_SENT',
+          tag: 'AckHash',
+        );
+      }
+    }
+
+    if (matchedMessageId == null) {
       config?.debugLogService?.warn(
         'PUSH_CODE_SEND_CONFIRMED: ACK hash $ackHashHex not found in direct mapping, trying fallback',
         tag: 'AckHash',
@@ -854,6 +890,7 @@ class MessageRetryService extends ChangeNotifier {
 
       final deliveredMessage = message.copyWith(
         status: MessageStatus.delivered,
+        deliveryUnknown: false,
         deliveredAt: DateTime.now(),
         tripTimeMs: tripTimeMs,
       );

@@ -3031,6 +3031,7 @@
   },
   "messageStatus_sentChannel": "Envoyé. Les canaux ne confirment pas la livraison : cela signifie seulement que votre radio l'a envoyé.",
   "messageStatus_sentDirect": "Envoyé. En attente de la confirmation du contact.",
+  "messageStatus_deliveryUnknown": "Envoyé. Livraison inconnue.",
   "messageStatus_heardRepeatedCount": "Entendu {count, plural, =1{une fois} other{{count} fois}}. Les répéteurs proches l'ont relayé.",
   "@messageStatus_heardRepeatedCount": {
     "placeholders": {

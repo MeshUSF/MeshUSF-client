@@ -95,6 +95,7 @@ class MessageStore {
       'isOutgoing': msg.isOutgoing,
       'isCli': msg.isCli,
       'status': msg.status.index,
+      'deliveryUnknown': msg.deliveryUnknown,
       'messageId': msg.messageId,
       'originalText': msg.originalText,
       'translatedText': msg.translatedText,
@@ -163,6 +164,7 @@ class MessageStore {
       status:
           MessageStatus.values.elementAtOrNull(json['status'] as int? ?? -1) ??
           MessageStatus.failed,
+      deliveryUnknown: json['deliveryUnknown'] as bool? ?? false,
       messageId: json['messageId'] as String?,
       originalText: json['originalText'] as String?,
       translatedText: json['translatedText'] as String?,

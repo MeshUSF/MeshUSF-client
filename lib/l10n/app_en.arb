@@ -60,6 +60,7 @@
   },
   "messageStatus_sentChannel": "Sent. Channels don't confirm delivery, so this only means your radio sent it.",
   "messageStatus_sentDirect": "Sent. Waiting for the contact to confirm.",
+  "messageStatus_deliveryUnknown": "Sent — delivery unknown.",
   "messageStatus_heardRepeatedCount": "Heard repeated {count, plural, =1{once} other{{count} times}}. Nearby repeaters passed it on.",
   "@messageStatus_heardRepeatedCount": {
     "placeholders": {

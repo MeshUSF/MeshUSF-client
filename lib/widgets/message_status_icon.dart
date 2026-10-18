@@ -8,6 +8,7 @@ class MessageStatusIcon extends StatefulWidget {
   final bool isAcked;
   final bool isFailed;
   final bool isPending;
+  final bool deliveryUnknown;
 
   /// Channel messages have no delivery ACK. Instead of a delivered tick they
   /// show how many times the mesh was heard repeating the message.
@@ -33,6 +34,7 @@ class MessageStatusIcon extends StatefulWidget {
     required this.isAcked,
     this.isFailed = false,
     this.isPending = false,
+    this.deliveryUnknown = false,
     this.isChannel = false,
     this.repeatCount = 0,
     this.resendProgress,
@@ -160,7 +162,9 @@ class _MessageStatusIconState extends State<MessageStatusIcon>
         colorFilter: ColorFilter.mode(confirmedColor, BlendMode.srcIn),
       );
     } else {
-      label = l10n.messageStatus_sentDirect;
+      label = widget.deliveryUnknown
+          ? l10n.messageStatus_deliveryUnknown
+          : l10n.messageStatus_sentDirect;
       icon = Icon(Icons.done, size: size, color: baseColor);
     }
 

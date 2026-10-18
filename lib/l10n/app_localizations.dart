@@ -340,6 +340,12 @@ abstract class AppLocalizations {
   /// **'Sent. Waiting for the contact to confirm.'**
   String get messageStatus_sentDirect;
 
+  /// No description provided for @messageStatus_deliveryUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent — delivery unknown.'**
+  String get messageStatus_deliveryUnknown;
+
   /// No description provided for @messageStatus_heardRepeatedCount.
   ///
   /// In en, this message translates to:

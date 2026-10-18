@@ -67,6 +67,53 @@ void main() {
     expect(service.hasPendingMessages, isFalse);
   });
 
+  test(
+    'recipient confirmation resolves a resend when RESP_CODE_SENT was missed',
+    () async {
+      final contact = _contact();
+      await service.sendMessageWithRetry(contact: contact, text: 'a');
+      await pumpEventQueue();
+
+      final pending = byText('a');
+      expect(pending.status, MessageStatus.pending);
+
+      final ackHash = MessageRetryService.computeExpectedAckHash(
+        pending.timestamp.millisecondsSinceEpoch ~/ 1000,
+        pending.retryCount,
+        pending.text,
+        selfKey!,
+      );
+      service.handleAckReceived(ackHash, 1200);
+      await pumpEventQueue();
+
+      expect(byText('a').status, MessageStatus.delivered);
+      expect(byText('a').tripTimeMs, 1200);
+    },
+  );
+
+  test(
+    'a sent message becomes delivery-unknown instead of retrying after timeout',
+    () async {
+      final contact = _contact();
+      await service.sendMessageWithRetry(contact: contact, text: 'a');
+      await pumpEventQueue();
+
+      final pending = byText('a');
+      final ackHash = MessageRetryService.computeExpectedAckHash(
+        pending.timestamp.millisecondsSinceEpoch ~/ 1000,
+        pending.retryCount,
+        pending.text,
+        selfKey!,
+      );
+      expect(service.updateMessageFromSent(ackHash, 1), isTrue);
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+
+      expect(byText('a').status, MessageStatus.sent);
+      expect(byText('a').deliveryUnknown, isTrue);
+      expect(sentTexts, ['a']);
+    },
+  );
+
   test('failAllPending fails in-flight and queued messages', () async {
     final contact = _contact();
     await service.sendMessageWithRetry(contact: contact, text: 'a');
