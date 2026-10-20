@@ -703,13 +703,13 @@ abstract class AppLocalizations {
   /// No description provided for @scanner_chromeRequired.
   ///
   /// In en, this message translates to:
-  /// **'Chrome Browser Required'**
+  /// **'Web Bluetooth Required'**
   String get scanner_chromeRequired;
 
   /// No description provided for @scanner_chromeRequiredMessage.
   ///
   /// In en, this message translates to:
-  /// **'This web application requires Google Chrome or a Chromium-based browser for Bluetooth support.'**
+  /// **'This web application requires a browser with Web Bluetooth support.'**
   String get scanner_chromeRequiredMessage;
 
   /// No description provided for @scanner_enableBluetooth.
@@ -8743,7 +8743,7 @@ abstract class AppLocalizations {
   /// No description provided for @chrome_bluetoothRequiresChromium.
   ///
   /// In en, this message translates to:
-  /// **'Web Bluetooth requires a Chromium browser'**
+  /// **'Web Bluetooth is not available in this browser'**
   String get chrome_bluetoothRequiresChromium;
 
   /// No description provided for @channels_communityShortId.

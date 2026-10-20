@@ -350,11 +350,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please turn on Bluetooth to scan for devices';
 
   @override
-  String get scanner_chromeRequired => 'Chrome Browser Required';
+  String get scanner_chromeRequired => 'Web Bluetooth Required';
 
   @override
   String get scanner_chromeRequiredMessage =>
-      'This web application requires Google Chrome or a Chromium-based browser for Bluetooth support.';
+      'This web application requires a browser with Web Bluetooth support.';
 
   @override
   String get scanner_enableBluetooth => 'Enable Bluetooth';
@@ -5050,7 +5050,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chrome_bluetoothRequiresChromium =>
-      'Web Bluetooth requires a Chromium browser';
+      'Web Bluetooth is not available in this browser';
 
   @override
   String channels_communityShortId(String id) {

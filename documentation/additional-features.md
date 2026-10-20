@@ -127,13 +127,17 @@ Both logs support copy-all and clear operations.
 
 ---
 
-## Chrome Required Screen
+## Web Bluetooth Required Screen
 
 ### When It Appears
-Automatically shown on web platforms when a non-Chromium browser is detected.
+Automatically shown on web platforms when the browser does not expose the Web
+Bluetooth API.
 
 ### What the User Sees
-A full-screen informational page explaining that the web client requires Chrome. On web the app connects over USB via Web Serial only; Bluetooth is not available in the browser. No interactive elements — purely informational.
+A full-screen informational page explaining that the web client requires Web
+Bluetooth support. Browsers that expose `navigator.bluetooth`, including
+supported browsers that are not Google Chrome, can use the scanner. No
+interactive elements — purely informational.
 
 ---
 

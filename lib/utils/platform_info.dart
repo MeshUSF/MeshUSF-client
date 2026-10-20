@@ -10,7 +10,7 @@ class PlatformInfo {
   /// Whether the app is running in a web browser.
   static bool get isWeb => kIsWeb;
 
-  /// Whether the app is running in the Chrome browser (only relevant if [isWeb] is true).
+  /// Whether the app is running in a Chrome browser.
   static bool get isChrome => isWeb && BrowserDetection.isChrome;
 
   /// Whether the app is running on Android.
@@ -44,4 +44,8 @@ class PlatformInfo {
   /// Whether USB serial is expected to be available on the current platform.
   static bool get supportsUsbSerial =>
       supportsNativeUsbSerial || supportsWebSerial;
+
+  /// Whether the current browser exposes the Web Bluetooth API.
+  static bool get supportsWebBluetooth =>
+      isWeb && BrowserDetection.supportsWebBluetooth;
 }

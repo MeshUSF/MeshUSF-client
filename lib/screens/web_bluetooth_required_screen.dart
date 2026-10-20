@@ -3,8 +3,8 @@ import '../l10n/l10n.dart';
 import '../theme/mesh_theme.dart';
 import '../widgets/mesh_ui.dart';
 
-class ChromeRequiredScreen extends StatelessWidget {
-  const ChromeRequiredScreen({super.key});
+class WebBluetoothRequiredScreen extends StatelessWidget {
+  const WebBluetoothRequiredScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

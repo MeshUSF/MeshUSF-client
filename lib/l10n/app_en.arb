@@ -176,8 +176,8 @@
   "scanner_scan": "Scan",
   "scanner_bluetoothOff": "Bluetooth is off",
   "scanner_bluetoothOffMessage": "Please turn on Bluetooth to scan for devices",
-  "scanner_chromeRequired": "Chrome Browser Required",
-  "scanner_chromeRequiredMessage": "This web application requires Google Chrome or a Chromium-based browser for Bluetooth support.",
+  "scanner_chromeRequired": "Web Bluetooth Required",
+  "scanner_chromeRequiredMessage": "This web application requires a browser with Web Bluetooth support.",
   "scanner_enableBluetooth": "Enable Bluetooth",
   "scanner_bluetoothWebUnsupported": "Bluetooth isn't available in the browser. Connect over USB instead.",
   "device_quickSwitch": "Quick switch",
@@ -2833,7 +2833,7 @@
   "map_zoomIn": "Zoom in",
   "map_zoomOut": "Zoom out",
   "map_centerMap": "Center map",
-  "chrome_bluetoothRequiresChromium": "Web Bluetooth requires a Chromium browser",
+  "chrome_bluetoothRequiresChromium": "Web Bluetooth is not available in this browser",
   "channels_communityShortId": "ID: {id}...",
   "@channels_communityShortId": {
     "placeholders": {
