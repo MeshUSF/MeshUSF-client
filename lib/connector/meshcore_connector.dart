@@ -53,6 +53,7 @@ import '../storage/contact_discovery_store.dart';
 import '../storage/contact_settings_store.dart';
 import '../storage/contact_store.dart';
 import '../storage/message_store.dart';
+import '../storage/private_message_retry_store.dart';
 import '../storage/unread_store.dart';
 import '../review_mode/review_mode_storage.dart';
 import '../review_mode/review_radio.dart';
@@ -62,6 +63,15 @@ import '../utils/platform_info.dart';
 import 'meshcore_uuids.dart';
 import 'meshcore_protocol.dart';
 import 'pending_command_replies.dart';
+
+class MeshCoreTransportWriteException implements Exception {
+  final Object cause;
+
+  const MeshCoreTransportWriteException(this.cause);
+
+  @override
+  String toString() => 'MeshCoreTransportWriteException: $cause';
+}
 
 class DirectRepeater {
   static const int maxAgeMinutes = 30; // Max age for direct repeater info
@@ -400,6 +410,8 @@ class MeshCoreConnector extends ChangeNotifier {
   AppDebugLogService? _appDebugLogService;
   final ChannelMessageStore _channelMessageStore = ChannelMessageStore();
   final MessageStore _messageStore = MessageStore();
+  final PrivateMessageRetryStore _privateMessageRetryStore =
+      PrivateMessageRetryStore();
   final ChannelOrderStore _channelOrderStore = ChannelOrderStore();
   final ChannelSettingsStore _channelSettingsStore = ChannelSettingsStore();
   final ChannelRegionStore _channelRegionStore = ChannelRegionStore();
@@ -1302,6 +1314,9 @@ class MeshCoreConnector extends ChangeNotifier {
         sendMessage: _sendMessageDirect,
         addMessage: _addMessage,
         updateMessage: _updateMessage,
+        isTransportError: (error) =>
+            error is MeshCoreTransportWriteException || !isConnected,
+        queueTransportFailure: _queuePrivateMessageForReconnect,
         clearContactPath: clearContactPath,
         setContactPath: setContactPath,
         calculateTimeout:
@@ -1556,6 +1571,46 @@ class MeshCoreConnector extends ChangeNotifier {
         _conversations[contactKey2] ?? [],
       );
       notifyListeners();
+    }
+  }
+
+  Future<void> _queuePrivateMessageForReconnect(
+    Contact contact,
+    Message message,
+  ) async {
+    final record = PrivateMessageRetryRecord.fromMessage(
+      message,
+      failedAt: DateTime.now(),
+    );
+    await _privateMessageRetryStore.add(record);
+    final currentMessages = _conversations[contact.publicKeyHex];
+    if (currentMessages == null) return;
+
+    final messageIndex = currentMessages.indexWhere(
+      (item) => item.messageId == message.messageId,
+    );
+    if (messageIndex < 0) return;
+
+    final updatedMessages = List<Message>.of(currentMessages)
+      ..removeAt(messageIndex);
+    _conversations[contact.publicKeyHex] = updatedMessages;
+    await _messageStore.saveMessages(contact.publicKeyHex, updatedMessages);
+    notifyListeners();
+  }
+
+  Future<void> _replayPrivateMessagesAfterReconnect() async {
+    final records = await _privateMessageRetryStore.load();
+    for (final record in records) {
+      final contact = getContactByPubKeyHex(record.contactKeyHex);
+      if (contact == null) continue;
+      await _privateMessageRetryStore.remove(record);
+      await sendMessage(
+        contact,
+        record.text,
+        originalText: record.originalText,
+        translatedLanguageCode: record.translatedLanguageCode,
+        translationModelId: record.translationModelId,
+      );
     }
   }
 
@@ -3285,8 +3340,10 @@ class MeshCoreConnector extends ChangeNotifier {
     _deviceId = null;
     _contacts.clear();
     _discoveredContacts.clear();
-    _conversations.clear();
-    _loadedConversationKeys.clear();
+    if (manual) {
+      _conversations.clear();
+      _loadedConversationKeys.clear();
+    }
     _selfPublicKey = null;
     _selfName = null;
     _selfLatitude = null;
@@ -3406,7 +3463,10 @@ class MeshCoreConnector extends ChangeNotifier {
           }
         }());
       }
-      Error.throwWithStackTrace(error, stackTrace);
+      Error.throwWithStackTrace(
+        MeshCoreTransportWriteException(error),
+        stackTrace,
+      );
     }
 
     if (pendingAck?.completer != null) {
@@ -5401,6 +5461,7 @@ class MeshCoreConnector extends ChangeNotifier {
     _unreadStore.setPublicKeyHex = selfPublicKeyHex;
     _discoveryContactStore.setPublicKeyHex = selfPublicKeyHex;
     _pathHistoryService?.setDevicePublicKey(selfPublicKeyHex);
+    _privateMessageRetryStore.setPublicKeyHex = selfPublicKeyHex;
 
     // Now that we have self info, we can load all the persisted data for this node
     _loadChannelOrder();
@@ -5416,7 +5477,8 @@ class MeshCoreConnector extends ChangeNotifier {
     _awaitingSelfInfo = false;
     _selfInfoRetryTimer?.cancel();
     _selfInfoRetryTimer = null;
-    _retryService?.resumeAllPending();
+    _retryService?.resumeSending();
+    unawaited(_replayPrivateMessagesAfterReconnect());
     unawaited(_retryPendingChannelMessagesAfterReconnect());
     _maybeRequestDeviceConfig();
     notifyListeners();
