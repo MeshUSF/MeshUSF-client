@@ -137,9 +137,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Envoyé. En attente de la confirmation du contact.';
 
   @override
-  String get messageStatus_deliveryUnknown => 'Envoyé. Livraison inconnue.';
-
-  @override
   String messageStatus_heardRepeatedCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

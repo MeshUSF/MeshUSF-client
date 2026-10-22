@@ -18,6 +18,7 @@ void main() {
   late MessageRetryService service;
   late Map<String, Message> latest;
   late List<String> sentTexts;
+  late List<String> queuedTexts;
   late bool failSends;
   Uint8List? selfKey;
 
@@ -25,6 +26,7 @@ void main() {
     service = MessageRetryService();
     latest = {};
     sentTexts = [];
+    queuedTexts = [];
     failSends = false;
     selfKey = Uint8List(32);
     service.initialize(
@@ -35,6 +37,9 @@ void main() {
         },
         addMessage: (_, m) => latest[m.messageId] = m,
         updateMessage: (m) => latest[m.messageId] = m,
+        queueTransportFailure: (_, message) async {
+          queuedTexts.add(message.text);
+        },
         getSelfPublicKey: () => selfKey,
       ),
     );
@@ -91,28 +96,17 @@ void main() {
     },
   );
 
-  test(
-    'a sent message becomes delivery-unknown instead of retrying after timeout',
-    () async {
-      final contact = _contact();
-      await service.sendMessageWithRetry(contact: contact, text: 'a');
-      await pumpEventQueue();
+  test('transport disconnect queues and removes the private message', () async {
+    final contact = _contact();
+    await service.sendMessageWithRetry(contact: contact, text: 'a');
+    await pumpEventQueue();
+    expect(sentTexts, ['a']);
 
-      final pending = byText('a');
-      final ackHash = MessageRetryService.computeExpectedAckHash(
-        pending.timestamp.millisecondsSinceEpoch ~/ 1000,
-        pending.retryCount,
-        pending.text,
-        selfKey!,
-      );
-      expect(service.updateMessageFromSent(ackHash, 1), isTrue);
-      await Future<void>.delayed(const Duration(milliseconds: 20));
-
-      expect(byText('a').status, MessageStatus.sent);
-      expect(byText('a').deliveryUnknown, isTrue);
-      expect(sentTexts, ['a']);
-    },
-  );
+    service.pauseAllPending();
+    await pumpEventQueue();
+    expect(queuedTexts, ['a']);
+    expect(service.hasPendingMessages, isFalse);
+  });
 
   test('failAllPending fails in-flight and queued messages', () async {
     final contact = _contact();

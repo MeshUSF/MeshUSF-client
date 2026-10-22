@@ -14,7 +14,6 @@ class Message {
   final bool isOutgoing;
   final bool isCli;
   final MessageStatus status;
-  final bool deliveryUnknown;
   final String? originalText;
   final String? translatedText;
   final String? translatedLanguageCode;
@@ -42,7 +41,6 @@ class Message {
     required this.isOutgoing,
     this.isCli = false,
     this.status = MessageStatus.pending,
-    this.deliveryUnknown = false,
     String? messageId,
     this.originalText,
     this.translatedText,
@@ -72,7 +70,6 @@ class Message {
 
   Message copyWith({
     MessageStatus? status,
-    bool? deliveryUnknown,
     int? retryCount,
     int? estimatedTimeoutMs,
     int? expectedAckHash,
@@ -98,7 +95,6 @@ class Message {
       isOutgoing: isOutgoing,
       isCli: isCli ?? this.isCli,
       status: status ?? this.status,
-      deliveryUnknown: deliveryUnknown ?? this.deliveryUnknown,
       messageId: messageId,
       originalText: originalText == _unset
           ? this.originalText

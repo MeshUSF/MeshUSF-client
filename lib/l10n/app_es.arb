@@ -3031,7 +3031,6 @@
   },
   "messageStatus_sentChannel": "Enviado. Los canales no confirman la entrega, así que esto solo significa que tu radio lo ha enviado.",
   "messageStatus_sentDirect": "Enviado. Esperando la confirmación del contacto.",
-  "messageStatus_deliveryUnknown": "Enviado. Entrega desconocida.",
   "messageStatus_heardRepeatedCount": "Escuchado {count, plural, =1{una vez} other{{count} veces}}. Los repetidores cercanos lo han reenviado.",
   "@messageStatus_heardRepeatedCount": {
     "placeholders": {

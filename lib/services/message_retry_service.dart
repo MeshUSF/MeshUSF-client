@@ -38,6 +38,8 @@ class RetryServiceConfig {
   final FutureOr<void> Function(Contact, String, int, int) sendMessage;
   final void Function(String, Message) addMessage;
   final void Function(Message) updateMessage;
+  final bool Function(Object error)? isTransportError;
+  final Future<void> Function(Contact, Message)? queueTransportFailure;
   final Function(Contact)? clearContactPath;
   final Function(Contact, Uint8List, int)? setContactPath;
   final int Function(
@@ -65,6 +67,8 @@ class RetryServiceConfig {
     required this.sendMessage,
     required this.addMessage,
     required this.updateMessage,
+    this.isTransportError,
+    this.queueTransportFailure,
     this.clearContactPath,
     this.setContactPath,
     this.calculateTimeout,
@@ -223,6 +227,18 @@ class MessageRetryService extends ChangeNotifier {
     _attemptSend(messageId, generation).catchError((Object e) {
       if ((_attemptGenerations[messageId] ?? 0) != generation) return;
       if (_pausedForDisconnect) return;
+      final message = _pendingMessages[messageId];
+      final contact = _pendingContacts[messageId];
+      if (message != null &&
+          contact != null &&
+          _config?.isTransportError?.call(e) == true) {
+        unawaited(
+          _config?.queueTransportFailure?.call(contact, message) ??
+              Future<void>.value(),
+        );
+        _cleanupMessage(messageId);
+        return;
+      }
       debugPrint('_attemptSend threw for $messageId: $e');
       _config?.debugLogService?.warn(
         'Send failed for message $messageId: $e',
@@ -279,86 +295,27 @@ class MessageRetryService extends ChangeNotifier {
     }
     _timeoutTimers.clear();
 
-    for (final entry in _pendingMessages.entries) {
-      final message = entry.value;
+    for (final messageId in _pendingMessages.keys.toList()) {
+      final message = _pendingMessages[messageId];
+      if (message == null) continue;
+      final contact = _pendingContacts[messageId];
       if (message.status == MessageStatus.failed ||
-          message.status == MessageStatus.delivered ||
-          message.deliveryUnknown) {
+          message.status == MessageStatus.delivered) {
         continue;
       }
-      final pendingMessage = message.copyWith(status: MessageStatus.pending);
-      _pendingMessages[entry.key] = pendingMessage;
-      _config?.updateMessage(pendingMessage);
+      if (contact != null) {
+        unawaited(
+          _config?.queueTransportFailure?.call(contact, message) ??
+              Future<void>.value(),
+        );
+      }
+      _cleanupMessage(messageId);
     }
     notifyListeners();
   }
 
-  /// Resumes messages retained by [pauseAllPending] after the radio handshake
-  /// has completed and the connector can send frames again.
-  void resumeAllPending() {
-    final getSelfPublicKey = _config?.getSelfPublicKey;
-    if (getSelfPublicKey != null && getSelfPublicKey() == null) {
-      _resumeTimer?.cancel();
-      _resumeTimer = Timer(const Duration(seconds: 1), () {
-        _resumeTimer = null;
-        resumeAllPending();
-      });
-      return;
-    }
-
+  void resumeSending() {
     _pausedForDisconnect = false;
-    _sendQueue.clear();
-    _activeMessages.clear();
-    _resolvedMessages.clear();
-    _expectedHashToMessageId.clear();
-    _ackHashToMessageId.clear();
-
-    final pendingCount = _pendingMessages.values
-        .where(
-          (message) =>
-              message.status != MessageStatus.failed &&
-              message.status != MessageStatus.delivered,
-        )
-        .length;
-    _config?.debugLogService?.info(
-      'Resuming $pendingCount pending message(s) after reconnect',
-      tag: 'AckHash',
-    );
-
-    for (final entry in _pendingMessages.entries) {
-      final message = entry.value;
-      if (message.status == MessageStatus.failed ||
-          message.status == MessageStatus.delivered ||
-          message.deliveryUnknown) {
-        continue;
-      }
-      _attemptGenerations[entry.key] =
-          (_attemptGenerations[entry.key] ?? 0) + 1;
-      final pendingMessage = message.copyWith(status: MessageStatus.pending);
-      _pendingMessages[entry.key] = pendingMessage;
-      _config?.updateMessage(pendingMessage);
-      final contact = _pendingContacts[entry.key];
-      if (contact == null) {
-        _config?.debugLogService?.warn(
-          'Cannot resume message ${entry.key}: contact missing',
-          tag: 'AckHash',
-        );
-        continue;
-      }
-      final queue = _sendQueue.putIfAbsent(contact.publicKeyHex, () => []);
-      if (!queue.contains(entry.key)) {
-        queue.add(entry.key);
-      }
-    }
-
-    _resumeTimer?.cancel();
-    _resumeTimer = Timer(const Duration(milliseconds: 750), () {
-      _resumeTimer = null;
-      for (final contactKey in _sendQueue.keys.toList()) {
-        _sendNextForContact(contactKey);
-        if (_activeMessages.length >= _maxGlobalInFlight) break;
-      }
-    });
   }
 
   void _onMessageResolved(String messageId, String contactKey) {
@@ -607,7 +564,6 @@ class MessageRetryService extends ChangeNotifier {
 
     final updatedMessage = message.copyWith(
       status: MessageStatus.sent,
-      deliveryUnknown: false,
       expectedAckHash: ackHash,
       estimatedTimeoutMs: actualTimeout,
       sentAt: DateTime.now(),
@@ -681,24 +637,6 @@ class MessageRetryService extends ChangeNotifier {
     final shortText = message.text.length > 20
         ? '${message.text.substring(0, 20)}...'
         : message.text;
-    if (message.status == MessageStatus.sent) {
-      final unknownDeliveryMessage = message.copyWith(
-        deliveryUnknown: true,
-      );
-      _pendingMessages[messageId] = unknownDeliveryMessage;
-      config?.updateMessage(unknownDeliveryMessage);
-      config?.debugLogService?.warn(
-        'No delivery confirmation for "$shortText" to ${contact.name}; '
-        'keeping it sent with unknown delivery and stopping retries',
-        tag: 'AckHash',
-      );
-      notifyListeners();
-      _onMessageResolved(messageId, contact.publicKeyHex);
-      _timeoutTimers[messageId] = Timer(const Duration(seconds: 30), () {
-        _cleanupMessage(messageId);
-      });
-      return;
-    }
     config?.debugLogService?.warn(
       'Timeout: No ACK received for "$shortText" to ${contact.name} (attempt ${message.retryCount}) → retrying',
       tag: 'AckHash',
@@ -890,7 +828,6 @@ class MessageRetryService extends ChangeNotifier {
 
       final deliveredMessage = message.copyWith(
         status: MessageStatus.delivered,
-        deliveryUnknown: false,
         deliveredAt: DateTime.now(),
         tripTimeMs: tripTimeMs,
       );

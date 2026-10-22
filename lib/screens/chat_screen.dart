@@ -1654,7 +1654,6 @@ class _MessageBubble extends StatelessWidget {
                                         MessageStatus.delivered,
                                     isPending:
                                         message.status == MessageStatus.pending,
-                                    deliveryUnknown: message.deliveryUnknown,
                                     isFailed:
                                         message.status == MessageStatus.failed,
                                   ),
