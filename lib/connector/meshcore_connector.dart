@@ -519,6 +519,7 @@ class MeshCoreConnector extends ChangeNotifier {
 
   List<Channel> get channels => List.unmodifiable(_channels);
   bool get isConnected => _state == MeshCoreConnectionState.connected;
+  bool get hasGps => _currentCustomVars?['gps'] == '1';
   String? get disconnectMessage => _disconnectMessage;
   void clearDisconnectMessage() {
     _disconnectMessage = null;

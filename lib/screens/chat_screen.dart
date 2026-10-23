@@ -13,6 +13,7 @@ import '../utils/platform_info.dart';
 import '../connector/meshcore_connector.dart';
 import '../connector/meshcore_protocol.dart';
 import '../helpers/cyr2lat.dart';
+import '../helpers/location_map_link.dart';
 import '../helpers/message_url_image_helper.dart';
 import '../helpers/path_helper.dart';
 import '../helpers/reaction_helper.dart';
@@ -27,6 +28,7 @@ import '../models/message.dart';
 import '../models/translation_support.dart';
 import '../services/app_settings_service.dart';
 import '../services/chat_text_scale_service.dart';
+import '../services/location_sharing_service.dart';
 import '../services/path_history_service.dart';
 import '../services/translation_service.dart';
 import '../widgets/chat_zoom_wrapper.dart';
@@ -491,6 +493,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 tooltip: context.l10n.chat_sendGif,
                 onPressed: () => _showGifPicker(context),
               ),
+              IconButton(
+                icon: const Icon(Icons.location_on_outlined),
+                tooltip: context.l10n.chat_sendLocation,
+                onPressed: () => _sendLocation(connector),
+              ),
               if (settings.translationEnabled)
                 MessageTranslationButton(
                   enabled: settings.composerTranslationEnabled,
@@ -662,8 +669,11 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Future<void> _sendMessage(MeshCoreConnector connector) async {
-    final text = _textController.text.trim();
+  Future<void> _sendMessage(
+    MeshCoreConnector connector, {
+    String? messageOverride,
+  }) async {
+    final text = (messageOverride ?? _textController.text).trim();
     if (text.isEmpty) return;
 
     final now = DateTime.now();
@@ -683,7 +693,7 @@ class _ChatScreenState extends State<ChatScreen> {
     String? originalText;
     String? translatedLanguageCode;
     String? translationModelId;
-    if (settings.translationEnabled) {
+    if (messageOverride == null && settings.translationEnabled) {
       final targetLanguageCode = translationService.resolvedTargetLanguageCode(
         Localizations.localeOf(context).languageCode,
       );
@@ -731,8 +741,10 @@ class _ChatScreenState extends State<ChatScreen> {
     }
     // end transform
 
-    _textController.clear();
-    _textFieldFocusNode.requestFocus();
+    if (messageOverride == null) {
+      _textController.clear();
+      _textFieldFocusNode.requestFocus();
+    }
     connector.sendMessage(
       _resolveContact(connector),
       outgoingText,
@@ -740,6 +752,36 @@ class _ChatScreenState extends State<ChatScreen> {
       translatedLanguageCode: translatedLanguageCode,
       translationModelId: translationModelId,
     );
+  }
+
+  Future<void> _sendLocation(MeshCoreConnector connector) async {
+    try {
+      final coordinates = await LocationSharingService.getCurrentCoordinates(
+        connector,
+      );
+      if (!mounted) return;
+
+      final mapCoordinates =
+          '${coordinates.latitude.toStringAsFixed(6)},'
+          '${coordinates.longitude.toStringAsFixed(6)}';
+      await _sendMessage(
+        connector,
+        messageOverride:
+            'Location: $mapCoordinates\n'
+            '${LocationMapLink.create(coordinates.latitude, coordinates.longitude)}',
+      );
+    } on LocationLookupException catch (error) {
+      if (!mounted) return;
+      final message = switch (error.failure) {
+        LocationLookupFailure.permissionDenied =>
+          context.l10n.chat_locationPermissionDenied,
+        LocationLookupFailure.serviceDisabled =>
+          context.l10n.chat_locationServicesDisabled,
+        LocationLookupFailure.unavailable =>
+          context.l10n.chat_locationUnavailable,
+      };
+      showDismissibleSnackBar(context, content: Text(message));
+    }
   }
 
   Future<void> _confirmClearChat(

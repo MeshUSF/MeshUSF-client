@@ -35,6 +35,7 @@ From the Contacts screen, tap any Chat-type contact to open the ChatScreen.
 ### Input Bar
 
 - **GIF button** (left): Opens GIF picker bottom sheet
+- **Send location action**: Sends the connected radio's coordinates when its GPS is available; otherwise, it requests the computer or phone's location through the operating system or browser. The message includes a **View on map** button that opens the coordinates in the app's built-in map. Direct chats show a location button; channel chats include the action in the add menu. Location permissions and services must be enabled; browser location requires HTTPS or localhost.
 - **Translation button** (optional, between GIF and text field): Shown only when translation is enabled in App Settings. Tap to configure outgoing-message translation language and on/off toggle.
 - **Text field** (center): Auto-capitalization, enforces UTF-8 byte limit in real-time
 - **Send button** (right): Submits the message
@@ -48,7 +49,7 @@ From the Contacts screen, tap any Chat-type contact to open the ChatScreen.
 | Plain text | Raw UTF-8 string | Inline text with link detection |
 | URL image preview | Image URL in text (per-contact opt-in; requires internet) | Downloaded inline preview |
 | GIF | `g:<giphy-id>` | Inline GIF image from Giphy CDN |
-| Location pin | `m:<lat>,<lon>\|<label>\|...` | Location icon + label; tap to open map |
+| Location | Coordinates followed by an internal map URL | Coordinates and a button to open the built-in map |
 | Reaction | `r:<hash>:<emoji-index>` | Applied to target message as emoji pill |
 
 ## Message Status

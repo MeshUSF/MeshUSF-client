@@ -2980,6 +2980,36 @@ abstract class AppLocalizations {
   /// **'Send GIF'**
   String get chat_sendGif;
 
+  /// No description provided for @chat_sendLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Send location'**
+  String get chat_sendLocation;
+
+  /// No description provided for @chat_viewOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View on map'**
+  String get chat_viewOnMap;
+
+  /// No description provided for @chat_locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow MeshCore to access this device\'s location, then try again.'**
+  String get chat_locationPermissionDenied;
+
+  /// No description provided for @chat_locationServicesDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on this device\'s location services, then try again.'**
+  String get chat_locationServicesDisabled;
+
+  /// No description provided for @chat_locationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t determine this device\'s location. Check its location settings and try again.'**
+  String get chat_locationUnavailable;
+
   /// No description provided for @chat_removeGif.
   ///
   /// In en, this message translates to:
