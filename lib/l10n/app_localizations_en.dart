@@ -5437,6 +5437,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewMode_testSent => 'A test message will arrive shortly.';
 
   @override
+  String get contacts_alreadyAdded => 'Already added';
+
+  @override
+  String get contacts_yourContact => 'Your contact';
+
+  @override
+  String get contacts_cannotAddSelf => 'You can\'t add your own contact.';
+
+  @override
+  String get chat_shareMyContact => 'Share my contact';
+
+  @override
+  String get chat_contactShareFailed => 'Could not share your contact.';
+
+  @override
   String get reviewMode_exit => 'Exit';
 
   @override

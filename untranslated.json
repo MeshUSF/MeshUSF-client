@@ -1,1 +1,17 @@
-{}
+{
+  "es": [
+    "contacts_alreadyAdded",
+    "contacts_yourContact",
+    "contacts_cannotAddSelf",
+    "chat_shareMyContact",
+    "chat_contactShareFailed"
+  ],
+
+  "fr": [
+    "contacts_alreadyAdded",
+    "contacts_yourContact",
+    "contacts_cannotAddSelf",
+    "chat_shareMyContact",
+    "chat_contactShareFailed"
+  ]
+}

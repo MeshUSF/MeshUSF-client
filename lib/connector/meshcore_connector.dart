@@ -59,6 +59,7 @@ import '../review_mode/review_mode_storage.dart';
 import '../review_mode/review_radio.dart';
 import '../utils/app_logger.dart';
 import '../utils/battery_utils.dart';
+import '../utils/contact_qr.dart';
 import '../utils/platform_info.dart';
 import 'meshcore_uuids.dart';
 import 'meshcore_protocol.dart';
@@ -6493,7 +6494,9 @@ class MeshCoreConnector extends ChangeNotifier {
   String prepareChannelOutboundText(int channelIndex, String text) {
     final trimmed = text.trim();
     final isStructuredPayload =
-        trimmed.startsWith('g:') || trimmed.startsWith('m:');
+        trimmed.startsWith('g:') ||
+        trimmed.startsWith('m:') ||
+        parseContactShare(trimmed) != null;
     if (!isStructuredPayload) {
       if (isChannelSmazEnabled(channelIndex)) {
         return Smaz.encodeIfSmaller(text);

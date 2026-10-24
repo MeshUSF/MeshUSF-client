@@ -9328,6 +9328,36 @@ abstract class AppLocalizations {
   /// **'A test message will arrive shortly.'**
   String get reviewMode_testSent;
 
+  /// No description provided for @contacts_alreadyAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Already added'**
+  String get contacts_alreadyAdded;
+
+  /// No description provided for @contacts_yourContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Your contact'**
+  String get contacts_yourContact;
+
+  /// No description provided for @contacts_cannotAddSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t add your own contact.'**
+  String get contacts_cannotAddSelf;
+
+  /// No description provided for @chat_shareMyContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my contact'**
+  String get chat_shareMyContact;
+
+  /// No description provided for @chat_contactShareFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not share your contact.'**
+  String get chat_contactShareFailed;
+
   /// Banner action that leaves review mode
   ///
   /// In en, this message translates to:

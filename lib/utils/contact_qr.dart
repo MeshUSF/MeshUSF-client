@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 /// Parsed result of a MeshCore contact QR / link.
@@ -33,6 +34,88 @@ const int _minAdvertPacketBytes = 98;
 const int _maxAdvertPacketBytes = 171;
 const int _contactCardKeyBytes = 32;
 const String _legacyPrefix = 'meshcore://';
+
+/// A lossless piece of message text, optionally recognized as a contact.
+class ContactShareSegment {
+  final String text;
+  final ScannedContact? contact;
+
+  const ContactShareSegment(this.text, {this.contact});
+}
+
+/// Parses the unsigned contact string used in channel messages.
+ScannedContact? parseContactShare(String data) {
+  final text = data.trim();
+  if (!text.startsWith('<') || !text.endsWith('>')) return null;
+  final body = text.substring(1, text.length - 1);
+  if (body.contains('>')) return null;
+  final firstColon = body.indexOf(':');
+  if (firstColon != 64) return null;
+  final secondColon = body.indexOf(':', firstColon + 1);
+  if (secondColon < 0) return null;
+  final publicKey = _tryHexDecode(body.substring(0, firstColon));
+  if (publicKey == null || publicKey.length != _contactCardKeyBytes) {
+    return null;
+  }
+  final typeText = body.substring(firstColon + 1, secondColon);
+  if (!RegExp(r'^[+-]?[0-9]+$').hasMatch(typeText)) return null;
+  final parsedType = int.tryParse(typeText);
+  final name = _fitContactShareName(body.substring(secondColon + 1).trim());
+  if (name.isEmpty) return null;
+  return ScannedContact(
+    publicKey: publicKey,
+    name: name,
+    type: parsedType != null && parsedType >= 1 && parsedType <= 4
+        ? parsedType
+        : null,
+  );
+}
+
+List<ContactShareSegment> findContactShareSegments(String text) {
+  final segments = <ContactShareSegment>[];
+  var offset = 0;
+  for (final match in RegExp(r'<[0-9a-fA-F]{64}:').allMatches(text)) {
+    if (match.start < offset) continue;
+    final end = text.indexOf('>', match.end);
+    if (end < 0) break;
+    final candidate = text.substring(match.start, end + 1);
+    final contact = parseContactShare(candidate);
+    if (contact == null) continue;
+    if (match.start > offset) {
+      segments.add(ContactShareSegment(text.substring(offset, match.start)));
+    }
+    segments.add(ContactShareSegment(candidate, contact: contact));
+    offset = end + 1;
+  }
+  if (offset < text.length) {
+    segments.add(ContactShareSegment(text.substring(offset)));
+  }
+  return segments;
+}
+
+/// Returns null until self-info contains a usable key and name.
+String? buildContactShare(Uint8List? publicKey, String? name) {
+  if (publicKey == null || publicKey.length != _contactCardKeyBytes) {
+    return null;
+  }
+  final fittedName = _fitContactShareName((name ?? '').trim());
+  if (fittedName.isEmpty || fittedName.contains('>')) return null;
+  final hex = publicKey.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+  return '<$hex:1:$fittedName>';
+}
+
+String _fitContactShareName(String name) {
+  final buffer = StringBuffer();
+  var used = 0;
+  for (final rune in name.runes) {
+    final char = String.fromCharCode(rune);
+    final size = utf8.encode(char).length;
+    if (used + size > 31) break;
+    buffer.write(char);
+    used += size;
+  }
+  return buffer.toString();
+}
 
 /// Returns null when [data] is not a recognizable MeshCore contact QR/link.
 ScannedContact? parseContactQr(String data) {

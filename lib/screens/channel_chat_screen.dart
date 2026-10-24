@@ -34,6 +34,8 @@ import '../services/received_image_store.dart';
 import '../services/translation_service.dart';
 import '../utils/image_save.dart';
 import '../utils/lora_airtime.dart';
+import '../utils/contact_qr.dart';
+import '../utils/contact_qr_frame.dart';
 import '../widgets/received_image_message.dart';
 import '../widgets/byte_count_input.dart';
 import '../widgets/chat_day_separator.dart';
@@ -83,6 +85,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   final CommunityPskIndex _communityIndex = CommunityPskIndex();
   final Map<String, GlobalKey> _messageKeys = {};
   bool _isLoadingOlder = false;
+  bool _isImportingContact = false;
   bool _communitiesLoaded = false;
 
   /// Per-screen image-id allocator. The id is 8 bits and the reassembly key also
@@ -604,6 +607,10 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     final scheme = Theme.of(context).colorScheme;
     final gifId = GifHelper.parseGif(message.text);
     final poi = parseMarkerText(message.text);
+    final contactSegments = findContactShareSegments(message.text);
+    final hasContactShares = contactSegments.any(
+      (segment) => segment.contact != null,
+    );
     final translatedDisplayText =
         message.translatedText != null &&
             message.translatedText!.trim().isNotEmpty
@@ -745,7 +752,31 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                           _buildReplyPreview(message, textScale),
                           const SizedBox(height: 8),
                         ],
-                        if (poi != null)
+                        if (hasContactShares)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              for (final segment in contactSegments)
+                                if (segment.contact != null)
+                                  _buildContactShareAction(
+                                    segment.contact!,
+                                    textScale,
+                                  )
+                                else if (segment.text.trim().isNotEmpty)
+                                  TranslatedMessageContent(
+                                    displayText: segment.text,
+                                    style: TextStyle(
+                                      color: textColor,
+                                      fontSize: bodyFontSize * textScale,
+                                    ),
+                                    onSecondaryTap: PlatformInfo.isDesktop
+                                        ? () => _showMessageActions(message)
+                                        : null,
+                                  ),
+                            ],
+                          )
+                        else if (poi != null)
                           _buildPoiMessage(
                             context,
                             poi,
@@ -1045,6 +1076,114 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
               ],
             ),
     );
+  }
+
+  Widget _buildContactShareAction(ScannedContact scanned, double textScale) {
+    final connector = context.watch<MeshCoreConnector>();
+    final scheme = Theme.of(context).colorScheme;
+    final key = pubKeyToHex(scanned.publicKey!);
+    final isSelf = key == pubKeyToHex(connector.selfPublicKey ?? Uint8List(0));
+    final alreadyAdded = connector.getContactByPubKeyHex(key) != null;
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: FilledButton.icon(
+        style: FilledButton.styleFrom(
+          backgroundColor: scheme.primary,
+          foregroundColor: scheme.onPrimary,
+          disabledBackgroundColor: scheme.surfaceContainerHighest,
+          disabledForegroundColor: scheme.onSurfaceVariant,
+        ),
+        icon: Icon(
+          isSelf
+              ? Icons.person_outline
+              : alreadyAdded
+              ? Icons.check
+              : Icons.person_add_outlined,
+        ),
+        onPressed:
+            (alreadyAdded && !isSelf) ||
+                !connector.isConnected ||
+                _isImportingContact
+            ? null
+            : () => _addSharedContact(scanned),
+        label: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              scanned.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 12 * textScale),
+            ),
+            Text(
+              key.substring(0, 8),
+              maxLines: 1,
+              style: TextStyle(fontSize: 12 * textScale),
+            ),
+            Text(
+              isSelf
+                  ? context.l10n.contacts_yourContact
+                  : alreadyAdded
+                  ? context.l10n.contacts_alreadyAdded
+                  : context.l10n.discoveredContacts_addContact,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 12 * textScale),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _addSharedContact(ScannedContact scanned) async {
+    final connector = context.read<MeshCoreConnector>();
+    final key = pubKeyToHex(scanned.publicKey!);
+    if (key == pubKeyToHex(connector.selfPublicKey ?? Uint8List(0))) {
+      showDismissibleSnackBar(
+        context,
+        content: Text(context.l10n.contacts_cannotAddSelf),
+        backgroundColor: MeshPalette.warn,
+      );
+      return;
+    }
+    if (_isImportingContact ||
+        !connector.isConnected ||
+        connector.getContactByPubKeyHex(key) != null) {
+      return;
+    }
+    final existing = connector.allContactsUnfiltered
+        .where((contact) => contact.publicKeyHex == key)
+        .firstOrNull;
+    // Unsigned strings must not replace metadata learned from an advert.
+    final contact = existing == null
+        ? scanned
+        : ScannedContact(publicKey: scanned.publicKey);
+    setState(() => _isImportingContact = true);
+    try {
+      final frame = buildContactQrFrame(
+        contact,
+        existing: existing,
+        pathHashByteWidth: connector.pathHashByteWidth,
+      );
+      await connector.sendFrame(frame, waitForGenericAck: true);
+      await connector.refreshContacts();
+      if (!mounted) return;
+      showDismissibleSnackBar(
+        context,
+        content: Text(context.l10n.contacts_contactImported),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      showDismissibleSnackBar(
+        context,
+        content: Text(context.l10n.contacts_contactImportFailed),
+        backgroundColor: MeshPalette.warn,
+      );
+    } finally {
+      if (mounted) setState(() => _isImportingContact = false);
+    }
   }
 
   Widget _buildReplyPreview(ChannelMessage message, double textScale) {
@@ -2044,7 +2183,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.add_circle_outline),
                     position: PopupMenuPosition.over,
-                    offset: Offset(0, showImageAction ? -112 : -64),
+                    offset: Offset(0, showImageAction ? -160 : -112),
                     tooltip: context.l10n.chat_selectSendAction,
                     onSelected: (action) {
                       switch (action) {
@@ -2054,16 +2193,38 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                         case 'meshcore-image':
                           _showImageSendPreview();
                           break;
+                        case 'contact':
+                          _shareMyContact();
+                          break;
                       }
                     },
                     itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'contact',
+                        enabled:
+                            connector.isConnected &&
+                            buildContactShare(
+                                  connector.selfPublicKey,
+                                  connector.selfName,
+                                ) !=
+                                null,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.contact_page_outlined),
+                            const SizedBox(width: 12),
+                            Flexible(
+                              child: Text(context.l10n.chat_shareMyContact),
+                            ),
+                          ],
+                        ),
+                      ),
                       PopupMenuItem(
                         value: 'gif',
                         child: Row(
                           children: [
                             const Icon(Icons.gif_box),
                             const SizedBox(width: 12),
-                            Text(context.l10n.chat_sendGif),
+                            Flexible(child: Text(context.l10n.chat_sendGif)),
                           ],
                         ),
                       ),
@@ -2074,7 +2235,9 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                             children: [
                               const Icon(Icons.image_outlined),
                               const SizedBox(width: 12),
-                              Text(context.l10n.chat_sendImageLora),
+                              Flexible(
+                                child: Text(context.l10n.chat_sendImageLora),
+                              ),
                             ],
                           ),
                         ),
@@ -2234,6 +2397,41 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
       onEnabledChanged: settingsService.setComposerTranslationEnabled,
       onLanguageSelected: settingsService.setTranslationTargetLanguageCode,
     );
+  }
+
+  Future<void> _shareMyContact() async {
+    final connector = context.read<MeshCoreConnector>();
+    if (!connector.isConnected) return;
+    final text = buildContactShare(connector.selfPublicKey, connector.selfName);
+    if (text == null) return;
+    final maxBytes = maxChannelMessageBytes(connector.selfName);
+    if (utf8.encode(text).length > maxBytes) {
+      showDismissibleSnackBar(
+        context,
+        content: Text(context.l10n.chat_messageTooLong(maxBytes)),
+      );
+      return;
+    }
+    final now = DateTime.now();
+    if (_lastChannelSendAt != null &&
+        now.difference(_lastChannelSendAt!) < const Duration(seconds: 1)) {
+      showDismissibleSnackBar(
+        context,
+        content: Text(context.l10n.chat_sendCooldown),
+      );
+      return;
+    }
+    _lastChannelSendAt = now;
+    try {
+      await connector.sendChannelMessage(widget.channel, text);
+    } catch (_) {
+      if (!mounted) return;
+      showDismissibleSnackBar(
+        context,
+        content: Text(context.l10n.chat_contactShareFailed),
+        backgroundColor: MeshPalette.warn,
+      );
+    }
   }
 
   Future<void> _sendMessage() async {
