@@ -2,9 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../helpers/location_map_link.dart';
 import '../l10n/l10n.dart';
 import '../utils/platform_info.dart';
 import '../helpers/snack_bar_builder.dart';
+import '../screens/map_screen.dart';
 
 class LinkHandler {
   static TextStyle defaultLinkStyle(BuildContext context, TextStyle base) {
@@ -57,6 +59,17 @@ class LinkHandler {
   }
 
   static Future<void> handleLinkTap(BuildContext context, String url) async {
+    final location = LocationMapLink.parse(url);
+    if (location != null) {
+      await Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) =>
+              MapScreen(highlightPosition: location, allowPop: true),
+        ),
+      );
+      return;
+    }
+
     // Show confirmation dialog
     final shouldOpen = await showDialog<bool>(
       context: context,

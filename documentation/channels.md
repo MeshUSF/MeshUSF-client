@@ -96,6 +96,8 @@ Messages also show a region label when known, independently of message tracing. 
 - **URL image previews** when enabled per channel; content is fetched over the internet
 - **Reactions** displayed as emoji pills below target messages
 
+The input bar's **Send location** action sends the connected radio's coordinates when its GPS is available; otherwise it requests the computer or phone's location through the operating system or browser. The message includes a **View on map** button that opens the coordinates in the app's built-in map. Location permissions and services must be enabled; browser location requires HTTPS or localhost.
+
 ### Replies (Channel Chat Only)
 
 - **Mobile**: Swipe an **incoming** message left to trigger reply (with haptic feedback). You cannot swipe your own outgoing messages. Swipe reply is not available on desktop.

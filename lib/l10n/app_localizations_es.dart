@@ -1676,6 +1676,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chat_sendGif => 'Enviar GIF';
 
   @override
+  String get chat_sendLocation => 'Enviar ubicación';
+
+  @override
+  String get chat_viewOnMap => 'Ver en el mapa';
+
+  @override
+  String get chat_locationPermissionDenied =>
+      'Permite que MeshCore acceda a la ubicación del dispositivo e inténtalo de nuevo.';
+
+  @override
+  String get chat_locationServicesDisabled =>
+      'Activa los servicios de ubicación del dispositivo e inténtalo de nuevo.';
+
+  @override
+  String get chat_locationUnavailable =>
+      'No se pudo determinar la ubicación del dispositivo. Comprueba los ajustes de ubicación e inténtalo de nuevo.';
+
+  @override
   String get chat_removeGif => 'Quitar GIF';
 
   @override
