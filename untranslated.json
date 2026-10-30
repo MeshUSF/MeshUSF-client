@@ -4,6 +4,9 @@
     "contacts_yourContact",
     "contacts_cannotAddSelf",
     "chat_shareMyContact",
+    "chat_shareContact",
+    "chat_contactCannotShare",
+    "chat_sharedContactFailed",
     "chat_contactShareFailed"
   ],
 
@@ -12,6 +15,9 @@
     "contacts_yourContact",
     "contacts_cannotAddSelf",
     "chat_shareMyContact",
+    "chat_shareContact",
+    "chat_contactCannotShare",
+    "chat_sharedContactFailed",
     "chat_contactShareFailed"
   ]
 }

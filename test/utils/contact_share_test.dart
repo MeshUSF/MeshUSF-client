@@ -110,6 +110,16 @@ void main() {
   });
 
   group('buildContactShare', () {
+    test('preserves each supported node type when sharing saved contacts', () {
+      final bytes = Uint8List.fromList(List.filled(32, 0xAB));
+      for (var type = 1; type <= 4; type++) {
+        final text = buildContactShare(bytes, 'Node: $type', type: type)!;
+        expect(parseContactShare(text)!.type, type);
+        expect(parseContactShare(text)!.name, 'Node: $type');
+      }
+      expect(buildContactShare(bytes, 'Node', type: 0), isNull);
+      expect(buildContactShare(bytes, 'Node', type: 5), isNull);
+    });
     test('uses lowercase hex, companion type, and a bounded name', () {
       final result = buildContactShare(
         Uint8List.fromList(List.filled(32, 0xAB)),

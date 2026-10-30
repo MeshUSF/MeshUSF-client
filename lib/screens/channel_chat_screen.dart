@@ -23,6 +23,7 @@ import '../helpers/reaction_helper.dart';
 import '../helpers/snack_bar_builder.dart';
 import '../l10n/l10n.dart';
 import '../models/channel.dart';
+import '../models/contact.dart';
 import '../models/channel_message.dart';
 import '../models/image_codec_support.dart' show aeicRatePointForUi;
 import '../models/translation_support.dart';
@@ -52,6 +53,8 @@ import '../widgets/message_status_icon.dart';
 import '../widgets/radio_stats_entry.dart';
 import '../widgets/sync_progress_overlay.dart';
 import '../widgets/translated_message_content.dart';
+import '../widgets/contact_share_button.dart';
+import '../widgets/contact_share_picker.dart';
 import '../widgets/unread_divider.dart';
 import '../theme/mesh_theme.dart';
 import '../widgets/mesh_ui.dart';
@@ -1080,60 +1083,29 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
 
   Widget _buildContactShareAction(ScannedContact scanned, double textScale) {
     final connector = context.watch<MeshCoreConnector>();
-    final scheme = Theme.of(context).colorScheme;
     final key = pubKeyToHex(scanned.publicKey!);
     final isSelf = key == pubKeyToHex(connector.selfPublicKey ?? Uint8List(0));
     final alreadyAdded = connector.getContactByPubKeyHex(key) != null;
-    return Padding(
-      padding: const EdgeInsets.only(top: 6),
-      child: FilledButton.icon(
-        style: FilledButton.styleFrom(
-          backgroundColor: scheme.primary,
-          foregroundColor: scheme.onPrimary,
-          disabledBackgroundColor: scheme.surfaceContainerHighest,
-          disabledForegroundColor: scheme.onSurfaceVariant,
-        ),
-        icon: Icon(
-          isSelf
-              ? Icons.person_outline
-              : alreadyAdded
-              ? Icons.check
-              : Icons.person_add_outlined,
-        ),
-        onPressed:
-            (alreadyAdded && !isSelf) ||
-                !connector.isConnected ||
-                _isImportingContact
-            ? null
-            : () => _addSharedContact(scanned),
-        label: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              scanned.name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 12 * textScale),
-            ),
-            Text(
-              key.substring(0, 8),
-              maxLines: 1,
-              style: TextStyle(fontSize: 12 * textScale),
-            ),
-            Text(
-              isSelf
-                  ? context.l10n.contacts_yourContact
-                  : alreadyAdded
-                  ? context.l10n.contacts_alreadyAdded
-                  : context.l10n.discoveredContacts_addContact,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 12 * textScale),
-            ),
-          ],
-        ),
-      ),
+    return ContactShareButton(
+      name: scanned.name,
+      publicKeyHex: key,
+      textScale: textScale,
+      icon: isSelf
+          ? Icons.person_outline
+          : alreadyAdded
+          ? Icons.check
+          : Icons.person_add_outlined,
+      label: isSelf
+          ? context.l10n.contacts_yourContact
+          : alreadyAdded
+          ? context.l10n.contacts_alreadyAdded
+          : context.l10n.discoveredContacts_addContact,
+      onPressed:
+          (alreadyAdded && !isSelf) ||
+              !connector.isConnected ||
+              _isImportingContact
+          ? null
+          : () => _addSharedContact(scanned),
     );
   }
 
@@ -2183,7 +2155,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.add_circle_outline),
                     position: PopupMenuPosition.over,
-                    offset: Offset(0, showImageAction ? -160 : -112),
+                    offset: Offset(0, showImageAction ? -208 : -160),
                     tooltip: context.l10n.chat_selectSendAction,
                     onSelected: (action) {
                       switch (action) {
@@ -2196,9 +2168,25 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                         case 'contact':
                           _shareMyContact();
                           break;
+                        case 'saved-contact':
+                          _shareSavedContact();
+                          break;
                       }
                     },
                     itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'saved-contact',
+                        enabled: connector.isConnected,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.contacts_outlined),
+                            const SizedBox(width: 12),
+                            Flexible(
+                              child: Text(context.l10n.chat_shareContact),
+                            ),
+                          ],
+                        ),
+                      ),
                       PopupMenuItem(
                         value: 'contact',
                         enabled:
@@ -2401,9 +2389,33 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
 
   Future<void> _shareMyContact() async {
     final connector = context.read<MeshCoreConnector>();
-    if (!connector.isConnected) return;
     final text = buildContactShare(connector.selfPublicKey, connector.selfName);
     if (text == null) return;
+    await _sendContactShare(text, context.l10n.chat_contactShareFailed);
+  }
+
+  Future<void> _shareSavedContact() async {
+    final connector = context.read<MeshCoreConnector>();
+    if (!connector.isConnected) return;
+    final contact = await showMeshSheet<Contact>(
+      context,
+      builder: (_) => const ContactSharePicker(),
+    );
+    if (!mounted || contact == null || !connector.isConnected) return;
+    final saved = connector.getContactByPubKeyHex(contact.publicKeyHex);
+    if (saved == null || !saved.isActive) return;
+    final text = buildContactShare(
+      saved.publicKey,
+      saved.name,
+      type: saved.type,
+    );
+    if (text == null) return;
+    await _sendContactShare(text, context.l10n.chat_sharedContactFailed);
+  }
+
+  Future<void> _sendContactShare(String text, String failureMessage) async {
+    final connector = context.read<MeshCoreConnector>();
+    if (!connector.isConnected) return;
     final maxBytes = maxChannelMessageBytes(connector.selfName);
     if (utf8.encode(text).length > maxBytes) {
       showDismissibleSnackBar(
@@ -2428,7 +2440,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
       if (!mounted) return;
       showDismissibleSnackBar(
         context,
-        content: Text(context.l10n.chat_contactShareFailed),
+        content: Text(failureMessage),
         backgroundColor: MeshPalette.warn,
       );
     }

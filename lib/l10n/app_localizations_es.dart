@@ -5532,6 +5532,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chat_shareMyContact => 'Share my contact';
 
   @override
+  String get chat_shareContact => 'Share contact';
+
+  @override
+  String get chat_contactCannotShare => 'This contact cannot be shared.';
+
+  @override
+  String get chat_sharedContactFailed => 'Could not share the contact.';
+
+  @override
   String get chat_contactShareFailed => 'Could not share your contact.';
 
   @override

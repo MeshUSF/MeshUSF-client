@@ -9352,6 +9352,24 @@ abstract class AppLocalizations {
   /// **'Share my contact'**
   String get chat_shareMyContact;
 
+  /// No description provided for @chat_shareContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Share contact'**
+  String get chat_shareContact;
+
+  /// No description provided for @chat_contactCannotShare.
+  ///
+  /// In en, this message translates to:
+  /// **'This contact cannot be shared.'**
+  String get chat_contactCannotShare;
+
+  /// No description provided for @chat_sharedContactFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not share the contact.'**
+  String get chat_sharedContactFailed;
+
   /// No description provided for @chat_contactShareFailed.
   ///
   /// In en, this message translates to:

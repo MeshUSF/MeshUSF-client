@@ -93,15 +93,16 @@ List<ContactShareSegment> findContactShareSegments(String text) {
   return segments;
 }
 
-/// Returns null until self-info contains a usable key and name.
-String? buildContactShare(Uint8List? publicKey, String? name) {
+/// Returns null when the key, name or node type cannot form a contact string.
+String? buildContactShare(Uint8List? publicKey, String? name, {int type = 1}) {
   if (publicKey == null || publicKey.length != _contactCardKeyBytes) {
     return null;
   }
+  if (type < 1 || type > 4) return null;
   final fittedName = _fitContactShareName((name ?? '').trim());
   if (fittedName.isEmpty || fittedName.contains('>')) return null;
   final hex = publicKey.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
-  return '<$hex:1:$fittedName>';
+  return '<$hex:$type:$fittedName>';
 }
 
 String _fitContactShareName(String name) {
