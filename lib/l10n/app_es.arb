@@ -476,7 +476,7 @@
       }
     }
   },
-  "chat_location": "Ubicación",
+  "chat_location": "Mi ubicación",
   "chat_sendMessageTo": "Enviar un mensaje a {contactName}",
   "@chat_sendMessageTo": {
     "placeholders": {
@@ -511,6 +511,8 @@
   "chat_selectSendAction": "Seleccionar acción de envío",
   "chat_sendGif": "Enviar GIF",
   "chat_sendLocation": "Enviar ubicación",
+  "chat_myLocation": "Mi ubicación",
+  "chat_gettingLocation": "Obteniendo ubicación…",
   "chat_viewOnMap": "Ver en el mapa",
   "chat_locationPermissionDenied": "Permite que MeshCore acceda a la ubicación del dispositivo e inténtalo de nuevo.",
   "chat_locationServicesDisabled": "Activa los servicios de ubicación del dispositivo e inténtalo de nuevo.",

@@ -35,7 +35,7 @@ From the Contacts screen, tap any Chat-type contact to open the ChatScreen.
 ### Input Bar
 
 - **GIF button** (left): Opens GIF picker bottom sheet
-- **Send location action**: Sends the connected radio's coordinates when its GPS is available; otherwise, it requests the computer or phone's location through the operating system or browser. The message includes a **View on map** button that opens the coordinates in the app's built-in map. Direct chats show a location button; channel chats include the action in the add menu. Location permissions and services must be enabled; browser location requires HTTPS or localhost.
+- **Send location action**: Sends the connected radio's stored coordinates when GPS is enabled and its coordinates are valid; otherwise, it requests the computer or phone's location through the operating system or browser. Direct chats show a location button; channel chats include the action in the add menu. See [Sharing your location](#sharing-your-location).
 - **Translation button** (optional, between GIF and text field): Shown only when translation is enabled in App Settings. Tap to configure outgoing-message translation language and on/off toggle.
 - **Text field** (center): Auto-capitalization, enforces UTF-8 byte limit in real-time
 - **Send button** (right): Submits the message
@@ -51,6 +51,23 @@ From the Contacts screen, tap any Chat-type contact to open the ChatScreen.
 | GIF | `g:<giphy-id>` | Inline GIF image from Giphy CDN |
 | Location | Coordinates followed by an internal map URL | Coordinates and a button to open the built-in map |
 | Reaction | `r:<hash>:<emoji-index>` | Applied to target message as emoji pill |
+
+### Sharing your location
+
+Tap **Send location** to send **My location: latitude,longitude**, followed by an internal map link. The label follows your app language. The recipient can tap **View on map** to open the coordinates in the app's built-in map.
+
+The connected node takes priority: its GPS must be enabled and its stored coordinates valid. This action does not wait for a new GPS fix from the node. Otherwise, the app asks the phone, computer, or browser for its location. Location permissions and services must be enabled; browser location requires HTTPS or localhost.
+
+In the browser, a cached device location can be reused if it is at most 60 seconds old and reports accuracy within 50 meters. If a cached fix does not qualify, the app requests a fresh fix. The 50-meter requirement applies to cached fixes only; a fresh fix may be less accurate. Node coordinates keep their existing validation.
+
+The location action shows a spinner immediately while looking up coordinates and prevents repeated location requests in that chat. Other channel add-menu actions remain available, and your typed draft is preserved. The entire device lookup, including permission handling and any fresh-fix retry, has a 10-second limit. On failure, an error appears and you can retry. Results arriving after timeout, leaving the chat, or disconnecting are not sent.
+
+| Chat | Looking up location | Sent message |
+|---|---|---|
+| Direct | ![Direct chat location lookup](../docs/screenshots/direct-location-sharing-loading.png) | ![Direct chat My location message](../docs/screenshots/direct-location-sharing-message.png) |
+| Channel | ![Channel location lookup](../docs/screenshots/channel-location-sharing-loading.png) | ![Channel My location message](../docs/screenshots/channel-location-sharing-message.png) |
+
+These screenshots use simulated coordinates and messages. Regenerate them with `flutter test --update-goldens test/screens/location_sharing_test.dart`.
 
 ## Message Status
 

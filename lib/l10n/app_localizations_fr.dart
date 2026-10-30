@@ -1684,6 +1684,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get chat_sendLocation => 'Envoyer la position';
 
   @override
+  String get chat_myLocation => 'Ma position';
+
+  @override
+  String get chat_gettingLocation => 'Obtention de la position…';
+
+  @override
   String get chat_viewOnMap => 'Voir sur la carte';
 
   @override

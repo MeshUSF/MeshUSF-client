@@ -187,10 +187,12 @@ Each waypoint includes: name, lat/lon, type label, and public key hex.
 
 ## Location Data Sources
 
-The phone's own GPS is **never used**. All location data comes from the mesh:
+Node markers on the main map use location data from the mesh:
 
 1. **Device self-location**: Read from firmware device-info response. Set manually in Settings → Location, or updated automatically if the device has a GPS module.
 2. **Remote node locations**: Extracted from advertisement packets received over the mesh. Encoded as integer lat/lon × 1,000,000.
+
+The chat **Send location** action first uses the connected node's valid stored coordinates when GPS is enabled. Otherwise, it uses the phone or computer's operating-system location, or browser geolocation. In the browser, cached fixes must be at most 60 seconds old with reported accuracy within 50 meters; otherwise a fresh fix is requested. Device lookup is limited to 10 seconds. See [Sharing your location](chat-and-messaging.md#sharing-your-location) for loading states and screenshots.
 
 ## Regions and offline use
 

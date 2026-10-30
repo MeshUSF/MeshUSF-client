@@ -28,6 +28,18 @@ void main() {
   });
 
   test(
+    'extracts My location messages without changing the map coordinates',
+    () {
+      final link = LocationMapLink.create(45.5, -122.6);
+      final extracted = LocationMapLink.extract(
+        'My location: 45.5,-122.6\n$link',
+      );
+      expect(extracted!.position, const LatLng(45.5, -122.6));
+      expect(extracted.textWithoutLink, 'My location: 45.5,-122.6');
+    },
+  );
+
+  test(
     'opens coordinates from previously sent Google Maps links internally',
     () {
       expect(

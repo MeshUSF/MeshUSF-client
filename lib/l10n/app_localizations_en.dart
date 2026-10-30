@@ -1653,6 +1653,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chat_sendLocation => 'Send location';
 
   @override
+  String get chat_myLocation => 'My location';
+
+  @override
+  String get chat_gettingLocation => 'Getting location…';
+
+  @override
   String get chat_viewOnMap => 'View on map';
 
   @override

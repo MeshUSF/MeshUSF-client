@@ -511,6 +511,8 @@
   "chat_selectSendAction": "Sélectionner une action d’envoi",
   "chat_sendGif": "Envoyer un GIF",
   "chat_sendLocation": "Envoyer la position",
+  "chat_myLocation": "Ma position",
+  "chat_gettingLocation": "Obtention de la position…",
   "chat_viewOnMap": "Voir sur la carte",
   "chat_locationPermissionDenied": "Autorisez MeshCore à accéder à la position de cet appareil, puis réessayez.",
   "chat_locationServicesDisabled": "Activez les services de localisation de cet appareil, puis réessayez.",

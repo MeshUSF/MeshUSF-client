@@ -80,6 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _textFieldFocusNode = FocusNode();
   final GlobalKey _unreadScrollKey = GlobalKey();
   bool _isLoadingOlder = false;
+  bool _isSharingLocation = false;
   MeshCoreConnector? _connector;
   Message? _pendingUnreadScrollTarget;
   String? _unreadDividerMessageId;
@@ -494,9 +495,21 @@ class _ChatScreenState extends State<ChatScreen> {
                 onPressed: () => _showGifPicker(context),
               ),
               IconButton(
-                icon: const Icon(Icons.location_on_outlined),
-                tooltip: context.l10n.chat_sendLocation,
-                onPressed: () => _sendLocation(connector),
+                icon: _isSharingLocation
+                    ? SizedBox.square(
+                        dimension: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          semanticsLabel: context.l10n.chat_gettingLocation,
+                        ),
+                      )
+                    : const Icon(Icons.location_on_outlined),
+                tooltip: _isSharingLocation
+                    ? context.l10n.chat_gettingLocation
+                    : context.l10n.chat_sendLocation,
+                onPressed: _isSharingLocation
+                    ? null
+                    : () => _sendLocation(connector),
               ),
               if (settings.translationEnabled)
                 MessageTranslationButton(
@@ -755,11 +768,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _sendLocation(MeshCoreConnector connector) async {
+    if (_isSharingLocation || !connector.isConnected) return;
+    setState(() => _isSharingLocation = true);
     try {
       final coordinates = await LocationSharingService.getCurrentCoordinates(
         connector,
       );
-      if (!mounted) return;
+      if (!mounted || !connector.isConnected) return;
 
       final mapCoordinates =
           '${coordinates.latitude.toStringAsFixed(6)},'
@@ -767,7 +782,7 @@ class _ChatScreenState extends State<ChatScreen> {
       await _sendMessage(
         connector,
         messageOverride:
-            'Location: $mapCoordinates\n'
+            '${context.l10n.chat_myLocation}: $mapCoordinates\n'
             '${LocationMapLink.create(coordinates.latitude, coordinates.longitude)}',
       );
     } on LocationLookupException catch (error) {
@@ -781,6 +796,8 @@ class _ChatScreenState extends State<ChatScreen> {
           context.l10n.chat_locationUnavailable,
       };
       showDismissibleSnackBar(context, content: Text(message));
+    } finally {
+      if (mounted) setState(() => _isSharingLocation = false);
     }
   }
 

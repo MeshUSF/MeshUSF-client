@@ -2986,6 +2986,18 @@ abstract class AppLocalizations {
   /// **'Send location'**
   String get chat_sendLocation;
 
+  /// No description provided for @chat_myLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My location'**
+  String get chat_myLocation;
+
+  /// No description provided for @chat_gettingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting location…'**
+  String get chat_gettingLocation;
+
   /// No description provided for @chat_viewOnMap.
   ///
   /// In en, this message translates to:

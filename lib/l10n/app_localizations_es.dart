@@ -1645,7 +1645,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get chat_location => 'Ubicación';
+  String get chat_location => 'Mi ubicación';
 
   @override
   String get chat_typeMessage => 'Escribe un mensaje...';
@@ -1677,6 +1677,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get chat_sendLocation => 'Enviar ubicación';
+
+  @override
+  String get chat_myLocation => 'Mi ubicación';
+
+  @override
+  String get chat_gettingLocation => 'Obteniendo ubicación…';
 
   @override
   String get chat_viewOnMap => 'Ver en el mapa';

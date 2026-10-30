@@ -867,6 +867,8 @@
   "chat_selectSendAction": "Select send action",
   "chat_sendGif": "Send GIF",
   "chat_sendLocation": "Send location",
+  "chat_myLocation": "My location",
+  "chat_gettingLocation": "Getting location…",
   "chat_viewOnMap": "View on map",
   "chat_locationPermissionDenied": "Allow MeshCore to access this device's location, then try again.",
   "chat_locationServicesDisabled": "Turn on this device's location services, then try again.",
