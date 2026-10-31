@@ -2980,6 +2980,48 @@ abstract class AppLocalizations {
   /// **'Send GIF'**
   String get chat_sendGif;
 
+  /// No description provided for @chat_sendLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Send location'**
+  String get chat_sendLocation;
+
+  /// No description provided for @chat_myLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My location'**
+  String get chat_myLocation;
+
+  /// No description provided for @chat_gettingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting location…'**
+  String get chat_gettingLocation;
+
+  /// No description provided for @chat_viewOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View on map'**
+  String get chat_viewOnMap;
+
+  /// No description provided for @chat_locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow MeshCore to access this device\'s location, then try again.'**
+  String get chat_locationPermissionDenied;
+
+  /// No description provided for @chat_locationServicesDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on this device\'s location services, then try again.'**
+  String get chat_locationServicesDisabled;
+
+  /// No description provided for @chat_locationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t determine this device\'s location. Check its location settings and try again.'**
+  String get chat_locationUnavailable;
+
   /// No description provided for @chat_removeGif.
   ///
   /// In en, this message translates to:
@@ -9327,6 +9369,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A test message will arrive shortly.'**
   String get reviewMode_testSent;
+
+  /// No description provided for @contacts_alreadyAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Already added'**
+  String get contacts_alreadyAdded;
+
+  /// No description provided for @contacts_yourContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Your contact'**
+  String get contacts_yourContact;
+
+  /// No description provided for @contacts_cannotAddSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t add your own contact.'**
+  String get contacts_cannotAddSelf;
+
+  /// No description provided for @chat_shareMyContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my contact'**
+  String get chat_shareMyContact;
+
+  /// No description provided for @chat_shareContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Share contact'**
+  String get chat_shareContact;
+
+  /// No description provided for @chat_contactCannotShare.
+  ///
+  /// In en, this message translates to:
+  /// **'This contact cannot be shared.'**
+  String get chat_contactCannotShare;
+
+  /// No description provided for @chat_sharedContactFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not share the contact.'**
+  String get chat_sharedContactFailed;
+
+  /// No description provided for @chat_contactShareFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not share your contact.'**
+  String get chat_contactShareFailed;
 
   /// Banner action that leaves review mode
   ///

@@ -1676,6 +1676,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chat_sendGif => 'Enviar GIF';
 
   @override
+  String get chat_sendLocation => 'Enviar ubicación';
+
+  @override
+  String get chat_myLocation => 'Mi ubicación';
+
+  @override
+  String get chat_gettingLocation => 'Obteniendo ubicación…';
+
+  @override
+  String get chat_viewOnMap => 'Ver en el mapa';
+
+  @override
+  String get chat_locationPermissionDenied =>
+      'Permite que MeshCore acceda a la ubicación del dispositivo e inténtalo de nuevo.';
+
+  @override
+  String get chat_locationServicesDisabled =>
+      'Activa los servicios de ubicación del dispositivo e inténtalo de nuevo.';
+
+  @override
+  String get chat_locationUnavailable =>
+      'No se pudo determinar la ubicación del dispositivo. Comprueba los ajustes de ubicación e inténtalo de nuevo.';
+
+  @override
   String get chat_removeGif => 'Quitar GIF';
 
   @override
@@ -5518,6 +5542,30 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reviewMode_testSent => 'En breve llegará un mensaje de prueba.';
+
+  @override
+  String get contacts_alreadyAdded => 'Already added';
+
+  @override
+  String get contacts_yourContact => 'Your contact';
+
+  @override
+  String get contacts_cannotAddSelf => 'You can\'t add your own contact.';
+
+  @override
+  String get chat_shareMyContact => 'Share my contact';
+
+  @override
+  String get chat_shareContact => 'Share contact';
+
+  @override
+  String get chat_contactCannotShare => 'This contact cannot be shared.';
+
+  @override
+  String get chat_sharedContactFailed => 'Could not share the contact.';
+
+  @override
+  String get chat_contactShareFailed => 'Could not share your contact.';
 
   @override
   String get reviewMode_exit => 'Salir';

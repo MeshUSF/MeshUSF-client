@@ -50,6 +50,7 @@ class MapScreen extends StatefulWidget {
   final String? highlightMarkerKey;
   final double highlightZoom;
   final bool hideBackButton;
+  final bool allowPop;
 
   const MapScreen({
     super.key,
@@ -58,6 +59,7 @@ class MapScreen extends StatefulWidget {
     this.highlightMarkerKey,
     this.highlightZoom = 15.0,
     this.hideBackButton = false,
+    this.allowPop = false,
   });
 
   @override
@@ -623,7 +625,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
           });
         }
 
-        final allowBack = !connector.isConnected;
+        final allowBack = widget.allowPop || !connector.isConnected;
 
         final visibleContacts = _filterContactsBySettings(
           contactsWithLocation,
@@ -656,6 +658,12 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
               title: AppBarTitle(context.l10n.map_title),
               centerTitle: true,
               automaticallyImplyLeading: false,
+              leading: widget.allowPop
+                  ? IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () => Navigator.of(context).maybePop(),
+                    )
+                  : null,
               bottom: const SyncProgressAppBarBottom(),
               actions: [
                 PopupMenuButton(

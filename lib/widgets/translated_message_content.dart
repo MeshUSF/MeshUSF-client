@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../helpers/link_handler.dart';
+import '../helpers/location_map_link.dart';
+import '../l10n/app_localizations.dart';
+import 'location_share_button.dart';
 
 class TranslatedMessageContent extends StatelessWidget {
   final String displayText;
@@ -9,6 +12,14 @@ class TranslatedMessageContent extends StatelessWidget {
   final TextStyle? originalStyle;
   final bool showOriginalFirst;
   final VoidCallback? onSecondaryTap;
+  final double textScale;
+
+  static final _locationLabels = {
+    for (final locale in AppLocalizations.supportedLocales) ...[
+      lookupAppLocalizations(locale).chat_myLocation,
+      lookupAppLocalizations(locale).chat_location,
+    ],
+  };
 
   const TranslatedMessageContent({
     super.key,
@@ -18,6 +29,7 @@ class TranslatedMessageContent extends StatelessWidget {
     this.originalStyle,
     this.showOriginalFirst = true,
     this.onSecondaryTap,
+    this.textScale = 1,
   });
 
   @override
@@ -28,10 +40,30 @@ class TranslatedMessageContent extends StatelessWidget {
         trimmedOriginal != null &&
         trimmedOriginal.isNotEmpty &&
         trimmedOriginal != trimmedDisplay;
-    final originalWidget = shouldShowOriginal
+    final displayLocation = LocationMapLink.extract(
+      trimmedDisplay,
+      locationLabels: _locationLabels,
+    );
+    final originalLocation = shouldShowOriginal
+        ? LocationMapLink.extract(
+            trimmedOriginal,
+            locationLabels: _locationLabels,
+          )
+        : null;
+    final location = displayLocation ?? originalLocation;
+    final displayBody =
+        displayLocation?.textWithoutLink.trim() ?? trimmedDisplay;
+    final originalBody = originalLocation?.position == location?.position
+        ? originalLocation?.textWithoutLink.trim() ?? trimmedOriginal
+        : trimmedOriginal;
+    final originalWidget =
+        shouldShowOriginal &&
+            originalBody != null &&
+            originalBody.isNotEmpty &&
+            originalBody != displayBody
         ? LinkHandler.buildLinkifyText(
             context: context,
-            text: trimmedOriginal,
+            text: originalBody,
             style:
                 originalStyle ??
                 style.copyWith(
@@ -41,20 +73,35 @@ class TranslatedMessageContent extends StatelessWidget {
             onSecondaryTap: onSecondaryTap,
           )
         : null;
-    final translatedWidget = LinkHandler.buildLinkifyText(
-      context: context,
-      text: trimmedDisplay,
-      style: style,
-      onSecondaryTap: onSecondaryTap,
-    );
+    final translatedWidget = displayBody.isEmpty
+        ? null
+        : LinkHandler.buildLinkifyText(
+            context: context,
+            text: displayBody,
+            style: style,
+            onSecondaryTap: onSecondaryTap,
+          );
 
-    if (!shouldShowOriginal) {
-      return translatedWidget;
-    }
-
-    final children = showOriginalFirst
-        ? [originalWidget!, const SizedBox(height: 6), translatedWidget]
-        : [translatedWidget, const SizedBox(height: 6), originalWidget!];
+    final textWidgets =
+        (showOriginalFirst
+                ? [originalWidget, translatedWidget]
+                : [translatedWidget, originalWidget])
+            .whereType<Widget>()
+            .toList();
+    final children = <Widget>[
+      for (var i = 0; i < textWidgets.length; i++) ...[
+        if (i > 0) const SizedBox(height: 6),
+        textWidgets[i],
+      ],
+      if (location != null)
+        LocationShareButton(
+          position: location.position,
+          textScale: textScale,
+          onPressed: () => LinkHandler.handleLinkTap(context, location.link),
+        ),
+    ];
+    if (children.isEmpty) return const SizedBox.shrink();
+    if (children.length == 1) return children.single;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
