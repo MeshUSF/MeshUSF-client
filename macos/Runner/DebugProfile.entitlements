@@ -22,6 +22,8 @@
 	</array>
 	<key>com.apple.security.device.camera</key>
 	<true/>
+	<key>com.apple.security.personal-information.location</key>
+	<true/>
 	<!-- image_picker: read photos the user explicitly chooses -->
 	<key>com.apple.security.files.user-selected.read-only</key>
 	<true/>

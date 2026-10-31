@@ -8,6 +8,7 @@ The Map feature is a full-featured node-location visualization and radio-plannin
 
 - **QuickSwitchBar tab 2** (rightmost) from Contacts or Channels
 - **Deep-link from a chat message**: Tapping a shared location pin in a chat opens the map centered on that pin
+- **View on map in a location card**: Opens the built-in map at the shared coordinates, with a back arrow to return to the channel or DM. Internal map links and supported Google Maps coordinate links use this same view. See [Sharing your location](chat-and-messaging.md#sharing-your-location).
 - **Settings → Offline Map Cache**: Opens the tile cache management screen
 
 ## What the Map Displays

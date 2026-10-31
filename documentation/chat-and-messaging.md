@@ -34,8 +34,8 @@ From the Contacts screen, tap any Chat-type contact to open the ChatScreen.
 
 ### Input Bar
 
-- **GIF button** (left): Opens GIF picker bottom sheet
-- **Translation button** (optional, between GIF and text field): Shown only when translation is enabled in App Settings. Tap to configure outgoing-message translation language and on/off toggle.
+- **Add menu** (`+`, left): Contains Share contact, Send location, and Send GIF. The same menu is used in channel chats, with their additional sharing actions.
+- **Translation button** (optional, between the add menu and text field): Shown only when translation is enabled in App Settings. Tap to configure outgoing-message translation language and on/off toggle.
 - **Text field** (center): Auto-capitalization, enforces UTF-8 byte limit in real-time
 - **Send button** (right): Submits the message
 - On desktop: Enter/Numpad Enter also submits
@@ -49,7 +49,25 @@ From the Contacts screen, tap any Chat-type contact to open the ChatScreen.
 | URL image preview | Image URL in text (per-contact opt-in; requires internet) | Downloaded inline preview |
 | GIF | `g:<giphy-id>` | Inline GIF image from Giphy CDN |
 | Location pin | `m:<lat>,<lon>\|<label>\|...` | Location icon + label; tap to open map |
+| Shared current location | Localized heading and coordinates followed by an internal map URL | White Location button with a red pin, coordinates, and View on map |
 | Reaction | `r:<hash>:<emoji-index>` | Applied to target message as emoji pill |
+
+### Sharing your location
+
+Open the **+** menu and choose **Send location** in a direct or channel chat. The app uses the connected radio's stored coordinates when GPS is enabled and the coordinates are valid. Otherwise, it requests this device's location through the operating system or browser.
+
+The menu trigger shows a spinner during lookup. Send location is disabled until it finishes; other menu actions remain available. Your typed draft and channel reply selection are preserved. Device lookup has a 10-second deadline, with localized feedback for permissions, disabled location services, or unavailable coordinates. A browser may reuse a fix up to 60 seconds old with reported accuracy within 50 meters. Late results after timeout, disconnection, or leaving chat are discarded.
+
+Incoming and outgoing shares display a white **Location** button with a red pin, dark text, coordinates, and **View on map**. A subtle grey border keeps the button visible in light mode. Tap it to open the built-in map, then use the back arrow to return to chat. Generated location headings and links are represented by the card, including older English, French, and Spanish shares. Other message text remains visible. Stored messages and transmitted text retain their original format.
+
+The app recognizes `https://meshcore.local/map?lat=...&lon=...` and Google Maps coordinate links such as `https://maps.google.com/?q=45.5,-122.6`. It reads coordinates directly from these links and opens the internal map. Bare coordinates, shortened links, addresses, and invalid coordinates remain ordinary text or links. Only the first valid map link in each text segment becomes a card.
+
+| Chat | Send menu | Location card |
+|---|---|---|
+| Direct | ![Direct chat send menu](../docs/screenshots/direct-location-sharing-menu.png) | ![Direct chat location card](../docs/screenshots/direct-location-sharing-message.png) |
+| Channel | ![Channel send menu](../docs/screenshots/channel-location-sharing-menu.png) | ![Channel location card](../docs/screenshots/channel-location-sharing-message.png) |
+
+Lookup progress: [direct chat](../docs/screenshots/direct-location-sharing-loading.png), [channel chat](../docs/screenshots/channel-location-sharing-loading.png). Screenshots use simulated coordinates and messages; regenerate with `flutter test --update-goldens test/screens/location_sharing_test.dart`.
 
 ## Message Status
 

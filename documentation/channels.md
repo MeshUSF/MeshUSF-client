@@ -92,6 +92,7 @@ Messages also show a region label when known, independently of message tracing. 
 - **Plain text** with linkified URLs
 - **GIFs** (`g:{gifId}`) rendered inline via Giphy CDN
 - **Location pins** (`m:{lat},{lon}|{label}|`) shown as tappable location cards
+- **Shared current locations** shown as white buttons with a red pin, coordinates, and View on map. Send yours through **+ → Send location**, alongside contact sharing and GIF actions. See [Sharing your location](chat-and-messaging.md#sharing-your-location) for lookup behavior and examples.
 - **Mesh images** sent as GRP_DATA chunks and reconstructed locally ([setup and limitations](image-messages.md))
 - **URL image previews** when enabled per channel; content is fetched over the internet
 - **Reactions** displayed as emoji pills below target messages
