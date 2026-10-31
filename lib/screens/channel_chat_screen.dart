@@ -17,7 +17,6 @@ import '../helpers/chat_scroll_controller.dart';
 import '../connector/meshcore_protocol.dart';
 import '../helpers/cyr2lat.dart';
 import '../helpers/gif_helper.dart';
-import '../helpers/location_map_link.dart';
 import '../helpers/message_url_image_helper.dart';
 import '../helpers/path_helper.dart';
 import '../helpers/reaction_helper.dart';
@@ -31,7 +30,6 @@ import '../services/app_settings_service.dart';
 import '../services/chat_text_scale_service.dart';
 import '../services/image_chunk_transport.dart';
 import '../services/image_codec_service.dart';
-import '../services/location_sharing_service.dart';
 import '../services/received_image_store.dart';
 import '../services/translation_service.dart';
 import '../utils/image_save.dart';
@@ -85,7 +83,6 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   final CommunityPskIndex _communityIndex = CommunityPskIndex();
   final Map<String, GlobalKey> _messageKeys = {};
   bool _isLoadingOlder = false;
-  bool _isSharingLocation = false;
   bool _communitiesLoaded = false;
 
   /// Per-screen image-id allocator. The id is 8 bits and the reassembly key also
@@ -2045,27 +2042,14 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   PopupMenuButton<String>(
-                    icon: _isSharingLocation
-                        ? SizedBox.square(
-                            dimension: 24,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              semanticsLabel: context.l10n.chat_gettingLocation,
-                            ),
-                          )
-                        : const Icon(Icons.add_circle_outline),
+                    icon: const Icon(Icons.add_circle_outline),
                     position: PopupMenuPosition.over,
-                    offset: Offset(0, showImageAction ? -160 : -112),
-                    tooltip: _isSharingLocation
-                        ? context.l10n.chat_gettingLocation
-                        : context.l10n.chat_selectSendAction,
+                    offset: Offset(0, showImageAction ? -112 : -64),
+                    tooltip: context.l10n.chat_selectSendAction,
                     onSelected: (action) {
                       switch (action) {
                         case 'gif':
                           _showGifPicker(context);
-                          break;
-                        case 'location':
-                          _sendLocation(connector);
                           break;
                         case 'meshcore-image':
                           _showImageSendPreview();
@@ -2080,17 +2064,6 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                             const Icon(Icons.gif_box),
                             const SizedBox(width: 12),
                             Text(context.l10n.chat_sendGif),
-                          ],
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 'location',
-                        enabled: !_isSharingLocation,
-                        child: Row(
-                          children: [
-                            const Icon(Icons.location_on_outlined),
-                            const SizedBox(width: 12),
-                            Text(context.l10n.chat_sendLocation),
                           ],
                         ),
                       ),
@@ -2263,8 +2236,8 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     );
   }
 
-  Future<void> _sendMessage({String? messageOverride}) async {
-    final text = (messageOverride ?? _textController.text).trim();
+  Future<void> _sendMessage() async {
+    final text = _textController.text.trim();
     if (text.isEmpty) return;
 
     final now = DateTime.now();
@@ -2286,7 +2259,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     String? originalText;
     String? translatedLanguageCode;
     String? translationModelId;
-    if (messageOverride == null && settings.translationEnabled) {
+    if (settings.translationEnabled) {
       final targetLanguageCode = translationService.resolvedTargetLanguageCode(
         Localizations.localeOf(context).languageCode,
       );
@@ -2337,11 +2310,9 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     // end transform
 
     final replyTo = _replyingToMessage;
-    if (messageOverride == null) {
-      _textController.clear();
-      _cancelReply();
-      _textFieldFocusNode.requestFocus();
-    }
+    _textController.clear();
+    _cancelReply();
+    _textFieldFocusNode.requestFocus();
     connector.sendChannelMessage(
       widget.channel,
       messageText,
@@ -2351,39 +2322,6 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
       region: replyRegion,
       replyTo: replyTo,
     );
-  }
-
-  Future<void> _sendLocation(MeshCoreConnector connector) async {
-    if (_isSharingLocation || !connector.isConnected) return;
-    setState(() => _isSharingLocation = true);
-    try {
-      final coordinates = await LocationSharingService.getCurrentCoordinates(
-        connector,
-      );
-      if (!mounted || !connector.isConnected) return;
-
-      final mapCoordinates =
-          '${coordinates.latitude.toStringAsFixed(6)},'
-          '${coordinates.longitude.toStringAsFixed(6)}';
-      await _sendMessage(
-        messageOverride:
-            '${context.l10n.chat_myLocation}: $mapCoordinates\n'
-            '${LocationMapLink.create(coordinates.latitude, coordinates.longitude)}',
-      );
-    } on LocationLookupException catch (error) {
-      if (!mounted) return;
-      final message = switch (error.failure) {
-        LocationLookupFailure.permissionDenied =>
-          context.l10n.chat_locationPermissionDenied,
-        LocationLookupFailure.serviceDisabled =>
-          context.l10n.chat_locationServicesDisabled,
-        LocationLookupFailure.unavailable =>
-          context.l10n.chat_locationUnavailable,
-      };
-      showDismissibleSnackBar(context, content: Text(message));
-    } finally {
-      if (mounted) setState(() => _isSharingLocation = false);
-    }
   }
 
   void _showMessagePathInfo(ChannelMessage message) {
