@@ -1,5 +1,5 @@
 {
-  "name": "meshcore-open",
+  "name": "MeshUSF-client",
   "scripts": {
     "build": "dart run build_pipe:build",
     "deploy": "bun x wrangler deploy"
