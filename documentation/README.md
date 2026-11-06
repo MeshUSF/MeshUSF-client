@@ -57,4 +57,7 @@ MeshCore Open connects to MeshCore LoRa mesh radios over BLE, USB, or TCP. Once 
 
 ## Keeping documentation current
 
+Experimental work: [MeshUSF shared-node integration proposal](meshusf-shared-node-proposal.md).
+This documents a separate prototype; it does not change the full client's runtime.
+
 When changing a feature, update its access steps, defaults, platform/firmware requirements, failure states, and screenshots. Keep binary framing details in the protocol reference and implementation links. See [contribution guidelines](../CONTRIBUTING.md).
