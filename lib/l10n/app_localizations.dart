@@ -676,6 +676,24 @@ abstract class AppLocalizations {
   /// **'Connection failed: {error}'**
   String scanner_connectionFailed(String error);
 
+  /// Recovery guidance when Bluetooth connection permission is missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth permission is missing. Allow Nearby Devices or Bluetooth access in system settings, then try again.'**
+  String get scanner_blePermissionGuidance;
+
+  /// Recovery guidance for authentication, cancelled pairing or pairing timeout. Does not assume the PIN was wrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth pairing did not finish. Check the radio\'s pairing instructions and any system pairing prompt, then try again.'**
+  String get scanner_blePairingGuidance;
+
+  /// Recovery guidance for a generic Bluetooth connection timeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The Bluetooth connection timed out. Keep the radio nearby and awake, then try again.'**
+  String get scanner_bleTimeoutGuidance;
+
   /// No description provided for @scanner_stop.
   ///
   /// In en, this message translates to:

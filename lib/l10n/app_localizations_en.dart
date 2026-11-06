@@ -337,6 +337,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get scanner_blePermissionGuidance =>
+      'Bluetooth permission is missing. Allow Nearby Devices or Bluetooth access in system settings, then try again.';
+
+  @override
+  String get scanner_blePairingGuidance =>
+      'Bluetooth pairing did not finish. Check the radio\'s pairing instructions and any system pairing prompt, then try again.';
+
+  @override
+  String get scanner_bleTimeoutGuidance =>
+      'The Bluetooth connection timed out. Keep the radio nearby and awake, then try again.';
+
+  @override
   String get scanner_stop => 'Stop';
 
   @override
