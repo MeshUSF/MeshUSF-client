@@ -1,0 +1,38 @@
+name: meshusf
+description: MeshUSF shared-node client, adapted from MeshUSF-client.
+publish_to: none
+version: 0.2.0+10000
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_reactive_ble: ^5.6.0
+  permission_handler: ^13.0.2
+  sqflite: 2.4.4+2
+  path: ^1.9.1
+  flutter_map: ^8.3.2
+  latlong2: ^0.9.1
+  path_provider: 2.1.5
+  path_provider_foundation: 2.4.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  sqflite_common_ffi: 2.3.6
+  sqlite3: 2.9.4
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf
+        - asset: assets/fonts/InterItalic.ttf
+          style: italic
+    - family: JetBrains Mono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono.ttf
