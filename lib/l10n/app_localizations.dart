@@ -136,6 +136,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get common_cancel;
 
+  /// No description provided for @common_apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get common_apply;
+
   /// No description provided for @common_ok.
   ///
   /// In en, this message translates to:
@@ -3921,6 +3927,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Set as my location'**
   String get map_setAsMyLocation;
+
+  /// No description provided for @map_pinColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin color'**
+  String get map_pinColor;
+
+  /// No description provided for @map_color.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get map_color;
+
+  /// No description provided for @map_pinColorLightRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Light red'**
+  String get map_pinColorLightRed;
+
+  /// No description provided for @map_pinColorOrange.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get map_pinColorOrange;
+
+  /// No description provided for @map_pinColorRichRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Rich red'**
+  String get map_pinColorRichRed;
+
+  /// No description provided for @map_pinColorYellow.
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow'**
+  String get map_pinColorYellow;
+
+  /// No description provided for @map_pinColorLime.
+  ///
+  /// In en, this message translates to:
+  /// **'Lime'**
+  String get map_pinColorLime;
+
+  /// No description provided for @map_pinColorGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get map_pinColorGreen;
+
+  /// No description provided for @map_pinColorTeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Teal'**
+  String get map_pinColorTeal;
+
+  /// No description provided for @map_pinColorCyan.
+  ///
+  /// In en, this message translates to:
+  /// **'Cyan'**
+  String get map_pinColorCyan;
+
+  /// No description provided for @map_pinColorBlue.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get map_pinColorBlue;
+
+  /// No description provided for @map_pinColorIndigo.
+  ///
+  /// In en, this message translates to:
+  /// **'Indigo'**
+  String get map_pinColorIndigo;
+
+  /// No description provided for @map_pinColorPurple.
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get map_pinColorPurple;
+
+  /// No description provided for @map_pinColorPink.
+  ///
+  /// In en, this message translates to:
+  /// **'Pink'**
+  String get map_pinColorPink;
+
+  /// No description provided for @map_pinColorBrown.
+  ///
+  /// In en, this message translates to:
+  /// **'Brown'**
+  String get map_pinColorBrown;
+
+  /// No description provided for @map_pinColorGray.
+  ///
+  /// In en, this message translates to:
+  /// **'Gray'**
+  String get map_pinColorGray;
+
+  /// No description provided for @map_pinColorBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Black'**
+  String get map_pinColorBlack;
+
+  /// No description provided for @map_pinColorCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get map_pinColorCustom;
+
+  /// No description provided for @map_pinColorHex.
+  ///
+  /// In en, this message translates to:
+  /// **'Hex color (#RRGGBB)'**
+  String get map_pinColorHex;
+
+  /// No description provided for @map_pinColorInvalidHex.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter six hexadecimal digits, for example #3366FF.'**
+  String get map_pinColorInvalidHex;
+
+  /// No description provided for @map_pinColorChannelRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get map_pinColorChannelRed;
 
   /// No description provided for @map_pinLabel.
   ///

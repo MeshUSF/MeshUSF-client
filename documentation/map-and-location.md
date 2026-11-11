@@ -36,6 +36,24 @@ Location pins shared in chat messages are displayed as flags:
 
 Tap a pin to see its info. Options to "Hide" (session only) or "Remove" (persistent).
 
+### Highlighted Location Pin
+
+When you open a location from chat, tap its highlighted pin to show a small info card beside it. The card follows the pin as you pan and zoom, and the rest of the map stays interactive. Close the card with its close button or tap the highlighted pin again.
+
+![Highlighted location card with a bold title and pill-shaped Color button](../docs/screenshots/map-pin-info-card.png)
+
+The location/name at the top of the card is bold. Tap the small pill-shaped **Color** button to open the color dialog. It has two rows of eight choices: 15 presets and **Custom** in the last position (row 2, column 8). On narrow screens, scroll the palette horizontally to reach every choice. The red presets are **Light red** (`#EF5350`) and **Rich red** (`#B71C1C`); amber and light blue are no longer presets.
+
+Choose a preset or select **Custom** to use red/green/blue sliders or enter a six-digit hex color such as `#3366FF`. An invalid hex value disables **Apply** until corrected. **Apply** updates this pin and its card outline together; **Cancel**, Back, or dismissing the dialog discards the draft. Labels and tooltips follow the app language (English, Spanish, or French).
+
+![Pin color dialog with fifteen presets and a final Custom choice](../docs/screenshots/map-pin-colors.png)
+
+The widget-test preview above shows the preset dialog. Base-map tiles are omitted by the test harness.
+
+![Custom pin color editor with hex input and red, green, and blue sliders](../docs/screenshots/map-pin-custom-color.png)
+
+Color changes apply locally to the highlighted pin while that map screen remains open. Closing the info card preserves the choice; leaving and reopening the map starts with Light red. Other shared flags and node markers keep their existing colors. Saving pins and transmitting chosen colors are not implemented by this palette.
+
 ### Predicted / Guessed Locations
 
 Many contacts on the mesh don't have GPS hardware, so the map has no explicit coordinates for them. Instead of leaving these contacts invisible, the app **infers an approximate position** by analyzing the repeater path the contact's messages travel through. These inferred positions are displayed as markers with a `not_listed_location` icon and a muted grey or colored border, visually distinct from confirmed-location markers.

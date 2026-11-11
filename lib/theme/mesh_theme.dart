@@ -78,6 +78,8 @@ class MapPalette {
   static const selected = Color(0xFF0EA5E9);
   static const sensor = Color(0xFF0F766E);
   static const shared = Color(0xFF0369A1);
+  static const pinLightRed = Color(0xFFEF5350);
+  static const pinRichRed = Color(0xFFB71C1C);
 
   static const panelLight = Color(0xF0FFFFFF);
   static const panelDark = Color(0xF50B1220);

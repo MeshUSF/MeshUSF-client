@@ -28,6 +28,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get common_cancel => 'Annuler';
 
   @override
+  String get common_apply => 'Appliquer';
+
+  @override
   String get common_ok => 'D\'accord';
 
   @override
@@ -2211,6 +2214,70 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get map_setAsMyLocation => 'Définir comme ma localisation';
+
+  @override
+  String get map_pinColor => 'Couleur du repère';
+
+  @override
+  String get map_color => 'Couleur';
+
+  @override
+  String get map_pinColorLightRed => 'Rouge clair';
+
+  @override
+  String get map_pinColorOrange => 'Orange';
+
+  @override
+  String get map_pinColorRichRed => 'Rouge intense';
+
+  @override
+  String get map_pinColorYellow => 'Jaune';
+
+  @override
+  String get map_pinColorLime => 'Vert citron';
+
+  @override
+  String get map_pinColorGreen => 'Vert';
+
+  @override
+  String get map_pinColorTeal => 'Bleu sarcelle';
+
+  @override
+  String get map_pinColorCyan => 'Cyan';
+
+  @override
+  String get map_pinColorBlue => 'Bleu';
+
+  @override
+  String get map_pinColorIndigo => 'Indigo';
+
+  @override
+  String get map_pinColorPurple => 'Violet';
+
+  @override
+  String get map_pinColorPink => 'Rose';
+
+  @override
+  String get map_pinColorBrown => 'Marron';
+
+  @override
+  String get map_pinColorGray => 'Gris';
+
+  @override
+  String get map_pinColorBlack => 'Noir';
+
+  @override
+  String get map_pinColorCustom => 'Personnalisé';
+
+  @override
+  String get map_pinColorHex => 'Couleur hexadécimale (#RRGGBB)';
+
+  @override
+  String get map_pinColorInvalidHex =>
+      'Saisissez six chiffres hexadécimaux, par exemple #3366FF.';
+
+  @override
+  String get map_pinColorChannelRed => 'Rouge';
 
   @override
   String get map_pinLabel => 'Libellé de l\'épingle';

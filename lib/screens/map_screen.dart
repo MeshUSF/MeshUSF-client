@@ -10,6 +10,7 @@ import 'package:meshcore_open/helpers/path_helper.dart';
 import 'package:meshcore_open/screens/path_trace_map.dart';
 import 'package:meshcore_open/widgets/app_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../connector/meshcore_connector.dart';
 import '../connector/meshcore_protocol.dart';
@@ -18,6 +19,7 @@ import '../models/app_settings.dart';
 import '../models/channel.dart';
 import '../models/contact.dart';
 import '../models/path_history.dart';
+import '../models/map_pin.dart';
 import '../l10n/contact_localization.dart';
 import '../services/app_settings_service.dart';
 import '../services/path_history_service.dart';
@@ -38,6 +40,7 @@ import '../theme/mesh_theme.dart';
 import '../widgets/mesh_ui.dart';
 import '../widgets/repeater_login_dialog.dart';
 import '../widgets/room_login_dialog.dart';
+import '../widgets/pin_color_dialog.dart';
 import '../helpers/guessed_location_estimator.dart';
 import '../helpers/snack_bar_builder.dart';
 import 'repeater_hub_screen.dart';
@@ -83,6 +86,9 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   Set<String> _removedMarkerIds = {};
   bool _isBuildingPathTrace = false;
   bool _isSelectingPoi = false;
+  bool _isPlanning = false;
+  bool _isHighlightPinSelected = false;
+  MapPin? _highlightPin;
   bool _hasInitializedMap = false;
   bool _removedMarkersLoaded = false;
   final List<int> _pathTrace = [];
@@ -204,6 +210,15 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   @override
   void initState() {
     super.initState();
+    final position = widget.highlightPosition;
+    if (position != null) {
+      _highlightPin = MapPin(
+        id: widget.highlightMarkerKey ?? const Uuid().v4(),
+        position: position,
+        label: (widget.highlightLabel ?? '').trim(),
+        color: MapPalette.pinLightRed,
+      );
+    }
     _loadRemovedMarkers();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -399,7 +414,8 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
             ? allContacts
             : allContacts.where((c) => c.isActive).toList();
 
-        final highlightPosition = widget.highlightPosition;
+        final pin = _highlightPin;
+        final highlightPosition = pin?.position;
         final sharedMarkers = settings.mapShowMarkers
             ? _collectSharedMarkers(
                     connector,
@@ -846,16 +862,22 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                       PolylineLayer(polylines: sharedMarkerPolylines),
                     MarkerLayer(
                       markers: [
-                        if (highlightPosition != null)
+                        if (pin != null)
                           Marker(
-                            point: highlightPosition,
+                            point: pin.position,
                             width: 44,
                             height: 44,
-                            child: IgnorePointer(
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _isHighlightPinSelected =
+                                      !_isHighlightPinSelected;
+                                });
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: MapPalette.batteryLow,
+                                  color: pin.color,
                                   border: Border.all(
                                     color: MapPalette.markerOutline,
                                     width: 3,
@@ -952,6 +974,100 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                           ),
                       ],
                     ),
+                    if (pin != null && _isHighlightPinSelected)
+                      MarkerLayer(
+                        markers: [
+                          Marker(
+                            point: pin.position,
+                            width: 260,
+                            height: 160,
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 12,
+                                bottom: 12,
+                              ),
+                              child: Card(
+                                margin: EdgeInsets.zero,
+                                elevation: 0,
+                                surfaceTintColor: Colors.transparent,
+                                color: _overlayPanelColor.withValues(
+                                  alpha: 0.5,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  side: BorderSide(
+                                    color: pin.color.withValues(alpha: 0.6),
+                                    width: 1.5,
+                                  ),
+                                ),
+                                child: ListView(
+                                  padding: const EdgeInsets.all(12),
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            pin.label.isEmpty
+                                                ? context.l10n.chat_location
+                                                : pin.label,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          tooltip: context.l10n.common_close,
+                                          icon: const Icon(Icons.close),
+                                          onPressed: () {
+                                            setState(() {
+                                              _isHighlightPinSelected = false;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      '${pin.position.latitude.toStringAsFixed(6)}, '
+                                      '${pin.position.longitude.toStringAsFixed(6)}',
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Tooltip(
+                                        message: context.l10n.map_pinColor,
+                                        child: FilledButton.tonal(
+                                          onPressed: () =>
+                                              _showPinColorDialog(pin),
+                                          style: FilledButton.styleFrom(
+                                            shape: const StadiumBorder(),
+                                            fixedSize: const Size(72, 24),
+                                            padding: const EdgeInsets.all(2),
+                                          ),
+                                          child: Text(
+                                            context.l10n.map_color,
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
                 if (selectedContact == null)
@@ -1804,6 +1920,23 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
     }
   }
 
+  Future<void> _showPinColorDialog(MapPin pin) async {
+    final color = await showDialog<Color>(
+      context: context,
+      builder: (_) => PinColorDialog(initialColor: pin.color),
+    );
+    if (!mounted || color == null) return;
+    setState(() {
+      pin.color = color;
+    });
+  }
+
+  void _togglePlanMode() {
+    setState(() {
+      _isPlanning = !_isPlanning;
+    });
+  }
+
   Widget _buildTopOverlay(
     BuildContext context, {
     required MeshCoreConnector connector,
@@ -1828,6 +1961,18 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              IconButton(
+                onPressed: _togglePlanMode,
+                tooltip: _isPlanning
+                    ? context.l10n.common_done
+                    : context.l10n.common_edit,
+                icon: Icon(_isPlanning ? Icons.check : Icons.edit_location_alt),
+                color: _overlayPrimaryTextColor,
+                style: IconButton.styleFrom(
+                  backgroundColor: _overlayPanelColor,
+                ),
+              ),
+              const SizedBox(width: 8),
               Expanded(
                 child: Material(
                   color: _overlayPanelColor,
@@ -1933,53 +2078,55 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
           LayoutBuilder(
             builder: (context, constraints) {
               final chips = <Widget>[
-                _mapChip(
-                  label: context.l10n.time_allTime,
-                  selected: _freshness == _Freshness.all,
-                  onTap: () => setState(() => _freshness = _Freshness.all),
-                ),
-                _mapChip(
-                  label: context.l10n.map_online,
-                  selected: _freshness == _Freshness.online,
-                  color: MapPalette.online,
-                  onTap: () => setState(() => _freshness = _Freshness.online),
-                ),
-                _mapChip(
-                  label: context.l10n.map_recent,
-                  selected: _freshness == _Freshness.recent,
-                  color: MapPalette.stale,
-                  onTap: () => setState(() => _freshness = _Freshness.recent),
-                ),
-                _mapChip(
-                  label: context.l10n.map_stale,
-                  selected: _freshness == _Freshness.stale,
-                  color: MapPalette.offline,
-                  onTap: () => setState(() => _freshness = _Freshness.stale),
-                ),
-                _mapChip(
-                  label: context.l10n.map_repeaters,
-                  selected: settings.mapShowRepeaters,
-                  color: MapPalette.repeater,
-                  onTap: () => settingsService.setMapShowRepeaters(
-                    !settings.mapShowRepeaters,
+                if (!_isPlanning) ...[
+                  _mapChip(
+                    label: context.l10n.time_allTime,
+                    selected: _freshness == _Freshness.all,
+                    onTap: () => setState(() => _freshness = _Freshness.all),
                   ),
-                ),
-                _mapChip(
-                  label: context.l10n.map_chatNodes,
-                  selected: settings.mapShowChatNodes,
-                  color: MapPalette.selected,
-                  onTap: () => settingsService.setMapShowChatNodes(
-                    !settings.mapShowChatNodes,
+                  _mapChip(
+                    label: context.l10n.map_online,
+                    selected: _freshness == _Freshness.online,
+                    color: MapPalette.online,
+                    onTap: () => setState(() => _freshness = _Freshness.online),
                   ),
-                ),
-                _mapChip(
-                  label: context.l10n.map_groupChip,
-                  selected: settings.mapClusterNodes,
-                  color: MapPalette.cluster,
-                  onTap: () => settingsService.setMapClusterNodes(
-                    !settings.mapClusterNodes,
+                  _mapChip(
+                    label: context.l10n.map_recent,
+                    selected: _freshness == _Freshness.recent,
+                    color: MapPalette.stale,
+                    onTap: () => setState(() => _freshness = _Freshness.recent),
                   ),
-                ),
+                  _mapChip(
+                    label: context.l10n.map_stale,
+                    selected: _freshness == _Freshness.stale,
+                    color: MapPalette.offline,
+                    onTap: () => setState(() => _freshness = _Freshness.stale),
+                  ),
+                  _mapChip(
+                    label: context.l10n.map_repeaters,
+                    selected: settings.mapShowRepeaters,
+                    color: MapPalette.repeater,
+                    onTap: () => settingsService.setMapShowRepeaters(
+                      !settings.mapShowRepeaters,
+                    ),
+                  ),
+                  _mapChip(
+                    label: context.l10n.map_chatNodes,
+                    selected: settings.mapShowChatNodes,
+                    color: MapPalette.selected,
+                    onTap: () => settingsService.setMapShowChatNodes(
+                      !settings.mapShowChatNodes,
+                    ),
+                  ),
+                  _mapChip(
+                    label: context.l10n.map_groupChip,
+                    selected: settings.mapClusterNodes,
+                    color: MapPalette.cluster,
+                    onTap: () => settingsService.setMapClusterNodes(
+                      !settings.mapClusterNodes,
+                    ),
+                  ),
+                ],
               ];
 
               if (constraints.maxWidth < 600) {
