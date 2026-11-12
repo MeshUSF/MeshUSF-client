@@ -242,8 +242,17 @@ Future<void> _capture(WidgetTester tester, String name) async {
 
 Color _highlightPinFill(WidgetTester tester) {
   final layer = tester.widgetList<MarkerLayer>(find.byType(MarkerLayer)).first;
-  final gesture = layer.markers.first.child as GestureDetector;
-  final container = gesture.child! as Container;
+  final container = tester.widget<Container>(
+    find.descendant(
+      of: find.byWidget(layer.markers.first.child),
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Container &&
+            widget.decoration is BoxDecoration &&
+            (widget.decoration! as BoxDecoration).shape == BoxShape.circle,
+      ),
+    ),
+  );
   return (container.decoration! as BoxDecoration).color!;
 }
 
@@ -544,6 +553,37 @@ void main() {
       );
     }
   }
+
+  testWidgets('selected pin and card hide and return together with zoom', (
+    tester,
+  ) async {
+    await _pumpChat(
+      tester,
+      connector,
+      channel: false,
+      home: const MapScreen(highlightPosition: LatLng(45.5, -122.6)),
+    );
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    await _openPinColorDialog(tester);
+    await _applyPinColor(tester, 'Blue');
+    expect(find.byTooltip('Pin color'), findsOneWidget);
+
+    final controller = tester
+        .widget<FlutterMap>(find.byType(FlutterMap))
+        .mapController!;
+    controller.move(controller.camera.center, 5);
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.location_on), findsNothing);
+    expect(find.byTooltip('Pin color'), findsNothing);
+
+    controller.move(controller.camera.center, 5.5);
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.location_on), findsOneWidget);
+    expect(find.byTooltip('Pin color'), findsOneWidget);
+    expect(_highlightPinFill(tester), Colors.blue);
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets('separate pin views retain independent colors', (tester) async {
     await _pumpChat(

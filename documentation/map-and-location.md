@@ -40,6 +40,8 @@ Tap a pin to see its info. Options to "Hide" (session only) or "Remove" (persist
 
 When you open a location from chat, tap its highlighted pin to show a small info card beside it. The card follows the pin as you pan and zoom, and the rest of the map stays interactive. Close the card with its close button or tap the highlighted pin again.
 
+The highlighted pin drawing shrinks as you zoom out and grows up to a fixed maximum as you zoom in. At the app's tracked zoom level of 5 or below, both the pin and its open card hide. Zooming back in restores the pin and any previously open card, preserving its selected color. The card itself keeps its current size; pin-size updates currently follow half-level zoom steps.
+
 ![Highlighted location card with a bold title and pill-shaped Color button](../docs/screenshots/map-pin-info-card.png)
 
 The location/name at the top of the card is bold. Tap the small pill-shaped **Color** button to open the color dialog. It has two rows of eight choices: 15 presets and **Custom** in the last position (row 2, column 8). On narrow screens, scroll the palette horizontally to reach every choice. The red presets are **Light red** (`#EF5350`) and **Rich red** (`#B71C1C`); amber and light blue are no longer presets.

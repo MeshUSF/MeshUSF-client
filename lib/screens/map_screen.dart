@@ -99,6 +99,10 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   bool _statsExpanded = false;
   bool _showNodeLabels = true;
   double _zoom = 10.0;
+  static const double _lowZoom = 6.0;
+  static const double _highZoom = 18.0;
+  static const double _minimumScale = 0.20;
+  static const double _maximumScale = 0.60;
   String? _selectedKey;
   LatLng? _selectedGuessPos;
   _Freshness _freshness = _Freshness.all;
@@ -416,6 +420,11 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
 
         final pin = _highlightPin;
         final highlightPosition = pin?.position;
+        final showHighlightPin = _zoom > 5;
+        final rawProgress = (_zoom - _lowZoom) / (_highZoom - _lowZoom);
+        final zoomProgress = rawProgress.clamp(0.0, 1.0);
+        final pinScale =
+            _minimumScale + (_maximumScale - _minimumScale) * zoomProgress;
         final sharedMarkers = settings.mapShowMarkers
             ? _collectSharedMarkers(
                     connector,
@@ -844,6 +853,13 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                       // Track zoom in half-step buckets so cluster/marker
                       // detail levels update without rebuilding every frame.
                       final bucket = (camera.zoom * 2).roundToDouble() / 2;
+
+                      if (kDebugMode && bucket != _zoom) {
+                        debugPrint(
+                          'Map zoom: ${camera.zoom.toStringAsFixed(2)}',
+                        );
+                      }
+
                       final shouldShow = camera.zoom >= _labelZoomThreshold;
                       if ((bucket != _zoom || shouldShow != _showNodeLabels) &&
                           mounted) {
@@ -862,38 +878,49 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                       PolylineLayer(polylines: sharedMarkerPolylines),
                     MarkerLayer(
                       markers: [
-                        if (pin != null)
+                        if (pin != null && showHighlightPin)
                           Marker(
                             point: pin.position,
-                            width: 44,
-                            height: 44,
+                            width: 48,
+                            height: 48,
                             child: GestureDetector(
+                              behavior: HitTestBehavior.deferToChild,
                               onTap: () {
                                 setState(() {
                                   _isHighlightPinSelected =
                                       !_isHighlightPinSelected;
                                 });
                               },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: pin.color,
-                                  border: Border.all(
-                                    color: MapPalette.markerOutline,
-                                    width: 3,
-                                  ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: MapPalette.markerShadow,
-                                      blurRadius: 8,
-                                      offset: Offset(0, 3),
+                              child: Center(
+                                child: Transform.scale(
+                                  scale: pinScale,
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                    width: 44,
+                                    height: 44,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: pin.color,
+                                        border: Border.all(
+                                          color: MapPalette.markerOutline,
+                                          width: 3,
+                                        ),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: MapPalette.markerShadow,
+                                            blurRadius: 8,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: const Icon(
+                                        Icons.location_on,
+                                        color: Colors.white,
+                                        size: 25,
+                                      ),
                                     ),
-                                  ],
-                                ),
-                                child: const Icon(
-                                  Icons.location_on,
-                                  color: Colors.white,
-                                  size: 25,
+                                  ),
                                 ),
                               ),
                             ),
@@ -974,7 +1001,9 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                           ),
                       ],
                     ),
-                    if (pin != null && _isHighlightPinSelected)
+                    if (pin != null &&
+                        showHighlightPin &&
+                        _isHighlightPinSelected)
                       MarkerLayer(
                         markers: [
                           Marker(
