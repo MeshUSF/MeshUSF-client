@@ -603,6 +603,9 @@ void main() {
         .mapController!;
     controller.move(controller.camera.center, 5.5);
     await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
     expect(tester.getRect(_highlightPinCard()).size, compactSize);
 
     controller.move(controller.camera.center, 12.1);
@@ -800,34 +803,104 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('selected pin and card hide and return together with zoom', (
+  testWidgets(
+    'selected card uses the exact zoom cutoff and retains its color',
+    (tester) async {
+      await _pumpChat(
+        tester,
+        connector,
+        channel: false,
+        home: const MapScreen(highlightPosition: LatLng(45.5, -122.6)),
+      );
+      await tester.tap(find.byIcon(Icons.location_on));
+      await tester.pumpAndSettle();
+      await _openPinColorDialog(tester);
+      await _applyPinColor(tester, 'Blue');
+      expect(find.byTooltip('Pin color'), findsOneWidget);
+
+      final controller = tester
+          .widget<FlutterMap>(find.byType(FlutterMap))
+          .mapController!;
+      controller.move(controller.camera.center, 11.29);
+      await tester.pumpAndSettle();
+      expect(_highlightPinCard(), findsOneWidget);
+      controller.move(controller.camera.center, 11.28);
+      await tester.pumpAndSettle();
+      expect(_highlightPinCard(), findsOneWidget);
+      controller.move(controller.camera.center, 11.279);
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.location_on), findsOneWidget);
+      expect(_highlightPinCard(), findsNothing);
+      expect(_highlightPinFill(tester), Colors.blue);
+
+      controller.move(controller.camera.center, 5);
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.location_on), findsNothing);
+      expect(find.byTooltip('Pin color'), findsNothing);
+
+      controller.move(controller.camera.center, 5.5);
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.location_on), findsOneWidget);
+      expect(_highlightPinCard(), findsNothing);
+      controller.move(controller.camera.center, 11.28);
+      await tester.pumpAndSettle();
+      expect(find.byTooltip('Pin color'), findsOneWidget);
+      expect(_highlightPinFill(tester), Colors.blue);
+      await tester.tap(find.byTooltip('Close'));
+      await tester.pumpAndSettle();
+      controller.move(controller.camera.center, 13);
+      await tester.pumpAndSettle();
+      expect(_highlightPinCard(), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets('low zoom click override expires on the next zoom out', (
     tester,
   ) async {
     await _pumpChat(
       tester,
       connector,
       channel: false,
-      home: const MapScreen(highlightPosition: LatLng(45.5, -122.6)),
+      home: const MapScreen(
+        highlightPosition: LatLng(45.5, -122.6),
+        highlightZoom: 10.5,
+      ),
     );
+    expect(_highlightPinCard(), findsNothing);
     await tester.tap(find.byIcon(Icons.location_on));
     await tester.pumpAndSettle();
-    await _openPinColorDialog(tester);
-    await _applyPinColor(tester, 'Blue');
-    expect(find.byTooltip('Pin color'), findsOneWidget);
+    expect(_highlightPinCard(), findsOneWidget);
 
     final controller = tester
         .widget<FlutterMap>(find.byType(FlutterMap))
         .mapController!;
-    controller.move(controller.camera.center, 5);
+    controller.move(const LatLng(45.501, -122.6), 10.5);
     await tester.pumpAndSettle();
-    expect(find.byIcon(Icons.location_on), findsNothing);
-    expect(find.byTooltip('Pin color'), findsNothing);
+    expect(_highlightPinCard(), findsOneWidget);
+    controller.move(controller.camera.center, 10.6);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsOneWidget);
+    controller.move(controller.camera.center, 10.59);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
+    controller.move(controller.camera.center, 10.61);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
 
-    controller.move(controller.camera.center, 5.5);
+    await tester.tap(find.byIcon(Icons.location_on));
     await tester.pumpAndSettle();
-    expect(find.byIcon(Icons.location_on), findsOneWidget);
-    expect(find.byTooltip('Pin color'), findsOneWidget);
-    expect(_highlightPinFill(tester), Colors.blue);
+    expect(_highlightPinCard(), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Close'));
+    await tester.pumpAndSettle();
+    controller.move(controller.camera.center, 12);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
     expect(tester.takeException(), isNull);
   });
 

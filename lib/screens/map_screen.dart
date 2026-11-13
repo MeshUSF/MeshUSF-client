@@ -79,6 +79,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   static const double _guessedZoomThreshold = 12.0;
   static const double _mapMinZoom = 2.0;
   static const double _mapMaxZoom = 18.0;
+  static const double _pinCardMinZoom = 11.28;
 
   final MapController _mapController = MapController();
   final MapMarkerService _markerService = MapMarkerService();
@@ -88,6 +89,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   bool _isSelectingPoi = false;
   bool _isPlanning = false;
   bool _isHighlightPinSelected = false;
+  bool _isPinCardZoomOverrideActive = false;
   MapPin? _highlightPin;
   bool _hasInitializedMap = false;
   bool _removedMarkersLoaded = false;
@@ -99,6 +101,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   bool _statsExpanded = false;
   bool _showNodeLabels = true;
   double _zoom = 10.0;
+  double? _lastCameraZoom;
   static const double _lowZoom = 6.0;
   static const double _highZoom = 18.0;
   static const double _minimumScale = 0.20;
@@ -849,6 +852,12 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                       }
                     },
                     onPositionChanged: (camera, hasGesture) {
+                      final previousZoom = _lastCameraZoom;
+                      final clearCardOverride =
+                          _isPinCardZoomOverrideActive &&
+                          previousZoom != null &&
+                          camera.zoom < previousZoom;
+                      _lastCameraZoom = camera.zoom;
                       // Track zoom in half-step buckets so cluster/marker
                       // detail levels update without rebuilding every frame.
                       final bucket = (camera.zoom * 2).roundToDouble() / 2;
@@ -860,11 +869,16 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                       }
 
                       final shouldShow = camera.zoom >= _labelZoomThreshold;
-                      if ((bucket != _zoom || shouldShow != _showNodeLabels) &&
+                      if ((bucket != _zoom ||
+                              shouldShow != _showNodeLabels ||
+                              clearCardOverride) &&
                           mounted) {
                         setState(() {
                           _zoom = bucket;
                           _showNodeLabels = shouldShow;
+                          if (clearCardOverride) {
+                            _isPinCardZoomOverrideActive = false;
+                          }
                         });
                       }
                     },
@@ -885,9 +899,17 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                             child: GestureDetector(
                               behavior: HitTestBehavior.deferToChild,
                               onTap: () {
+                                final preciseZoom = _mapController.camera.zoom;
+                                final isCardVisible =
+                                    _isHighlightPinSelected &&
+                                    (preciseZoom >= _pinCardMinZoom ||
+                                        _isPinCardZoomOverrideActive);
                                 setState(() {
-                                  _isHighlightPinSelected =
-                                      !_isHighlightPinSelected;
+                                  _isHighlightPinSelected = !isCardVisible;
+                                  _isPinCardZoomOverrideActive =
+                                      !isCardVisible &&
+                                      preciseZoom < _pinCardMinZoom;
+                                  _lastCameraZoom = preciseZoom;
                                 });
                               },
                               child: Center(
@@ -1024,6 +1046,10 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                       Builder(
                         builder: (cardContext) {
                           final preciseZoom = MapCamera.of(cardContext).zoom;
+                          if (preciseZoom < _pinCardMinZoom &&
+                              !_isPinCardZoomOverrideActive) {
+                            return const SizedBox.shrink();
+                          }
                           final zoomProgress =
                               ((preciseZoom - _lowZoom) /
                                       (_highZoom - _lowZoom))
@@ -1104,6 +1130,8 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                                                   onPressed: () {
                                                     setState(() {
                                                       _isHighlightPinSelected =
+                                                          false;
+                                                      _isPinCardZoomOverrideActive =
                                                           false;
                                                     });
                                                   },
