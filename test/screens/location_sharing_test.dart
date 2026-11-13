@@ -256,6 +256,17 @@ Color _highlightPinFill(WidgetTester tester) {
   return (container.decoration! as BoxDecoration).color!;
 }
 
+double _highlightPinScale(WidgetTester tester) {
+  final layer = tester.widgetList<MarkerLayer>(find.byType(MarkerLayer)).first;
+  final transform = tester.widget<Transform>(
+    find.descendant(
+      of: find.byWidget(layer.markers.first.child),
+      matching: find.byType(Transform),
+    ),
+  );
+  return transform.transform.storage[0];
+}
+
 IconButton _pinColorButton(WidgetTester tester, String label) =>
     tester.widget<IconButton>(
       find.ancestor(
@@ -553,6 +564,50 @@ void main() {
       );
     }
   }
+
+  testWidgets('pin size follows fractional zoom within one bucket', (
+    tester,
+  ) async {
+    await _pumpChat(
+      tester,
+      connector,
+      channel: false,
+      home: const MapScreen(
+        highlightPosition: LatLng(45.5, -122.6),
+        highlightZoom: 18,
+      ),
+    );
+    expect(_highlightPinScale(tester), closeTo(0.60, 0.000001));
+
+    final controller = tester
+        .widget<FlutterMap>(find.byType(FlutterMap))
+        .mapController!;
+    controller.move(controller.camera.center, 12);
+    await tester.pumpAndSettle();
+    final scaleAt12 = _highlightPinScale(tester);
+
+    controller.move(controller.camera.center, 12.1);
+    await tester.pumpAndSettle();
+    final scaleAt12Point1 = _highlightPinScale(tester);
+    expect(scaleAt12Point1, greaterThan(scaleAt12));
+
+    controller.move(controller.camera.center, 12.2);
+    await tester.pumpAndSettle();
+    final scaleAt12Point2 = _highlightPinScale(tester);
+    expect(scaleAt12Point2, greaterThan(scaleAt12Point1));
+
+    controller.move(const LatLng(45.51, -122.6), 12.2);
+    await tester.pumpAndSettle();
+    expect(_highlightPinScale(tester), closeTo(scaleAt12Point2, 0.000001));
+
+    controller.move(controller.camera.center, 6);
+    await tester.pumpAndSettle();
+    final minimumScale = _highlightPinScale(tester);
+    controller.move(controller.camera.center, 5.5);
+    await tester.pumpAndSettle();
+    expect(_highlightPinScale(tester), closeTo(minimumScale, 0.000001));
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets('selected pin and card hide and return together with zoom', (
     tester,

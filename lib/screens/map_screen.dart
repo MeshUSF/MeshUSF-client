@@ -421,10 +421,6 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
         final pin = _highlightPin;
         final highlightPosition = pin?.position;
         final showHighlightPin = _zoom > 5;
-        final rawProgress = (_zoom - _lowZoom) / (_highZoom - _lowZoom);
-        final zoomProgress = rawProgress.clamp(0.0, 1.0);
-        final pinScale =
-            _minimumScale + (_maximumScale - _minimumScale) * zoomProgress;
         final sharedMarkers = settings.mapShowMarkers
             ? _collectSharedMarkers(
                     connector,
@@ -892,35 +888,53 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                                 });
                               },
                               child: Center(
-                                child: Transform.scale(
-                                  scale: pinScale,
-                                  alignment: Alignment.center,
-                                  child: SizedBox(
-                                    width: 44,
-                                    height: 44,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: pin.color,
-                                        border: Border.all(
-                                          color: MapPalette.markerOutline,
-                                          width: 3,
-                                        ),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: MapPalette.markerShadow,
-                                            blurRadius: 8,
-                                            offset: Offset(0, 3),
+                                child: Builder(
+                                  builder: (pinContext) {
+                                    final preciseZoom = MapCamera.of(
+                                      pinContext,
+                                    ).zoom;
+                                    final rawProgress =
+                                        (preciseZoom - _lowZoom) /
+                                        (_highZoom - _lowZoom);
+                                    final zoomProgress = rawProgress.clamp(
+                                      0.0,
+                                      1.0,
+                                    );
+                                    final pinScale =
+                                        _minimumScale +
+                                        (_maximumScale - _minimumScale) *
+                                            zoomProgress;
+                                    return Transform.scale(
+                                      scale: pinScale,
+                                      alignment: Alignment.center,
+                                      child: SizedBox(
+                                        width: 44,
+                                        height: 44,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: pin.color,
+                                            border: Border.all(
+                                              color: MapPalette.markerOutline,
+                                              width: 3,
+                                            ),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: MapPalette.markerShadow,
+                                                blurRadius: 8,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                          child: const Icon(
+                                            Icons.location_on,
+                                            color: Colors.white,
+                                            size: 25,
+                                          ),
+                                        ),
                                       ),
-                                      child: const Icon(
-                                        Icons.location_on,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                    ),
-                                  ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
