@@ -103,6 +103,9 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   static const double _highZoom = 18.0;
   static const double _minimumScale = 0.20;
   static const double _maximumScale = 0.60;
+  static const Size _compactPinCardSize = Size(59, 47);
+  static const Size _expandedPinCardSize = Size(208, 167);
+  static const double _pinCardGap = 12;
   String? _selectedKey;
   LatLng? _selectedGuessPos;
   _Freshness _freshness = _Freshness.all;
@@ -1018,98 +1021,141 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                     if (pin != null &&
                         showHighlightPin &&
                         _isHighlightPinSelected)
-                      MarkerLayer(
-                        markers: [
-                          Marker(
-                            point: pin.position,
-                            width: 260,
-                            height: 160,
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 12,
-                                bottom: 12,
-                              ),
-                              child: Card(
-                                margin: EdgeInsets.zero,
-                                elevation: 0,
-                                surfaceTintColor: Colors.transparent,
-                                color: _overlayPanelColor.withValues(
-                                  alpha: 0.5,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  side: BorderSide(
-                                    color: pin.color.withValues(alpha: 0.6),
-                                    width: 1.5,
+                      Builder(
+                        builder: (cardContext) {
+                          final preciseZoom = MapCamera.of(cardContext).zoom;
+                          final zoomProgress =
+                              ((preciseZoom - _lowZoom) /
+                                      (_highZoom - _lowZoom))
+                                  .clamp(0.0, 1.0);
+                          final cardSize = Size.lerp(
+                            _compactPinCardSize,
+                            _expandedPinCardSize,
+                            zoomProgress,
+                          )!;
+                          return MarkerLayer(
+                            markers: [
+                              Marker(
+                                point: pin.position,
+                                width: cardSize.width,
+                                height: cardSize.height,
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: _pinCardGap,
+                                    bottom: _pinCardGap,
                                   ),
-                                ),
-                                child: ListView(
-                                  padding: const EdgeInsets.all(12),
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            pin.label.isEmpty
-                                                ? context.l10n.chat_location
-                                                : pin.label,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleSmall
-                                                ?.copyWith(
-                                                  fontWeight: FontWeight.bold,
+                                  child: FittedBox(
+                                    fit: BoxFit.contain,
+                                    alignment: Alignment.bottomLeft,
+                                    child: SizedBox(
+                                      width:
+                                          _expandedPinCardSize.width -
+                                          _pinCardGap,
+                                      height:
+                                          _expandedPinCardSize.height -
+                                          _pinCardGap,
+                                      child: Card(
+                                        margin: EdgeInsets.zero,
+                                        elevation: 0,
+                                        surfaceTintColor: Colors.transparent,
+                                        color: _overlayPanelColor.withValues(
+                                          alpha: 0.5,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          side: BorderSide(
+                                            color: pin.color.withValues(
+                                              alpha: 0.6,
+                                            ),
+                                            width: 1.5,
+                                          ),
+                                        ),
+                                        child: ListView(
+                                          padding: const EdgeInsets.all(12),
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    pin.label.isEmpty
+                                                        ? context
+                                                              .l10n
+                                                              .chat_location
+                                                        : pin.label,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleSmall
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
                                                 ),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        IconButton(
-                                          tooltip: context.l10n.common_close,
-                                          icon: const Icon(Icons.close),
-                                          onPressed: () {
-                                            setState(() {
-                                              _isHighlightPinSelected = false;
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      '${pin.position.latitude.toStringAsFixed(6)}, '
-                                      '${pin.position.longitude.toStringAsFixed(6)}',
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Tooltip(
-                                        message: context.l10n.map_pinColor,
-                                        child: FilledButton.tonal(
-                                          onPressed: () =>
-                                              _showPinColorDialog(pin),
-                                          style: FilledButton.styleFrom(
-                                            shape: const StadiumBorder(),
-                                            fixedSize: const Size(72, 24),
-                                            padding: const EdgeInsets.all(2),
-                                          ),
-                                          child: Text(
-                                            context.l10n.map_color,
-                                            textAlign: TextAlign.center,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(
-                                              context,
-                                            ).textTheme.labelMedium,
-                                          ),
+                                                IconButton(
+                                                  tooltip:
+                                                      context.l10n.common_close,
+                                                  icon: const Icon(Icons.close),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _isHighlightPinSelected =
+                                                          false;
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            Text(
+                                              '${pin.position.latitude.toStringAsFixed(6)}, '
+                                              '${pin.position.longitude.toStringAsFixed(6)}',
+                                            ),
+                                            const SizedBox(height: 20),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Tooltip(
+                                                message:
+                                                    context.l10n.map_pinColor,
+                                                child: FilledButton.tonal(
+                                                  onPressed: () =>
+                                                      _showPinColorDialog(pin),
+                                                  style: FilledButton.styleFrom(
+                                                    shape:
+                                                        const StadiumBorder(),
+                                                    fixedSize: const Size(
+                                                      72,
+                                                      24,
+                                                    ),
+                                                    padding:
+                                                        const EdgeInsets.all(2),
+                                                  ),
+                                                  child: Text(
+                                                    context.l10n.map_color,
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: Theme.of(
+                                                      context,
+                                                    ).textTheme.labelMedium,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
+                            ],
+                          );
+                        },
                       ),
                   ],
                 ),

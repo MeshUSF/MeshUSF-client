@@ -40,9 +40,13 @@ Tap a pin to see its info. Options to "Hide" (session only) or "Remove" (persist
 
 When you open a location from chat, tap its highlighted pin to show a small info card beside it. The card follows the pin as you pan and zoom, and the rest of the map stays interactive. Close the card with its close button or tap the highlighted pin again.
 
-The highlighted pin drawing shrinks smoothly as you zoom out and grows up to a fixed maximum as you zoom in, following fractional zoom changes. At the app's tracked zoom level of 5 or below, both the pin and its open card hide. Zooming back in restores the pin and any previously open card, preserving its selected color. The card itself keeps its current size. Other zoom behavior, including visibility and clustering, keeps its existing rules.
+The highlighted pin drawing and info card resize smoothly as you zoom, up to fixed minimum and maximum sizes. The whole card scales proportionally: its title, coordinates, Color button, close icon, padding, and border all grow or shrink together. Scroll inside the card when a long name, larger system text, or limited space puts an action below the visible area. The color-picker dialog opens at its normal size. At the app's tracked zoom level of 5 or below, both the pin and its open card hide. Zooming back in restores the pin and any previously open card, preserving its selected color. Other zoom behavior, including visibility and clustering, keeps its existing rules. Pan the map to bring a card away from screen edges when needed.
 
 ![Highlighted location card with a bold title and pill-shaped Color button](../docs/screenshots/map-pin-info-card.png)
+
+| Compact card when zoomed out | Expanded card when zoomed in |
+|---|---|
+| ![Compact location card](../docs/screenshots/map-pin-card-compact.png) | ![Expanded location card](../docs/screenshots/map-pin-card-expanded.png) |
 
 The location/name at the top of the card is bold. Tap the small pill-shaped **Color** button to open the color dialog. It has two rows of eight choices: 15 presets and **Custom** in the last position (row 2, column 8). On narrow screens, scroll the palette horizontally to reach every choice. The red presets are **Light red** (`#EF5350`) and **Rich red** (`#B71C1C`); amber and light blue are no longer presets.
 
