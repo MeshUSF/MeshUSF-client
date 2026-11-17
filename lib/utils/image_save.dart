@@ -14,8 +14,8 @@ Future<bool> saveImagePng(
   String? shareText,
 }) async {
   final name = entry.synthesized
-      ? 'meshcore-ai-reconstructed-${entry.streamId}.png'
-      : 'meshcore-${entry.streamId}.png';
+      ? 'meshusf-ai-reconstructed-${entry.streamId}.png'
+      : 'meshusf-${entry.streamId}.png';
   final file = XFile.fromData(png, mimeType: 'image/png', name: name);
   try {
     if (PlatformInfo.isDesktop) {

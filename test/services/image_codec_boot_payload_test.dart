@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/models/image_codec_support.dart';
-import 'package:meshcore_open/services/image_codec_session_io.dart';
+import 'package:meshusf/models/image_codec_support.dart';
+import 'package:meshusf/services/image_codec_session_io.dart';
 
 /// Connection tests for the codec worker's boot payload.
 ///

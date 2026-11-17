@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/helpers/utf8_length_limiter.dart';
+import 'package:meshusf/helpers/utf8_length_limiter.dart';
 
 TextEditingValue _value(String text, [int? cursor]) => TextEditingValue(
   text: text,

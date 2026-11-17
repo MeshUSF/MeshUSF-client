@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/services/notification_reply.dart';
+import 'package:meshusf/services/notification_reply.dart';
 
 void main() {
   group('NotificationReply.parse', () {

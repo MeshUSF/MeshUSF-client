@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/models/image_codec_support.dart';
-import 'package:meshcore_open/widgets/image_send_codec_binding.dart';
+import 'package:meshusf/models/image_codec_support.dart';
+import 'package:meshusf/widgets/image_send_codec_binding.dart';
 
 void main() {
   group('ImageCodecModelRecord', () {

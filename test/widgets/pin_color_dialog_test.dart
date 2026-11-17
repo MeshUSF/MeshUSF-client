@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/l10n/app_localizations.dart';
-import 'package:meshcore_open/theme/mesh_theme.dart';
-import 'package:meshcore_open/widgets/pin_color_dialog.dart';
+import 'package:meshusf/l10n/app_localizations.dart';
+import 'package:meshusf/theme/mesh_theme.dart';
+import 'package:meshusf/widgets/pin_color_dialog.dart';
 
 Future<Completer<Color?>> _pumpDialog(
   WidgetTester tester, {

@@ -54,7 +54,7 @@ class ReviewFrames {
     required int firmwareVerCode,
     required int maxContacts,
     required int maxChannels,
-    String manufacturer = 'MeshCore Open Review',
+    String manufacturer = 'MeshUSF Review',
     String version = 'review',
     bool clientRepeat = false,
     int pathHashMode = 0,

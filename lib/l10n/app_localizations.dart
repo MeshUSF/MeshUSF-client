@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'MeshCore Open'**
+  /// **'MeshUSF'**
   String get appTitle;
 
   /// No description provided for @radioDisconnectedReconnecting.
@@ -409,7 +409,7 @@ abstract class AppLocalizations {
   /// No description provided for @scanner_title.
   ///
   /// In en, this message translates to:
-  /// **'MeshCore Open'**
+  /// **'MeshUSF'**
   String get scanner_title;
 
   /// No description provided for @connectionChoiceUsbLabel.
@@ -1273,13 +1273,13 @@ abstract class AppLocalizations {
   /// No description provided for @settings_aboutVersion.
   ///
   /// In en, this message translates to:
-  /// **'MeshCore Open v{version}'**
+  /// **'MeshUSF v{version}'**
   String settings_aboutVersion(String version);
 
   /// No description provided for @settings_aboutLegalese.
   ///
   /// In en, this message translates to:
-  /// **'2026 MeshCore Open Source Project'**
+  /// **'MeshUSF\nBased on MeshCore Open'**
   String get settings_aboutLegalese;
 
   /// No description provided for @settings_aboutDescription.
@@ -1723,7 +1723,7 @@ abstract class AppLocalizations {
   /// No description provided for @appSettings_batteryOptimizationSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Set MeshCore Open to \"Don\'t optimize\" in battery settings so messages keep arriving in the background'**
+  /// **'Set MeshUSF to \"Don\'t optimize\" in battery settings so messages keep arriving in the background'**
   String get appSettings_batteryOptimizationSubtitle;
 
   /// No description provided for @appSettings_channelMessageNotifications.
@@ -3031,7 +3031,7 @@ abstract class AppLocalizations {
   /// No description provided for @chat_locationPermissionDenied.
   ///
   /// In en, this message translates to:
-  /// **'Allow MeshCore to access this device\'s location, then try again.'**
+  /// **'Allow MeshUSF to access this device\'s location, then try again.'**
   String get chat_locationPermissionDenied;
 
   /// No description provided for @chat_locationServicesDisabled.
@@ -8089,7 +8089,7 @@ abstract class AppLocalizations {
   /// No description provided for @notification_activityTitle.
   ///
   /// In en, this message translates to:
-  /// **'MeshCore Activity'**
+  /// **'MeshUSF Activity'**
   String get notification_activityTitle;
 
   /// No description provided for @notification_messagesCount.
@@ -8161,13 +8161,13 @@ abstract class AppLocalizations {
   /// No description provided for @notification_replyNotConnected.
   ///
   /// In en, this message translates to:
-  /// **'Not connected to a radio. Reconnect in MeshCore Open and send your reply again.'**
+  /// **'Not connected to a radio. Reconnect in MeshUSF and send your reply again.'**
   String get notification_replyNotConnected;
 
   /// No description provided for @notification_replyTooLong.
   ///
   /// In en, this message translates to:
-  /// **'Your reply is too long to send from a notification. Send it from MeshCore Open instead.'**
+  /// **'Your reply is too long to send from a notification. Send it from MeshUSF instead.'**
   String get notification_replyTooLong;
 
   /// No description provided for @notification_replyUnavailable.
@@ -8179,13 +8179,13 @@ abstract class AppLocalizations {
   /// No description provided for @notification_replySendFailed.
   ///
   /// In en, this message translates to:
-  /// **'Your reply may not have been sent. Check in MeshCore Open and try again.'**
+  /// **'Your reply may not have been sent. Check in MeshUSF and try again.'**
   String get notification_replySendFailed;
 
   /// No description provided for @notification_replyAppNotRunning.
   ///
   /// In en, this message translates to:
-  /// **'MeshCore Open isn\'t running. Open it and send your reply again.'**
+  /// **'MeshUSF isn\'t running. Open it and send your reply again.'**
   String get notification_replyAppNotRunning;
 
   /// No description provided for @settings_gpxExportRepeaters.
@@ -8269,13 +8269,13 @@ abstract class AppLocalizations {
   /// No description provided for @settings_gpxExportShareText.
   ///
   /// In en, this message translates to:
-  /// **'Map data exported from meshcore-open'**
+  /// **'Map data exported from MeshUSF'**
   String get settings_gpxExportShareText;
 
   /// No description provided for @settings_gpxExportShareSubject.
   ///
   /// In en, this message translates to:
-  /// **'meshcore-open GPX map data export'**
+  /// **'MeshUSF GPX map data export'**
   String get settings_gpxExportShareSubject;
 
   /// No description provided for @snrIndicator_nearByRepeaters.
@@ -8857,7 +8857,7 @@ abstract class AppLocalizations {
   /// No description provided for @background_serviceTitle.
   ///
   /// In en, this message translates to:
-  /// **'MeshCore running'**
+  /// **'MeshUSF running'**
   String get background_serviceTitle;
 
   /// No description provided for @background_serviceText.

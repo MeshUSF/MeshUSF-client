@@ -3,8 +3,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/services/entropy_tables.dart';
-import 'package:meshcore_open/services/rans_coder.dart';
+import 'package:meshusf/services/entropy_tables.dart';
+import 'package:meshusf/services/rans_coder.dart';
 
 /// Golden-vector conformance for the pure-Dart rANS port.
 ///

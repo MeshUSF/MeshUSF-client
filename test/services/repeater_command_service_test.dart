@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_connector.dart';
-import 'package:meshcore_open/models/contact.dart';
-import 'package:meshcore_open/models/path_selection.dart';
-import 'package:meshcore_open/services/repeater_command_service.dart';
+import 'package:meshusf/connector/meshcore_connector.dart';
+import 'package:meshusf/models/contact.dart';
+import 'package:meshusf/models/path_selection.dart';
+import 'package:meshusf/services/repeater_command_service.dart';
 
 class _FakeConnector extends MeshCoreConnector {
   @override

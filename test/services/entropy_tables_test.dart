@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/services/entropy_tables.dart';
+import 'package:meshusf/services/entropy_tables.dart';
 
 /// Structural checks on the shipped CDF table file. The invariants here are the
 /// ones the rANS coder relies on; if any of them breaks, encoding silently

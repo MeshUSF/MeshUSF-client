@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/services/ble_connection_error.dart';
+import 'package:meshusf/services/ble_connection_error.dart';
 
 void main() {
   group('Bluetooth connection guidance', () {

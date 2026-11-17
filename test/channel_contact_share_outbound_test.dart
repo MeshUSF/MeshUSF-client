@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_connector.dart';
-import 'package:meshcore_open/helpers/cyr2lat.dart';
-import 'package:meshcore_open/helpers/smaz.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/models/contact.dart';
+import 'package:meshusf/connector/meshcore_connector.dart';
+import 'package:meshusf/helpers/cyr2lat.dart';
+import 'package:meshusf/helpers/smaz.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/models/contact.dart';
 import 'dart:typed_data';
 
 class _Connector extends MeshCoreConnector {

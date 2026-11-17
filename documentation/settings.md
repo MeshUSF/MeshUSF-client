@@ -211,4 +211,4 @@ Structured log entries (Info / Warning / Error), with tag, message, and timestam
 
 ## About
 
-Shows the standard Flutter about dialog with app name, version, and legal notice.
+Shows the standard Flutter about dialog with the MeshUSF app name, version, and acknowledgment of the MeshCore Open foundation.

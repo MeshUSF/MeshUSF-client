@@ -3,10 +3,9 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/services/entropy_tables.dart';
-import 'package:meshcore_open/services/image_codec_backend.dart'
-    show AeicRansCoders;
-import 'package:meshcore_open/services/image_codec_entropy.dart';
+import 'package:meshusf/services/entropy_tables.dart';
+import 'package:meshusf/services/image_codec_backend.dart' show AeicRansCoders;
+import 'package:meshusf/services/image_codec_entropy.dart';
 
 /// Golden vectors for the entropy layer — the arithmetic between the ONNX
 /// tensors and the rANS coder.

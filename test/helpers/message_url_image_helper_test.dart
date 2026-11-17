@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:meshcore_open/helpers/message_url_image_helper.dart';
+import 'package:meshusf/helpers/message_url_image_helper.dart';
 
 void main() {
   group('MessageUrlImageHelper', () {

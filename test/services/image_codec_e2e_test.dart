@@ -4,9 +4,9 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart' show sha256;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/services/entropy_tables.dart';
-import 'package:meshcore_open/services/image_codec_backend.dart';
-import 'package:meshcore_open/services/image_codec_entropy.dart';
+import 'package:meshusf/services/entropy_tables.dart';
+import 'package:meshusf/services/image_codec_backend.dart';
+import 'package:meshusf/services/image_codec_entropy.dart';
 
 /// End-to-end cross-language conformance for the AEIC entropy path.
 ///

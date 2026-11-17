@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/models/image_codec_support.dart';
-import 'package:meshcore_open/services/image_chunk_transport.dart';
-import 'package:meshcore_open/widgets/image_send_codec_binding.dart';
+import 'package:meshusf/models/image_codec_support.dart';
+import 'package:meshusf/services/image_chunk_transport.dart';
+import 'package:meshusf/widgets/image_send_codec_binding.dart';
 
 Uint8List payloadOf(int length, {int seed = 7}) => Uint8List.fromList(
   List<int>.generate(length, (i) => (i * 37 + seed * 11) & 0xFF),

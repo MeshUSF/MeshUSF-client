@@ -5,25 +5,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meshcore_open/connector/meshcore_connector.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/helpers/path_helper.dart';
-import 'package:meshcore_open/l10n/l10n.dart';
-import 'package:meshcore_open/models/app_settings.dart';
-import 'package:meshcore_open/models/contact.dart';
-import 'package:meshcore_open/models/display_path.dart';
-import 'package:meshcore_open/models/path_history.dart';
-import 'package:meshcore_open/models/path_playback.dart';
-import 'package:meshcore_open/services/app_settings_service.dart';
-import 'package:meshcore_open/services/map_tile_cache_service.dart';
-import 'package:meshcore_open/services/path_history_service.dart';
-import 'package:meshcore_open/utils/app_logger.dart';
-import 'package:meshcore_open/widgets/path_map_ui.dart';
-import 'package:meshcore_open/widgets/snr_indicator.dart';
+import 'package:meshusf/connector/meshcore_connector.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/helpers/path_helper.dart';
+import 'package:meshusf/l10n/l10n.dart';
+import 'package:meshusf/models/app_settings.dart';
+import 'package:meshusf/models/contact.dart';
+import 'package:meshusf/models/display_path.dart';
+import 'package:meshusf/models/path_history.dart';
+import 'package:meshusf/models/path_playback.dart';
+import 'package:meshusf/services/app_settings_service.dart';
+import 'package:meshusf/services/map_tile_cache_service.dart';
+import 'package:meshusf/services/path_history_service.dart';
+import 'package:meshusf/utils/app_logger.dart';
+import 'package:meshusf/widgets/path_map_ui.dart';
+import 'package:meshusf/widgets/snr_indicator.dart';
 import 'package:provider/provider.dart';
 import '../theme/mesh_theme.dart';
 
-export 'package:meshcore_open/widgets/path_map_ui.dart'
+export 'package:meshusf/widgets/path_map_ui.dart'
     show formatDistance, getPathDistanceMeters;
 
 class PathTraceData {

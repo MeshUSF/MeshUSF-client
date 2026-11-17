@@ -6,11 +6,11 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:meshcore_open/models/image_codec_support.dart';
-import 'package:meshcore_open/services/app_settings_service.dart';
-import 'package:meshcore_open/services/image_codec_file_store.dart';
-import 'package:meshcore_open/services/image_codec_service.dart';
-import 'package:meshcore_open/services/image_codec_settings_store.dart';
+import 'package:meshusf/models/image_codec_support.dart';
+import 'package:meshusf/services/app_settings_service.dart';
+import 'package:meshusf/services/image_codec_file_store.dart';
+import 'package:meshusf/services/image_codec_service.dart';
+import 'package:meshusf/services/image_codec_settings_store.dart';
 
 /// Real file store, redirected at a temp directory.
 ///

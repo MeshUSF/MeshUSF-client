@@ -1,11 +1,11 @@
 {
-    "name": "meshcore_open",
-    "short_name": "meshcore_open",
+    "name": "MeshUSF",
+    "short_name": "MeshUSF",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Off-grid communication and coordination for emergency-response teams.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

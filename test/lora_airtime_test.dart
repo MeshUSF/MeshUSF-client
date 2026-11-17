@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/services/image_chunk_transport.dart';
-import 'package:meshcore_open/widgets/image_send_codec_binding.dart';
-import 'package:meshcore_open/models/radio_settings.dart';
-import 'package:meshcore_open/utils/lora_airtime.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart' as protocol;
+import 'package:meshusf/services/image_chunk_transport.dart';
+import 'package:meshusf/widgets/image_send_codec_binding.dart';
+import 'package:meshusf/models/radio_settings.dart';
+import 'package:meshusf/utils/lora_airtime.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart' as protocol;
 
 double _ms(Duration d) => d.inMicroseconds / 1000.0;
 

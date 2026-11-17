@@ -3,10 +3,10 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/models/contact.dart';
-import 'package:meshcore_open/models/message.dart';
-import 'package:meshcore_open/services/message_retry_service.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/models/contact.dart';
+import 'package:meshusf/models/message.dart';
+import 'package:meshusf/services/message_retry_service.dart';
 
 // ---------------------------------------------------------------------------
 // Helpers

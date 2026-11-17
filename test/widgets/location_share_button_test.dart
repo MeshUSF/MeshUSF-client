@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meshcore_open/helpers/location_map_link.dart';
-import 'package:meshcore_open/l10n/app_localizations.dart';
-import 'package:meshcore_open/theme/mesh_theme.dart';
-import 'package:meshcore_open/widgets/location_share_button.dart';
-import 'package:meshcore_open/widgets/translated_message_content.dart';
+import 'package:meshusf/helpers/location_map_link.dart';
+import 'package:meshusf/l10n/app_localizations.dart';
+import 'package:meshusf/theme/mesh_theme.dart';
+import 'package:meshusf/widgets/location_share_button.dart';
+import 'package:meshusf/widgets/translated_message_content.dart';
 
 Future<void> _show(
   WidgetTester tester,

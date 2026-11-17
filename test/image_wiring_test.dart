@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/main.dart';
-import 'package:meshcore_open/services/image_chunk_transport.dart';
-import 'package:meshcore_open/services/received_image_store.dart';
-import 'package:meshcore_open/models/app_settings.dart';
-import 'package:meshcore_open/models/image_codec_support.dart';
-import 'package:meshcore_open/widgets/image_send_codec_binding.dart';
+import 'package:meshusf/main.dart';
+import 'package:meshusf/services/image_chunk_transport.dart';
+import 'package:meshusf/services/received_image_store.dart';
+import 'package:meshusf/models/app_settings.dart';
+import 'package:meshusf/models/image_codec_support.dart';
+import 'package:meshusf/widgets/image_send_codec_binding.dart';
 
 void main() {
   test(

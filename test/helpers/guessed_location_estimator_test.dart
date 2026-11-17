@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meshcore_open/helpers/guessed_location_estimator.dart';
+import 'package:meshusf/helpers/guessed_location_estimator.dart';
 
 const _phoenix = (33.45, -112.07);
 const _casaGrande = (32.88, -111.76);

@@ -1,4 +1,4 @@
-MeshCore Open is a cross-platform application for communicating with MeshCore LoRa mesh network devices over Bluetooth Low Energy (BLE), USB or TCP. The app enables long-range, off-grid communication through peer-to-peer messaging, public channels, and mesh networking capabilities.
+MeshUSF is a cross-platform application for communicating with MeshCore LoRa mesh network devices over Bluetooth Low Energy (BLE), USB or TCP. The app enables long-range, off-grid communication through peer-to-peer messaging, public channels, and mesh networking capabilities.
 
 <big>Core Functionality</big>
 

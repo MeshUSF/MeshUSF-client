@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:meshcore_open/utils/gpx_export.dart';
-import 'package:meshcore_open/widgets/elements_ui.dart';
+import 'package:meshusf/utils/gpx_export.dart';
+import 'package:meshusf/widgets/elements_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -658,7 +658,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               exporter,
               l10n.map_repeater,
               l10n.settings_gpxExportRepeatersRoom,
-              'meshcore_repeaters_',
+              'meshusf_repeaters_',
               l10n.settings_gpxExportShareText,
               l10n.settings_gpxExportShareSubject,
             );
@@ -677,7 +677,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               exporter,
               l10n.map_repeater,
               l10n.settings_gpxExportChat,
-              'meshcore_contacts_',
+              'meshusf_contacts_',
               l10n.settings_gpxExportShareText,
               l10n.settings_gpxExportShareSubject,
             );
@@ -696,7 +696,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               exporter,
               l10n.map_repeater,
               l10n.settings_gpxExportAllContacts,
-              'meshcore_all_',
+              'meshusf_all_',
               l10n.settings_gpxExportShareText,
               l10n.settings_gpxExportShareSubject,
             );

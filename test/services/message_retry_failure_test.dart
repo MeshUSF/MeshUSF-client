@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/models/contact.dart';
-import 'package:meshcore_open/models/message.dart';
-import 'package:meshcore_open/services/message_retry_service.dart';
+import 'package:meshusf/models/contact.dart';
+import 'package:meshusf/models/message.dart';
+import 'package:meshusf/services/message_retry_service.dart';
 
 Contact _contact() => Contact(
   publicKey: Uint8List.fromList(List<int>.generate(32, (i) => 0xAA + i)),

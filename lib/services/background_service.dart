@@ -20,8 +20,8 @@ class BackgroundService {
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
         channelId: 'meshcore_background',
-        channelName: 'MeshCore Background',
-        channelDescription: 'Keeps MeshCore running in the background.',
+        channelName: 'MeshUSF Background',
+        channelDescription: 'Keeps MeshUSF running in the background.',
         channelImportance: NotificationChannelImportance.LOW,
         priority: NotificationPriority.LOW,
       ),
