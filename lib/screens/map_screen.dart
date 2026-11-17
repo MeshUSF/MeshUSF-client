@@ -104,8 +104,11 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   double? _lastCameraZoom;
   static const double _lowZoom = 6.0;
   static const double _highZoom = 18.0;
-  static const double _minimumScale = 0.20;
-  static const double _maximumScale = 0.60;
+  static const double _minimumScale = 0.30;
+  static const double _maximumScale = 0.70;
+  static const double _pinIconSize = 44;
+  // MaterialIcons.location_on has 43/512 em of blank space below its tip.
+  static const double _pinIconBottomInset = _pinIconSize * 43 / 512;
   static const Size _compactPinCardSize = Size(59, 47);
   static const Size _expandedPinCardSize = Size(208, 167);
   static const double _pinCardGap = 12;
@@ -896,6 +899,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                             point: pin.position,
                             width: 48,
                             height: 48,
+                            alignment: Alignment.topCenter,
                             child: GestureDetector(
                               behavior: HitTestBehavior.deferToChild,
                               onTap: () {
@@ -912,7 +916,8 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                                   _lastCameraZoom = preciseZoom;
                                 });
                               },
-                              child: Center(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
                                 child: Builder(
                                   builder: (pinContext) {
                                     final preciseZoom = MapCamera.of(
@@ -931,30 +936,26 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                                             zoomProgress;
                                     return Transform.scale(
                                       scale: pinScale,
-                                      alignment: Alignment.center,
+                                      alignment: Alignment.bottomCenter,
                                       child: SizedBox(
-                                        width: 44,
-                                        height: 44,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
+                                        width: _pinIconSize,
+                                        height: _pinIconSize,
+                                        child: Transform.translate(
+                                          offset: const Offset(
+                                            0,
+                                            _pinIconBottomInset,
+                                          ),
+                                          child: Icon(
+                                            Icons.location_on,
                                             color: pin.color,
-                                            border: Border.all(
-                                              color: MapPalette.markerOutline,
-                                              width: 3,
-                                            ),
-                                            boxShadow: const [
-                                              BoxShadow(
+                                            size: _pinIconSize,
+                                            shadows: const [
+                                              Shadow(
                                                 color: MapPalette.markerShadow,
                                                 blurRadius: 8,
                                                 offset: Offset(0, 3),
                                               ),
                                             ],
-                                          ),
-                                          child: const Icon(
-                                            Icons.location_on,
-                                            color: Colors.white,
-                                            size: 25,
                                           ),
                                         ),
                                       ),

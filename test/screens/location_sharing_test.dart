@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -245,18 +247,13 @@ Future<void> _capture(WidgetTester tester, String name) async {
 
 Color _highlightPinFill(WidgetTester tester) {
   final layer = tester.widgetList<MarkerLayer>(find.byType(MarkerLayer)).first;
-  final container = tester.widget<Container>(
+  final icon = tester.widget<Icon>(
     find.descendant(
       of: find.byWidget(layer.markers.first.child),
-      matching: find.byWidgetPredicate(
-        (widget) =>
-            widget is Container &&
-            widget.decoration is BoxDecoration &&
-            (widget.decoration! as BoxDecoration).shape == BoxShape.circle,
-      ),
+      matching: find.byIcon(Icons.location_on),
     ),
   );
-  return (container.decoration! as BoxDecoration).color!;
+  return icon.color!;
 }
 
 double _highlightPinScale(WidgetTester tester) {
@@ -264,10 +261,60 @@ double _highlightPinScale(WidgetTester tester) {
   final transform = tester.widget<Transform>(
     find.descendant(
       of: find.byWidget(layer.markers.first.child),
-      matching: find.byType(Transform),
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Transform && widget.alignment == Alignment.bottomCenter,
+      ),
     ),
   );
   return transform.transform.storage[0];
+}
+
+Future<void> _expectVisiblePinTip(WidgetTester tester, Offset anchor) async {
+  final boundaryFinder = find.byKey(
+    const ValueKey('location-sharing-screenshot'),
+  );
+  final boundary = tester.renderObject<RenderRepaintBoundary>(boundaryFinder);
+  final localAnchor = anchor - tester.getTopLeft(boundaryFinder);
+  await tester.runAsync(() async {
+    final snapshot = await boundary.toImage(pixelRatio: 1);
+    try {
+      final data = await snapshot.toByteData(
+        format: ui.ImageByteFormat.rawRgba,
+      );
+      final pixels = data!.buffer.asUint8List();
+      int? lastPinRow;
+      for (
+        var y = localAnchor.dy.floor() - 5;
+        y <= localAnchor.dy.ceil() + 1;
+        y++
+      ) {
+        for (
+          var x = localAnchor.dx.floor() - 3;
+          x <= localAnchor.dx.ceil() + 3;
+          x++
+        ) {
+          final index = (y * snapshot.width + x) * 4;
+          if (pixels[index] > pixels[index + 1] + 20 &&
+              pixels[index] > pixels[index + 2] + 20) {
+            lastPinRow = y;
+          }
+        }
+      }
+      expect(
+        lastPinRow,
+        isNotNull,
+        reason: 'Find the red pin, excluding its shadow.',
+      );
+      expect(
+        (lastPinRow! + 1 - localAnchor.dy).abs(),
+        lessThanOrEqualTo(1.5),
+        reason: 'The visible pin tip should reach the projected coordinate.',
+      );
+    } finally {
+      snapshot.dispose();
+    }
+  });
 }
 
 Finder _highlightPinCard() => find.byWidgetPredicate(
@@ -776,6 +823,11 @@ void main() {
     final controller = tester
         .widget<FlutterMap>(find.byType(FlutterMap))
         .mapController!;
+    final mapOrigin = tester.getTopLeft(find.byType(FlutterMap));
+    final initialAnchor =
+        mapOrigin +
+        controller.camera.latLngToScreenOffset(const LatLng(45.5, -122.6));
+    await _expectVisiblePinTip(tester, initialAnchor);
     controller.move(controller.camera.center, 12);
     await tester.pumpAndSettle();
     final scaleAt12 = _highlightPinScale(tester);
@@ -793,10 +845,19 @@ void main() {
     controller.move(const LatLng(45.51, -122.6), 12.2);
     await tester.pumpAndSettle();
     expect(_highlightPinScale(tester), closeTo(scaleAt12Point2, 0.000001));
+    final movedAnchor =
+        mapOrigin +
+        controller.camera.latLngToScreenOffset(const LatLng(45.5, -122.6));
+    await _expectVisiblePinTip(tester, movedAnchor);
 
     controller.move(controller.camera.center, 6);
     await tester.pumpAndSettle();
     final minimumScale = _highlightPinScale(tester);
+    await _expectVisiblePinTip(
+      tester,
+      mapOrigin +
+          controller.camera.latLngToScreenOffset(const LatLng(45.5, -122.6)),
+    );
     controller.move(controller.camera.center, 5.5);
     await tester.pumpAndSettle();
     expect(_highlightPinScale(tester), closeTo(minimumScale, 0.000001));
