@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:meshcore_open/connector/meshcore_connector.dart';
 import 'package:meshcore_open/l10n/app_localizations.dart';
 import 'package:meshcore_open/models/app_settings.dart';
@@ -36,16 +40,18 @@ class _ChatSettings extends AppSettingsService {
   );
 }
 
-class _MapTiles extends MapTileCacheService {
-  _MapTiles({required super.appSettingsService});
-
+class _MapTiles extends ChangeNotifier implements MapTileCacheService {
   @override
   Widget buildTileLayer(BuildContext context, {double opacity = 1}) =>
       const SizedBox.shrink();
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class _ChatConnector extends MeshCoreConnector {
   bool connected = true;
+  final mapContacts = <Contact>[];
   final directMessages = <Message>[];
   final channelMessages = <ChannelMessage>[];
   ChannelMessage? sentReplyTo;
@@ -56,6 +62,8 @@ class _ChatConnector extends MeshCoreConnector {
   String get selfName => 'Me';
   @override
   bool get hasGps => false;
+  @override
+  List<Contact> get allContacts => mapContacts;
   @override
   Future<void> getChannels({int? maxChannels, bool force = false}) async {}
   @override
@@ -153,6 +161,8 @@ Future<void> _pumpChat(
   _ChatConnector connector, {
   required bool channel,
   String language = 'en',
+  bool dark = true,
+  Widget? home,
 }) async {
   await tester.pumpWidget(
     MultiProvider(
@@ -165,10 +175,7 @@ Future<void> _pumpChat(
           create: (_) => PathHistoryService(StorageService()),
         ),
         ChangeNotifierProvider(create: (_) => ChatTextScaleService()),
-        ChangeNotifierProvider<MapTileCacheService>(
-          create: (context) =>
-              _MapTiles(appSettingsService: context.read<AppSettingsService>()),
-        ),
+        ChangeNotifierProvider<MapTileCacheService>(create: (_) => _MapTiles()),
         ChangeNotifierProvider(
           create: (context) =>
               TranslationService(context.read<AppSettingsService>()),
@@ -178,28 +185,30 @@ Future<void> _pumpChat(
         key: const ValueKey('location-sharing-screenshot'),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: MeshTheme.dark(),
+          theme: dark ? MeshTheme.dark() : MeshTheme.light(),
           locale: Locale(language),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: channel
-              ? ChannelChatScreen(
-                  channel: Channel(
-                    index: 1,
-                    name: '#local',
-                    psk: Uint8List(16),
-                  ),
-                )
-              : ChatScreen(
-                  contact: Contact(
-                    publicKey: Uint8List(32),
-                    name: 'Alex',
-                    type: 1,
-                    pathLength: -1,
-                    path: Uint8List(0),
-                    lastSeen: DateTime(2026, 10, 29),
-                  ),
-                ),
+          home:
+              home ??
+              (channel
+                  ? ChannelChatScreen(
+                      channel: Channel(
+                        index: 1,
+                        name: '#local',
+                        psk: Uint8List(16),
+                      ),
+                    )
+                  : ChatScreen(
+                      contact: Contact(
+                        publicKey: Uint8List(32),
+                        name: 'Alex',
+                        type: 1,
+                        pathLength: -1,
+                        path: Uint8List(0),
+                        lastSeen: DateTime(2026, 10, 29),
+                      ),
+                    )),
         ),
       ),
     ),
@@ -236,6 +245,115 @@ Future<void> _capture(WidgetTester tester, String name) async {
   );
 }
 
+Color _highlightPinFill(WidgetTester tester) {
+  final layer = tester.widgetList<MarkerLayer>(find.byType(MarkerLayer)).first;
+  final icon = tester.widget<Icon>(
+    find.descendant(
+      of: find.byWidget(layer.markers.first.child),
+      matching: find.byIcon(Icons.location_on),
+    ),
+  );
+  return icon.color!;
+}
+
+double _highlightPinScale(WidgetTester tester) {
+  final layer = tester.widgetList<MarkerLayer>(find.byType(MarkerLayer)).first;
+  final transform = tester.widget<Transform>(
+    find.descendant(
+      of: find.byWidget(layer.markers.first.child),
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Transform && widget.alignment == Alignment.bottomCenter,
+      ),
+    ),
+  );
+  return transform.transform.storage[0];
+}
+
+Future<void> _expectVisiblePinTip(WidgetTester tester, Offset anchor) async {
+  final boundaryFinder = find.byKey(
+    const ValueKey('location-sharing-screenshot'),
+  );
+  final boundary = tester.renderObject<RenderRepaintBoundary>(boundaryFinder);
+  final localAnchor = anchor - tester.getTopLeft(boundaryFinder);
+  await tester.runAsync(() async {
+    final snapshot = await boundary.toImage(pixelRatio: 1);
+    try {
+      final data = await snapshot.toByteData(
+        format: ui.ImageByteFormat.rawRgba,
+      );
+      final pixels = data!.buffer.asUint8List();
+      int? lastPinRow;
+      for (
+        var y = localAnchor.dy.floor() - 5;
+        y <= localAnchor.dy.ceil() + 1;
+        y++
+      ) {
+        for (
+          var x = localAnchor.dx.floor() - 3;
+          x <= localAnchor.dx.ceil() + 3;
+          x++
+        ) {
+          final index = (y * snapshot.width + x) * 4;
+          if (pixels[index] > pixels[index + 1] + 20 &&
+              pixels[index] > pixels[index + 2] + 20) {
+            lastPinRow = y;
+          }
+        }
+      }
+      expect(
+        lastPinRow,
+        isNotNull,
+        reason: 'Find the red pin, excluding its shadow.',
+      );
+      expect(
+        (lastPinRow! + 1 - localAnchor.dy).abs(),
+        lessThanOrEqualTo(1.5),
+        reason: 'The visible pin tip should reach the projected coordinate.',
+      );
+    } finally {
+      snapshot.dispose();
+    }
+  });
+}
+
+Finder _highlightPinCard() => find.byWidgetPredicate(
+  (widget) => widget is Card && widget.shape is RoundedRectangleBorder,
+);
+
+IconButton _pinColorButton(WidgetTester tester, String label) =>
+    tester.widget<IconButton>(
+      find.ancestor(
+        of: find.byTooltip(label),
+        matching: find.byType(IconButton),
+      ),
+    );
+
+Future<void> _openPinColorDialog(
+  WidgetTester tester, {
+  String label = 'Pin color',
+}) async {
+  final button = find.byTooltip(label);
+  await tester.ensureVisible(button);
+  await tester.pumpAndSettle();
+  await tester.tap(button);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _applyPinColor(
+  WidgetTester tester,
+  String label, {
+  String applyLabel = 'Apply',
+}) async {
+  final choice = find.byTooltip(label);
+  await tester.ensureVisible(choice);
+  await tester.pumpAndSettle();
+  await tester.tap(choice);
+  await tester.pumpAndSettle();
+  await tester.tap(find.widgetWithText(FilledButton, applyLabel));
+  await tester.pumpAndSettle();
+}
+
 void main() {
   late GeolocatorPlatform originalPlatform;
   late _ChatLocationPlatform platform;
@@ -264,6 +382,626 @@ void main() {
   tearDown(() {
     GeolocatorPlatform.instance = originalPlatform;
     connector.dispose();
+  });
+
+  final paletteLabels = {
+    'en': [
+      'Light red',
+      'Orange',
+      'Rich red',
+      'Yellow',
+      'Lime',
+      'Green',
+      'Teal',
+      'Cyan',
+      'Blue',
+      'Indigo',
+      'Purple',
+      'Pink',
+      'Brown',
+      'Gray',
+      'Black',
+      'Custom',
+    ],
+    'es': [
+      'Rojo claro',
+      'Naranja',
+      'Rojo intenso',
+      'Amarillo',
+      'Verde lima',
+      'Verde',
+      'Verde azulado',
+      'Cian',
+      'Azul',
+      'Índigo',
+      'Morado',
+      'Rosa',
+      'Marrón',
+      'Gris',
+      'Negro',
+      'Personalizado',
+    ],
+    'fr': [
+      'Rouge clair',
+      'Orange',
+      'Rouge intense',
+      'Jaune',
+      'Vert citron',
+      'Vert',
+      'Bleu sarcelle',
+      'Cyan',
+      'Bleu',
+      'Indigo',
+      'Violet',
+      'Rose',
+      'Marron',
+      'Gris',
+      'Noir',
+      'Personnalisé',
+    ],
+  };
+
+  for (final entry in paletteLabels.entries) {
+    for (final dark in [false, true]) {
+      testWidgets(
+        'pin palette ${entry.key} ${dark ? 'dark' : 'light'} updates the pin and outline',
+        (tester) async {
+          await _pumpChat(
+            tester,
+            connector,
+            channel: false,
+            language: entry.key,
+            dark: dark,
+            home: const MapScreen(highlightPosition: LatLng(45.5, -122.6)),
+          );
+          await tester.tap(find.byIcon(Icons.location_on));
+          await tester.pumpAndSettle();
+          expect(find.byType(AlertDialog), findsNothing);
+          expect(find.byType(GridView), findsNothing);
+          final l10n = lookupAppLocalizations(Locale(entry.key));
+          expect(
+            tester
+                .widget<Text>(find.text(l10n.chat_location))
+                .style!
+                .fontWeight,
+            FontWeight.bold,
+          );
+          if (entry.key == 'en' && dark) {
+            await _capture(tester, 'map-pin-info-card');
+          }
+          await _openPinColorDialog(tester, label: l10n.map_pinColor);
+          expect(find.byType(AlertDialog), findsOneWidget);
+          final buttons = find.descendant(
+            of: find.byType(GridView),
+            matching: find.byType(IconButton),
+          );
+          expect(buttons, findsNWidgets(16));
+          for (final label in entry.value) {
+            expect(find.byTooltip(label), findsOneWidget);
+          }
+          expect(
+            tester.widget<IconButton>(buttons.last).tooltip,
+            entry.value.last,
+          );
+          final customPosition = tester.getCenter(
+            find.byTooltip(entry.value.last),
+          );
+          final firstRowY = tester
+              .getCenter(find.byTooltip(entry.value.first))
+              .dy;
+          final secondRowY = tester
+              .getCenter(find.byTooltip(entry.value[8]))
+              .dy;
+          for (final label in entry.value.take(8)) {
+            expect(
+              tester.getCenter(find.byTooltip(label)).dy,
+              closeTo(firstRowY, 0.1),
+            );
+          }
+          for (final label in entry.value.skip(8)) {
+            expect(
+              tester.getCenter(find.byTooltip(label)).dy,
+              closeTo(secondRowY, 0.1),
+            );
+          }
+          final firstRowEnd = tester.getCenter(find.byTooltip(entry.value[7]));
+          expect(customPosition.dx, closeTo(firstRowEnd.dx, 0.1));
+          expect(customPosition.dy, greaterThan(firstRowEnd.dy));
+
+          final blue = find.byTooltip(entry.value[8]);
+          await tester.ensureVisible(blue);
+          await tester.pumpAndSettle();
+          await tester.tap(blue);
+          await tester.pumpAndSettle();
+          expect(_highlightPinFill(tester), MapPalette.pinLightRed);
+          expect(_pinColorButton(tester, entry.value[8]).isSelected, isTrue);
+          expect(
+            tester
+                .widgetList<IconButton>(buttons)
+                .where((button) => button.isSelected == true),
+            hasLength(1),
+          );
+          await tester.tap(find.widgetWithText(TextButton, l10n.common_cancel));
+          await tester.pumpAndSettle();
+          expect(_highlightPinFill(tester), MapPalette.pinLightRed);
+
+          await _openPinColorDialog(tester, label: l10n.map_pinColor);
+          await _applyPinColor(
+            tester,
+            entry.value[8],
+            applyLabel: l10n.common_apply,
+          );
+          expect(_highlightPinFill(tester), Colors.blue);
+          final infoCard = tester
+              .widgetList<Card>(find.byType(Card))
+              .singleWhere((card) => card.shape is RoundedRectangleBorder);
+          expect(
+            (infoCard.shape! as RoundedRectangleBorder).side.color,
+            Colors.blue.withValues(alpha: 0.6),
+          );
+
+          await _openPinColorDialog(tester, label: l10n.map_pinColor);
+          expect(_pinColorButton(tester, entry.value[8]).isSelected, isTrue);
+          if (entry.key == 'en' && dark) {
+            await _capture(tester, 'map-pin-colors');
+          }
+
+          final custom = find.byTooltip(entry.value.last);
+          await tester.ensureVisible(custom);
+          await tester.pumpAndSettle();
+          await tester.tap(custom);
+          await tester.pumpAndSettle();
+          await tester.enterText(
+            find.descendant(
+              of: find.byType(AlertDialog),
+              matching: find.byType(TextField),
+            ),
+            '#3366FF',
+          );
+          await tester.pumpAndSettle();
+          expect(_highlightPinFill(tester), Colors.blue);
+          if (entry.key == 'en' && dark) {
+            await _capture(tester, 'map-pin-custom-color');
+          }
+          await tester.tap(find.widgetWithText(TextButton, l10n.common_cancel));
+          await tester.pumpAndSettle();
+          expect(_highlightPinFill(tester), Colors.blue);
+          await _openPinColorDialog(tester, label: l10n.map_pinColor);
+
+          final black = find.byTooltip(entry.value[14]);
+          await tester.ensureVisible(black);
+          await tester.pumpAndSettle();
+          await tester.tap(black);
+          await tester.pumpAndSettle();
+          expect(_highlightPinFill(tester), Colors.blue);
+          final blackCheck = tester.widget<Icon>(
+            find.descendant(of: black, matching: find.byIcon(Icons.check)),
+          );
+          expect(blackCheck.color, Colors.white);
+          await tester.tap(
+            find.widgetWithText(FilledButton, l10n.common_apply),
+          );
+          await tester.pumpAndSettle();
+          expect(_highlightPinFill(tester), Colors.black);
+
+          await _openPinColorDialog(tester, label: l10n.map_pinColor);
+          final yellow = find.byTooltip(entry.value[3]);
+          await tester.ensureVisible(yellow);
+          await tester.pumpAndSettle();
+          await tester.tap(yellow);
+          await tester.pumpAndSettle();
+          final yellowCheck = tester.widget<Icon>(
+            find.descendant(of: yellow, matching: find.byIcon(Icons.check)),
+          );
+          expect(yellowCheck.color, Colors.black);
+          await tester.tap(
+            find.widgetWithText(FilledButton, l10n.common_apply),
+          );
+          await tester.pumpAndSettle();
+
+          await tester.tap(find.byIcon(Icons.location_on));
+          await tester.pumpAndSettle();
+          expect(find.byTooltip(l10n.map_pinColor), findsNothing);
+          await tester.tap(find.byIcon(Icons.location_on));
+          await tester.pumpAndSettle();
+          expect(_highlightPinFill(tester), Colors.yellow);
+          await _openPinColorDialog(tester, label: l10n.map_pinColor);
+          expect(_pinColorButton(tester, entry.value[3]).isSelected, isTrue);
+          await tester.tap(find.widgetWithText(TextButton, l10n.common_cancel));
+          await tester.pumpAndSettle();
+          await tester.drag(find.byType(FlutterMap), const Offset(-40, 30));
+          await tester.pumpAndSettle();
+          expect(find.byTooltip(l10n.map_pinColor), findsOneWidget);
+          expect(_highlightPinFill(tester), Colors.yellow);
+          expect(tester.takeException(), isNull);
+        },
+      );
+    }
+  }
+
+  testWidgets('pin card and its contents scale together with fractional zoom', (
+    tester,
+  ) async {
+    const label = 'Command post';
+    await _pumpChat(
+      tester,
+      connector,
+      channel: false,
+      home: const MapScreen(
+        highlightPosition: LatLng(45.5, -122.6),
+        highlightLabel: label,
+        highlightZoom: 6,
+      ),
+    );
+    await tester.tap(find.byIcon(Icons.edit_location_alt));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    final compactSize = tester.getRect(_highlightPinCard()).size;
+    final titleSize = tester.getRect(find.text(label)).size;
+    final coordinates = find.text('45.500000, -122.600000');
+    final coordinatesSize = tester.getRect(coordinates).size;
+    final closeSize = tester.getRect(find.byTooltip('Close')).size;
+    final colorButtonSize = tester.getRect(find.byTooltip('Pin color')).size;
+    await _capture(tester, 'map-pin-card-compact');
+
+    final controller = tester
+        .widget<FlutterMap>(find.byType(FlutterMap))
+        .mapController!;
+    controller.move(controller.camera.center, 5.5);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    expect(tester.getRect(_highlightPinCard()).size, compactSize);
+
+    controller.move(controller.camera.center, 12.1);
+    await tester.pumpAndSettle();
+    final sizeAt12Point1 = tester.getRect(_highlightPinCard()).size;
+    expect(sizeAt12Point1.width, greaterThan(compactSize.width));
+    expect(sizeAt12Point1.height, greaterThan(compactSize.height));
+
+    controller.move(controller.camera.center, 12.2);
+    await tester.pumpAndSettle();
+    final sizeAt12Point2 = tester.getRect(_highlightPinCard()).size;
+    expect(sizeAt12Point2.width, greaterThan(sizeAt12Point1.width));
+    expect(sizeAt12Point2.height, greaterThan(sizeAt12Point1.height));
+
+    controller.move(controller.camera.center, 18);
+    await tester.pumpAndSettle();
+    final expandedSize = tester.getRect(_highlightPinCard()).size;
+    expect(expandedSize.width, greaterThan(sizeAt12Point2.width));
+    expect(expandedSize.height, greaterThan(sizeAt12Point2.height));
+    final scaleRatio = expandedSize.width / compactSize.width;
+    final expandedTitle = tester.getRect(find.text(label)).size;
+    final expandedCoordinates = tester.getRect(coordinates).size;
+    final expandedClose = tester.getRect(find.byTooltip('Close')).size;
+    final expandedColor = tester.getRect(find.byTooltip('Pin color')).size;
+    expect(scaleRatio, greaterThan(1));
+    expect(
+      expandedTitle.height / titleSize.height,
+      closeTo(scaleRatio, 0.000001),
+    );
+    expect(
+      expandedCoordinates.height / coordinatesSize.height,
+      closeTo(scaleRatio, 0.000001),
+    );
+    expect(
+      expandedClose.width / closeSize.width,
+      closeTo(scaleRatio, 0.000001),
+    );
+    expect(
+      expandedClose.height / closeSize.height,
+      closeTo(scaleRatio, 0.000001),
+    );
+    expect(
+      expandedColor.width / colorButtonSize.width,
+      closeTo(scaleRatio, 0.000001),
+    );
+    expect(
+      expandedColor.height / colorButtonSize.height,
+      closeTo(scaleRatio, 0.000001),
+    );
+    await tester.tap(find.byTooltip('Close'));
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    await _capture(tester, 'map-pin-card-expanded');
+    expect(tester.takeException(), isNull);
+  });
+
+  for (final language in ['en', 'es', 'fr']) {
+    testWidgets('compact pin card supports large text in $language', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(360, 640);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      const label =
+          'Command post — secteur nord — rendez-vous et coordination des équipes';
+      connector.mapContacts.add(
+        Contact(
+          publicKey: Uint8List(32),
+          name: 'Map fixture',
+          type: 1,
+          pathLength: -1,
+          path: Uint8List(0),
+          lastSeen: DateTime.now(),
+          latitude: 44,
+          longitude: -120,
+        ),
+      );
+      await _pumpChat(
+        tester,
+        connector,
+        channel: false,
+        language: language,
+        home: const MapScreen(
+          highlightPosition: LatLng(45.5, -122.6),
+          highlightLabel: label,
+          highlightZoom: 6,
+        ),
+      );
+      await tester.tap(find.byIcon(Icons.edit_location_alt));
+      await tester.pumpAndSettle();
+      tester.platformDispatcher.textScaleFactorTestValue = 2;
+      await tester.pumpAndSettle();
+      final controller = tester
+          .widget<FlutterMap>(find.byType(FlutterMap))
+          .mapController!;
+      final camera = controller.camera;
+      // Keep this layout test independent of the upcoming edge-placement step.
+      controller.move(
+        camera.screenOffsetToLatLng(
+          Offset(
+            camera.nonRotatedSize.width / 2 + 110,
+            camera.nonRotatedSize.height / 2 - 40,
+          ),
+        ),
+        6,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.location_on));
+      await tester.pumpAndSettle();
+
+      final l10n = lookupAppLocalizations(Locale(language));
+      final card = _highlightPinCard();
+      final cardScrollable = find.descendant(
+        of: card,
+        matching: find.byType(Scrollable),
+      );
+      expect(tester.getRect(card).right, lessThanOrEqualTo(360));
+      expect(
+        MediaQuery.textScalerOf(tester.element(find.text(label))).scale(14),
+        28,
+      );
+      final colorAction = find.byTooltip(l10n.map_pinColor);
+      await tester.scrollUntilVisible(
+        colorAction,
+        40,
+        scrollable: cardScrollable,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(colorAction);
+      await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsOneWidget);
+      await tester.tap(find.widgetWithText(TextButton, l10n.common_cancel));
+      await tester.pumpAndSettle();
+      final closeAction = find.byTooltip(l10n.common_close);
+      await tester.scrollUntilVisible(
+        closeAction,
+        -40,
+        scrollable: cardScrollable,
+      );
+      tester.state<ScrollableState>(cardScrollable).position.jumpTo(0);
+      await tester.pumpAndSettle();
+      if (language == 'en') await _capture(tester, 'map-pin-card-large-en');
+      await tester.tap(closeAction);
+      await tester.pumpAndSettle();
+      expect(card, findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
+  testWidgets('pin size follows fractional zoom within one bucket', (
+    tester,
+  ) async {
+    await _pumpChat(
+      tester,
+      connector,
+      channel: false,
+      home: const MapScreen(
+        highlightPosition: LatLng(45.5, -122.6),
+        highlightZoom: 18,
+      ),
+    );
+    expect(_highlightPinScale(tester), closeTo(0.60, 0.000001));
+
+    final controller = tester
+        .widget<FlutterMap>(find.byType(FlutterMap))
+        .mapController!;
+    final mapOrigin = tester.getTopLeft(find.byType(FlutterMap));
+    final initialAnchor =
+        mapOrigin +
+        controller.camera.latLngToScreenOffset(const LatLng(45.5, -122.6));
+    await _expectVisiblePinTip(tester, initialAnchor);
+    controller.move(controller.camera.center, 12);
+    await tester.pumpAndSettle();
+    final scaleAt12 = _highlightPinScale(tester);
+
+    controller.move(controller.camera.center, 12.1);
+    await tester.pumpAndSettle();
+    final scaleAt12Point1 = _highlightPinScale(tester);
+    expect(scaleAt12Point1, greaterThan(scaleAt12));
+
+    controller.move(controller.camera.center, 12.2);
+    await tester.pumpAndSettle();
+    final scaleAt12Point2 = _highlightPinScale(tester);
+    expect(scaleAt12Point2, greaterThan(scaleAt12Point1));
+
+    controller.move(const LatLng(45.51, -122.6), 12.2);
+    await tester.pumpAndSettle();
+    expect(_highlightPinScale(tester), closeTo(scaleAt12Point2, 0.000001));
+    final movedAnchor =
+        mapOrigin +
+        controller.camera.latLngToScreenOffset(const LatLng(45.5, -122.6));
+    await _expectVisiblePinTip(tester, movedAnchor);
+
+    controller.move(controller.camera.center, 6);
+    await tester.pumpAndSettle();
+    final minimumScale = _highlightPinScale(tester);
+    await _expectVisiblePinTip(
+      tester,
+      mapOrigin +
+          controller.camera.latLngToScreenOffset(const LatLng(45.5, -122.6)),
+    );
+    controller.move(controller.camera.center, 5.5);
+    await tester.pumpAndSettle();
+    expect(_highlightPinScale(tester), closeTo(minimumScale, 0.000001));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+    'selected card uses the exact zoom cutoff and retains its color',
+    (tester) async {
+      await _pumpChat(
+        tester,
+        connector,
+        channel: false,
+        home: const MapScreen(highlightPosition: LatLng(45.5, -122.6)),
+      );
+      await tester.tap(find.byIcon(Icons.location_on));
+      await tester.pumpAndSettle();
+      await _openPinColorDialog(tester);
+      await _applyPinColor(tester, 'Blue');
+      expect(find.byTooltip('Pin color'), findsOneWidget);
+
+      final controller = tester
+          .widget<FlutterMap>(find.byType(FlutterMap))
+          .mapController!;
+      controller.move(controller.camera.center, 11.29);
+      await tester.pumpAndSettle();
+      expect(_highlightPinCard(), findsOneWidget);
+      controller.move(controller.camera.center, 11.28);
+      await tester.pumpAndSettle();
+      expect(_highlightPinCard(), findsOneWidget);
+      controller.move(controller.camera.center, 11.279);
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.location_on), findsOneWidget);
+      expect(_highlightPinCard(), findsNothing);
+      expect(_highlightPinFill(tester), Colors.blue);
+
+      controller.move(controller.camera.center, 5);
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.location_on), findsNothing);
+      expect(find.byTooltip('Pin color'), findsNothing);
+
+      controller.move(controller.camera.center, 5.5);
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.location_on), findsOneWidget);
+      expect(_highlightPinCard(), findsNothing);
+      controller.move(controller.camera.center, 11.28);
+      await tester.pumpAndSettle();
+      expect(find.byTooltip('Pin color'), findsOneWidget);
+      expect(_highlightPinFill(tester), Colors.blue);
+      await tester.tap(find.byTooltip('Close'));
+      await tester.pumpAndSettle();
+      controller.move(controller.camera.center, 13);
+      await tester.pumpAndSettle();
+      expect(_highlightPinCard(), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets('low zoom click override expires on the next zoom out', (
+    tester,
+  ) async {
+    await _pumpChat(
+      tester,
+      connector,
+      channel: false,
+      home: const MapScreen(
+        highlightPosition: LatLng(45.5, -122.6),
+        highlightZoom: 10.5,
+      ),
+    );
+    expect(_highlightPinCard(), findsNothing);
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsOneWidget);
+
+    final controller = tester
+        .widget<FlutterMap>(find.byType(FlutterMap))
+        .mapController!;
+    controller.move(const LatLng(45.501, -122.6), 10.5);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsOneWidget);
+    controller.move(controller.camera.center, 10.6);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsOneWidget);
+    controller.move(controller.camera.center, 10.59);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
+    controller.move(controller.camera.center, 10.61);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
+
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Close'));
+    await tester.pumpAndSettle();
+    controller.move(controller.camera.center, 12);
+    await tester.pumpAndSettle();
+    expect(_highlightPinCard(), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('separate pin views retain independent colors', (tester) async {
+    await _pumpChat(
+      tester,
+      connector,
+      channel: false,
+      home: const MapScreen(highlightPosition: LatLng(45.5, -122.6)),
+    );
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    await _openPinColorDialog(tester);
+    await _applyPinColor(tester, 'Blue');
+
+    unawaited(
+      Navigator.of(tester.element(find.byType(MapScreen))).push<void>(
+        MaterialPageRoute<void>(
+          builder: (_) => const MapScreen(
+            highlightPosition: LatLng(46, -123),
+            allowPop: true,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(_highlightPinFill(tester), MapPalette.pinLightRed);
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.pumpAndSettle();
+    await _openPinColorDialog(tester);
+    await _applyPinColor(tester, 'Green');
+    expect(_highlightPinFill(tester), Colors.green);
+    await tester.tap(find.byIcon(Icons.arrow_back));
+    await tester.pumpAndSettle();
+    expect(_highlightPinFill(tester), Colors.blue);
+    await _openPinColorDialog(tester);
+    expect(_pinColorButton(tester, 'Blue').isSelected, isTrue);
+    await tester.tap(find.widgetWithText(TextButton, 'Cancel'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
   });
 
   for (final channel in [false, true]) {

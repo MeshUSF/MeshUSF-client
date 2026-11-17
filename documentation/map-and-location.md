@@ -36,6 +36,32 @@ Location pins shared in chat messages are displayed as flags:
 
 Tap a pin to see its info. Options to "Hide" (session only) or "Remove" (persistent).
 
+### Highlighted Location Pin
+
+When you open a location from chat, a colored pin-shaped icon marks it, with its visible pointed tip anchored to the location as you zoom. Tap the pin to show a small info card beside it. The card follows the pin as you pan and zoom, and the rest of the map stays interactive. Close a visible card with its close button or by tapping the highlighted pin again.
+
+The highlighted pin drawing and info card resize smoothly as you zoom, up to fixed minimum and maximum sizes. The whole card scales proportionally: its title, coordinates, Color button, close icon, padding, and border all grow or shrink together. Scroll inside the card when a long name, larger system text, or limited space puts an action below the visible area. The color-picker dialog opens at its normal size. Other zoom behavior, including clustering, keeps its existing rules. Pan the map to bring a card away from screen edges when needed.
+
+An opened card normally stays visible at zoom **11.28 or higher** and hides below that cutoff. Tap a visible pin below the cutoff to open its card temporarily: panning or zooming in keeps it open; the next zoom-out ends that exception. A selected card can return when zooming back to 11.28 or higher. Closing it with X or a second pin tap clears the selection, so zoom alone will not reopen it. The pin itself still hides at the app's tracked zoom level of 5 or below; restoring the pin below the card cutoff requires another tap to show its card. Color changes are retained.
+
+![Highlighted location card with a bold title and pill-shaped Color button](../docs/screenshots/map-pin-info-card.png)
+
+| Compact card explicitly opened below the cutoff | Expanded card when zoomed in |
+|---|---|
+| ![Compact location card](../docs/screenshots/map-pin-card-compact.png) | ![Expanded location card](../docs/screenshots/map-pin-card-expanded.png) |
+
+The location/name at the top of the card is bold. Tap the small pill-shaped **Color** button to open the color dialog. It has two rows of eight choices: 15 presets and **Custom** in the last position (row 2, column 8). On narrow screens, scroll the palette horizontally to reach every choice. The red presets are **Light red** (`#EF5350`) and **Rich red** (`#B71C1C`); amber and light blue are no longer presets.
+
+Choose a preset or select **Custom** to use red/green/blue sliders or enter a six-digit hex color such as `#3366FF`. An invalid hex value disables **Apply** until corrected. **Apply** updates this pin and its card outline together; **Cancel**, Back, or dismissing the dialog discards the draft. Labels and tooltips follow the app language (English, Spanish, or French).
+
+![Pin color dialog with fifteen presets and a final Custom choice](../docs/screenshots/map-pin-colors.png)
+
+The widget-test preview above shows the preset dialog. Base-map tiles are omitted by the test harness.
+
+![Custom pin color editor with hex input and red, green, and blue sliders](../docs/screenshots/map-pin-custom-color.png)
+
+Color changes apply locally to the highlighted pin while that map screen remains open. Closing the info card preserves the choice; leaving and reopening the map starts with Light red. Other shared flags and node markers keep their existing colors. Saving pins and transmitting chosen colors are not implemented by this palette.
+
 ### Predicted / Guessed Locations
 
 Many contacts on the mesh don't have GPS hardware, so the map has no explicit coordinates for them. Instead of leaving these contacts invisible, the app **infers an approximate position** by analyzing the repeater path the contact's messages travel through. These inferred positions are displayed as markers with a `not_listed_location` icon and a muted grey or colored border, visually distinct from confirmed-location markers.
