@@ -53,6 +53,7 @@ import '../storage/contact_discovery_store.dart';
 import '../storage/contact_settings_store.dart';
 import '../storage/contact_store.dart';
 import '../storage/message_store.dart';
+import '../storage/manual_location_store.dart';
 import '../storage/private_message_retry_store.dart';
 import '../storage/unread_store.dart';
 import '../review_mode/review_mode_storage.dart';
@@ -288,6 +289,9 @@ class MeshCoreConnector extends ChangeNotifier {
   int? _batteryMillivolts;
   double? _selfLatitude;
   double? _selfLongitude;
+  ManualLocation? _manualLocation;
+  String? _manualLocationRadioKey;
+  bool _isUpdatingNodeLocation = false;
   final List<DirectRepeater> _directRepeaters = List.empty(growable: true);
   bool _isLoadingContacts = false;
   DateTime? _contactSyncRequestedAt;
@@ -417,6 +421,7 @@ class MeshCoreConnector extends ChangeNotifier {
   final ChannelSettingsStore _channelSettingsStore = ChannelSettingsStore();
   final ChannelRegionStore _channelRegionStore = ChannelRegionStore();
   final ContactSettingsStore _contactSettingsStore = ContactSettingsStore();
+  final ManualLocationStore _manualLocationStore = ManualLocationStore();
   final ContactStore _contactStore = ContactStore();
   final ContactDiscoveryStore _discoveryContactStore = ContactDiscoveryStore();
   final ChannelStore _channelStore = ChannelStore();
@@ -555,6 +560,15 @@ class MeshCoreConnector extends ChangeNotifier {
   String? get firmwareVersionString => _firmwareVersionString;
   double? get selfLatitude => _selfLatitude;
   double? get selfLongitude => _selfLongitude;
+  ManualLocation? get manualLocation {
+    if (!isConnected || selfPublicKeyHex.length < 10) return null;
+    if (_manualLocationRadioKey != selfPublicKeyHex) {
+      _manualLocationRadioKey = selfPublicKeyHex;
+      _manualLocation = _manualLocationStore.load(selfPublicKeyHex);
+    }
+    return _manualLocation;
+  }
+
   List<DirectRepeater> get directRepeaters => _directRepeaters;
   int? get currentTxPower => _currentTxPower;
   int? get maxTxPower => _maxTxPower;
@@ -3106,6 +3120,8 @@ class MeshCoreConnector extends ChangeNotifier {
     _selfName = null;
     _selfLatitude = null;
     _selfLongitude = null;
+    _manualLocation = null;
+    _manualLocationRadioKey = null;
     _lastZeroHopAdvertLatitude = null;
     _lastZeroHopAdvertLongitude = null;
     _awaitingSelfInfo = false;
@@ -3350,6 +3366,8 @@ class MeshCoreConnector extends ChangeNotifier {
     _selfName = null;
     _selfLatitude = null;
     _selfLongitude = null;
+    _manualLocation = null;
+    _manualLocationRadioKey = null;
     _lastZeroHopAdvertLatitude = null;
     _lastZeroHopAdvertLongitude = null;
     _clientRepeat = null;
@@ -4852,7 +4870,94 @@ class MeshCoreConnector extends ChangeNotifier {
     required double lon,
   }) async {
     if (!isConnected) return;
-    await sendFrame(buildSetAdvertLatLonFrame(lat, lon));
+    if (!lat.isFinite || !lon.isFinite || lat.abs() > 90 || lon.abs() > 180) {
+      throw ArgumentError('Invalid location coordinates');
+    }
+    if (_isUpdatingNodeLocation) {
+      throw StateError('Location update in progress');
+    }
+    final radioKey = selfPublicKeyHex;
+    if (radioKey.length < 10) throw StateError('Radio identity unavailable');
+    final previous = manualLocation;
+    final hasPreviousRadio =
+        hasGps &&
+        selfLatitude != null &&
+        selfLongitude != null &&
+        hasValidLocation(selfLatitude, selfLongitude);
+    final location = ManualLocation(
+      latitude: lat,
+      longitude: lon,
+      previousRadioLatitude: previous != null
+          ? previous.previousRadioLatitude
+          : hasPreviousRadio
+          ? selfLatitude
+          : null,
+      previousRadioLongitude: previous != null
+          ? previous.previousRadioLongitude
+          : hasPreviousRadio
+          ? selfLongitude
+          : null,
+    );
+    _isUpdatingNodeLocation = true;
+    try {
+      await sendFrame(
+        buildSetAdvertLatLonFrame(lat, lon),
+        waitForGenericAck: true,
+      );
+      if (!isConnected || selfPublicKeyHex != radioKey) {
+        throw StateError('Radio disconnected during location update');
+      }
+      _selfLatitude = lat;
+      _selfLongitude = lon;
+      _manualLocation = location;
+      _manualLocationRadioKey = radioKey;
+      notifyListeners();
+      await _manualLocationStore.save(radioKey, location);
+    } finally {
+      _isUpdatingNodeLocation = false;
+    }
+  }
+
+  Future<void> revertManualLocation() async {
+    final location = manualLocation;
+    if (!isConnected || location == null) return;
+    if (_isUpdatingNodeLocation) {
+      throw StateError('Location update in progress');
+    }
+    final radioKey = selfPublicKeyHex;
+    final currentLat = selfLatitude;
+    final currentLon = selfLongitude;
+    final hasNewRadioLocation =
+        currentLat != null &&
+        currentLon != null &&
+        hasValidLocation(currentLat, currentLon) &&
+        ((currentLat - location.latitude).abs() > 0.000001 ||
+            (currentLon - location.longitude).abs() > 0.000001);
+    final lat = hasNewRadioLocation
+        ? currentLat
+        : location.previousRadioLatitude ?? 0;
+    final lon = hasNewRadioLocation
+        ? currentLon
+        : location.previousRadioLongitude ?? 0;
+    _isUpdatingNodeLocation = true;
+    try {
+      await sendFrame(
+        buildSetAdvertLatLonFrame(lat, lon),
+        waitForGenericAck: true,
+      );
+      if (!isConnected || selfPublicKeyHex != radioKey) {
+        throw StateError('Radio disconnected during location update');
+      }
+      _selfLatitude = lat;
+      _selfLongitude = lon;
+      _manualLocation = null;
+      _manualLocationRadioKey = radioKey;
+      notifyListeners();
+      await _manualLocationStore.save(radioKey, null);
+      await sendFrame(buildAppStartFrame());
+    } finally {
+      _isUpdatingNodeLocation = false;
+    }
   }
 
   Future<void> setCustomVar(String value) async {

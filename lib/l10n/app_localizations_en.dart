@@ -2083,6 +2083,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get map_centerOnMe => 'Center on my location';
 
   @override
+  String get map_usingPhoneLocation => 'Using phone location';
+
+  @override
+  String get map_usingRadioLocation => 'Using radio location';
+
+  @override
+  String get map_usingSetLocation => 'Using set location';
+
+  @override
+  String get map_revertLocation => 'Revert';
+
+  @override
+  String get map_locationUpdateFailed =>
+      'Couldn\'t update the location. Check your radio connection and try again.';
+
+  @override
   String get map_details => 'Details';
 
   @override

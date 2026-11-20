@@ -13,8 +13,33 @@ The Map feature is a full-featured node-location visualization and radio-plannin
 
 ## What the Map Displays
 
-### Self Location (Teal Circle)
-Your own node's position, obtained from the device firmware. Displayed as a teal `person_pin_circle` icon. Only appears if the device has GPS data or a manually-set location.
+### Self Location (Purple, Green, or Blue Dot)
+
+Your position appears as an Apple Maps-style location dot with a white rim and a soft colored halo. An explicitly set location takes priority; otherwise the map prefers valid radio coordinates, then the phone:
+
+- **Purple**: Using a location you chose with **Set as my location** or saved through Settings → Location. This override is remembered for the connected radio and takes priority in both the map and location sharing from direct/channel chats.
+- **Green**: Using radio location.
+- **Blue**: Using phone/device location because the radio has no valid coordinates. Allow the app to access your device's location when prompted. The pin follows device location updates while the map is active.
+
+The dot scales smoothly from **0.25 at zoom 2** to **0.75 at zoom 18**. Its white-rimmed center is 8–24 logical pixels wide, so it stays visible at world zoom and remains smaller than the former person marker. Its tap target stays 48 × 48 logical pixels at every zoom level. Zooming out never hides the self marker.
+
+Tap your dot to show **Using set location**, **Using phone location**, or **Using radio location** in a small popup with a 50%-opaque background. Close it by tapping the dot again, tapping **X**, tapping anywhere else on the screen, or waiting three seconds. Tapping another screen control also closes it and performs that control's action; tapping inside the popup does not close it. Map drags remain interactive. **Center on my location** uses the same position and source color.
+
+The purple popup includes **Revert** beside **Using set location**. Revert removes the override and requests fresh radio coordinates. It retains a newer radio fix when available, or restores the GPS fix saved before the override; without a known radio GPS fix, it clears the manually configured radio coordinates and resumes phone fallback. A radio error leaves the override in place so you can retry. Manual choices made before this source tracking was added have no saved origin record: choose **Set as my location** once again to enable the purple source and Revert.
+
+![Purple set-location dot with its Revert action](../docs/screenshots/map-self-location-manual.png)
+
+The map requests fresh radio coordinates when opened or resumed. GPS-enabled radios already refresh once per minute; while GPS is not reported, the map checks radio coordinates once per minute itself. In automatic mode, a valid radio update immediately replaces the phone position and turns the dot green. Phone updates cannot override radio coordinates. An explicit set location stays purple until reverted, even if radio fixes arrive. If the radio loses its valid position in automatic mode, the map resumes the phone fallback.
+
+Location tracking stops when the map is closed or the app goes into the background. When switching away and returning to the app, the last known position stays visible while fresh coordinates are requested, avoiding a disappearing/reappearing dot. A disconnect clears this retained position. If neither source has supplied a usable location (for example, phone location permission is denied), the self marker is hidden and the rest of the map remains usable. The app retries while the map is active, once per minute, and immediately when resumed. This fallback only displays your location locally; it does not set or advertise the radio's position.
+
+| Phone fallback | Radio location |
+|---|---|
+| ![Blue self pin using phone location](../docs/screenshots/map-self-location-phone.png) | ![Green self pin using radio location](../docs/screenshots/map-self-location-radio.png) |
+
+These widget-test previews omit base-map tiles.
+
+![Self-location dot stays visible at world zoom](../docs/screenshots/map-self-location-world-zoom.png)
 
 ### Contact / Node Markers (Color-Coded)
 All contacts with known GPS coordinates are plotted:
@@ -38,7 +63,7 @@ Tap a pin to see its info. Options to "Hide" (session only) or "Remove" (persist
 
 ### Highlighted Location Pin
 
-When you open a location from chat, a colored pin-shaped icon marks it, with its visible pointed tip anchored to the location as you zoom. Tap the pin to show a small info card beside it. The card follows the pin as you pan and zoom, and the rest of the map stays interactive. Close a visible card with its close button or by tapping the highlighted pin again.
+When you open a location from chat, a colored pin-shaped icon marks it, with its visible pointed tip anchored to the location as you zoom. Tap the pin to show a small info card beside it. The card follows the pin as you pan and zoom, and the rest of the map stays interactive. Close a visible card with its close button, by tapping the highlighted pin again, or by tapping anywhere outside the card. Taps inside the card, its color-picker dialog, and map drags keep it open. An outside tap clears the selection, so zooming back in will not reopen a dismissed card.
 
 The highlighted pin drawing and info card resize smoothly as you zoom, up to fixed minimum and maximum sizes. The whole card scales proportionally: its title, coordinates, Color button, close icon, padding, and border all grow or shrink together. Scroll inside the card when a long name, larger system text, or limited space puts an action below the visible area. The color-picker dialog opens at its normal size. Other zoom behavior, including clustering, keeps its existing rules. Pan the map to bring a card away from screen edges when needed.
 
@@ -112,7 +137,7 @@ Opens a dialog showing: type, path (hop chain), coordinates, last-seen time, and
 ### Long-Press on Empty Map Area
 Shows a bottom sheet with:
 - **Share marker here**: Prompts for a label, then pick a DM contact or channel to send the location to. Wire format: `m:<lat>,<lon>|<label>|poi`
-- **Set as my location**: Updates your device's advertised location
+- **Set as my location**: Updates your radio's advertised location and remembers an explicit purple location override. Tap the purple self dot, then **Revert**, to return to automatic radio/phone positioning. The chosen point also takes priority when sharing your location in chats.
 
 ### Filter Dialog (FAB)
 Toggle visibility of: chat nodes, repeaters, other nodes, guessed locations, discovery contacts, overlapping markers (stacked markers at similar coordinates), and shared map pins (flag markers).
@@ -214,10 +239,12 @@ Each waypoint includes: name, lat/lon, type label, and public key hex.
 
 ## Location Data Sources
 
-The phone's own GPS is **never used**. All location data comes from the mesh:
+The map uses these location sources:
 
-1. **Device self-location**: Read from firmware device-info response. Set manually in Settings → Location, or updated automatically if the device has a GPS module.
-2. **Remote node locations**: Extracted from advertisement packets received over the mesh. Encoded as integer lat/lon × 1,000,000.
+1. **Explicitly set self-location (override)**: Saved per radio when setting coordinates in the app. Used for the self dot, centering, main-map planning, and location sharing until reverted.
+2. **Radio self-location (automatic preference)**: Read from the firmware device-info response. The protocol reports coordinates, not a separate fresh-fix status, so valid firmware coordinates remain preferred even if the radio is retaining an earlier fix.
+3. **Phone/device self-location (fallback)**: Obtained through the operating system's location service when the radio has no valid position. Requires location services and permission. Browser geolocation also requires a secure origin and browser support. It is used for the self dot, centering, and the main map's planning origin; mesh routing estimates continue to use radio coordinates.
+4. **Remote node locations**: Extracted from advertisement packets received over the mesh. Encoded as integer lat/lon × 1,000,000.
 
 ## Regions and offline use
 

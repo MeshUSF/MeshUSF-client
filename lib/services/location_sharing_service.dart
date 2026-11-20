@@ -31,6 +31,13 @@ class LocationSharingService {
   static Future<SharedCoordinates> getCurrentCoordinates(
     MeshCoreConnector connector,
   ) async {
+    final manual = connector.manualLocation;
+    if (manual != null) {
+      return SharedCoordinates(
+        latitude: manual.latitude,
+        longitude: manual.longitude,
+      );
+    }
     final radioLatitude = connector.selfLatitude;
     final radioLongitude = connector.selfLongitude;
     if (connector.isConnected &&
@@ -109,6 +116,13 @@ class LocationSharingService {
         if (!_isValidCoordinates(position.latitude, position.longitude)) {
           throw const LocationLookupException(
             LocationLookupFailure.unavailable,
+          );
+        }
+        final manual = connector.manualLocation;
+        if (manual != null) {
+          return SharedCoordinates(
+            latitude: manual.latitude,
+            longitude: manual.longitude,
           );
         }
         return SharedCoordinates(

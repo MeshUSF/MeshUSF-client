@@ -2118,6 +2118,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get map_centerOnMe => 'Centrer sur ma localisation';
 
   @override
+  String get map_usingPhoneLocation => 'Position du téléphone utilisée';
+
+  @override
+  String get map_usingRadioLocation => 'Position de la radio utilisée';
+
+  @override
+  String get map_usingSetLocation => 'Position définie utilisée';
+
+  @override
+  String get map_revertLocation => 'Rétablir';
+
+  @override
+  String get map_locationUpdateFailed =>
+      'Impossible de mettre à jour la position. Vérifiez la connexion à la radio et réessayez.';
+
+  @override
   String get map_details => 'Détails';
 
   @override

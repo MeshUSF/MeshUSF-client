@@ -6,12 +6,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meshcore_open/connector/meshcore_connector.dart';
 import 'package:meshcore_open/services/location_sharing_service.dart';
+import 'package:meshcore_open/storage/manual_location_store.dart';
 
 class _LocationConnector extends MeshCoreConnector {
   bool connected = true;
   bool gpsEnabled = false;
   double? latitude;
   double? longitude;
+  ManualLocation? selectedLocation;
 
   @override
   bool get isConnected => connected;
@@ -21,6 +23,8 @@ class _LocationConnector extends MeshCoreConnector {
   double? get selfLatitude => latitude;
   @override
   double? get selfLongitude => longitude;
+  @override
+  ManualLocation? get manualLocation => connected ? selectedLocation : null;
 }
 
 class _LocationPlatform extends GeolocatorPlatform {
@@ -122,6 +126,39 @@ void main() {
       expect(platform.settings, isEmpty);
     },
   );
+
+  for (final gps in [false, true]) {
+    test('manual location beats phone and radio (GPS enabled: $gps)', () async {
+      connector
+        ..gpsEnabled = gps
+        ..latitude = 42
+        ..longitude = -71
+        ..selectedLocation = const ManualLocation(latitude: 28, longitude: -82);
+      platform.serviceEnabled = false;
+      final result = await LocationSharingService.getCurrentCoordinates(
+        connector,
+      );
+      expect(result.latitude, 28);
+      expect(result.longitude, -82);
+      expect(platform.serviceChecks, 0);
+    });
+  }
+
+  testWidgets('a manual selection wins over a phone lookup already in flight', (
+    tester,
+  ) async {
+    final pending = Completer<Position>();
+    platform.locate = () => pending.future;
+    final result = LocationSharingService.getCurrentCoordinates(connector);
+    await tester.pump();
+    connector.selectedLocation = const ManualLocation(
+      latitude: 28,
+      longitude: -82,
+    );
+    pending.complete(_position());
+    await tester.pump();
+    expect((await result).latitude, 28);
+  });
 
   for (final reason in [
     'disabled GPS',

@@ -3748,6 +3748,36 @@ abstract class AppLocalizations {
   /// **'Center on my location'**
   String get map_centerOnMe;
 
+  /// No description provided for @map_usingPhoneLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Using phone location'**
+  String get map_usingPhoneLocation;
+
+  /// No description provided for @map_usingRadioLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Using radio location'**
+  String get map_usingRadioLocation;
+
+  /// No description provided for @map_usingSetLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Using set location'**
+  String get map_usingSetLocation;
+
+  /// No description provided for @map_revertLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Revert'**
+  String get map_revertLocation;
+
+  /// No description provided for @map_locationUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update the location. Check your radio connection and try again.'**
+  String get map_locationUpdateFailed;
+
   /// No description provided for @map_details.
   ///
   /// In en, this message translates to:

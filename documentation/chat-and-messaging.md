@@ -54,7 +54,7 @@ From the Contacts screen, tap any Chat-type contact to open the ChatScreen.
 
 ### Sharing your location
 
-Open the **+** menu and choose **Send location** in a direct or channel chat. The app uses the connected radio's stored coordinates when GPS is enabled and the coordinates are valid. Otherwise, it requests this device's location through the operating system or browser.
+Open the **+** menu and choose **Send location** in a direct or channel chat. A location explicitly chosen with **Set as my location** or saved in Settings → Location takes priority. Without that override, the app uses the connected radio's stored coordinates when GPS is enabled and the coordinates are valid; otherwise, it requests this device's location through the operating system or browser. To return to automatic positioning, open the map, tap the purple self-location dot, and choose **Revert**. See [self location](map-and-location.md#self-location-purple-green-or-blue-dot).
 
 The menu trigger shows a spinner during lookup. Send location is disabled until it finishes; other menu actions remain available. Your typed draft and channel reply selection are preserved. Device lookup has a 10-second deadline, with localized feedback for permissions, disabled location services, or unavailable coordinates. A browser may reuse a fix up to 60 seconds old with reported accuracy within 50 meters. Late results after timeout, disconnection, or leaving chat are discarded.
 

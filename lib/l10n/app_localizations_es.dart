@@ -2111,6 +2111,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get map_centerOnMe => 'Centrar en mi ubicación';
 
   @override
+  String get map_usingPhoneLocation => 'Usando la ubicación del teléfono';
+
+  @override
+  String get map_usingRadioLocation => 'Usando la ubicación de la radio';
+
+  @override
+  String get map_usingSetLocation => 'Usando la ubicación establecida';
+
+  @override
+  String get map_revertLocation => 'Revertir';
+
+  @override
+  String get map_locationUpdateFailed =>
+      'No se pudo actualizar la ubicación. Comprueba la conexión con la radio e inténtalo de nuevo.';
+
+  @override
   String get map_details => 'Detalles';
 
   @override

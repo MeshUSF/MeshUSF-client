@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:meshcore_open/connector/meshcore_connector.dart';
+import 'package:meshcore_open/connector/meshcore_protocol.dart';
 import 'package:meshcore_open/l10n/app_localizations.dart';
 import 'package:meshcore_open/models/app_settings.dart';
 import 'package:meshcore_open/models/channel.dart';
@@ -51,6 +52,9 @@ class _MapTiles extends ChangeNotifier implements MapTileCacheService {
 
 class _ChatConnector extends MeshCoreConnector {
   bool connected = true;
+  double? latitude;
+  double? longitude;
+  bool gpsEnabled = false;
   final mapContacts = <Contact>[];
   final directMessages = <Message>[];
   final channelMessages = <ChannelMessage>[];
@@ -61,7 +65,27 @@ class _ChatConnector extends MeshCoreConnector {
   @override
   String get selfName => 'Me';
   @override
-  bool get hasGps => false;
+  bool get hasGps => gpsEnabled;
+  @override
+  String get selfPublicKeyHex => '0123456789abcdef';
+  @override
+  double? get selfLatitude => latitude;
+  @override
+  double? get selfLongitude => longitude;
+  @override
+  Future<void> sendFrame(
+    Uint8List data, {
+    String? channelSendQueueId,
+    bool expectsGenericAck = false,
+    bool waitForGenericAck = false,
+  }) async {
+    if (data.first == cmdSetAdvertLatLon) {
+      final reader = BufferReader(data)..skipBytes(1);
+      latitude = reader.readInt32LE() / 1000000;
+      longitude = reader.readInt32LE() / 1000000;
+    }
+  }
+
   @override
   List<Contact> get allContacts => mapContacts;
   @override
@@ -126,6 +150,7 @@ class _ChatConnector extends MeshCoreConnector {
 }
 
 class _ChatLocationPlatform extends GeolocatorPlatform {
+  final updates = StreamController<Position>.broadcast();
   int lookups = 0;
   Future<Position> Function()? locate;
 
@@ -134,6 +159,9 @@ class _ChatLocationPlatform extends GeolocatorPlatform {
   @override
   Future<LocationPermission> checkPermission() async =>
       LocationPermission.whileInUse;
+  @override
+  Stream<Position> getPositionStream({LocationSettings? locationSettings}) =>
+      updates.stream;
   @override
   Future<Position> getCurrentPosition({
     LocationSettings? locationSettings,
@@ -245,22 +273,23 @@ Future<void> _capture(WidgetTester tester, String name) async {
   );
 }
 
+Future<void> _setLocationOnMap(WidgetTester tester, String actionLabel) async {
+  final map = find.byType(FlutterMap);
+  await tester.longPressAt(tester.getCenter(map) + const Offset(40, 70));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text(actionLabel));
+  await tester.pumpAndSettle();
+}
+
 Color _highlightPinFill(WidgetTester tester) {
-  final layer = tester.widgetList<MarkerLayer>(find.byType(MarkerLayer)).first;
-  final icon = tester.widget<Icon>(
-    find.descendant(
-      of: find.byWidget(layer.markers.first.child),
-      matching: find.byIcon(Icons.location_on),
-    ),
-  );
+  final icon = tester.widget<Icon>(find.byIcon(Icons.location_on));
   return icon.color!;
 }
 
 double _highlightPinScale(WidgetTester tester) {
-  final layer = tester.widgetList<MarkerLayer>(find.byType(MarkerLayer)).first;
   final transform = tester.widget<Transform>(
-    find.descendant(
-      of: find.byWidget(layer.markers.first.child),
+    find.ancestor(
+      of: find.byIcon(Icons.location_on),
       matching: find.byWidgetPredicate(
         (widget) =>
             widget is Transform && widget.alignment == Alignment.bottomCenter,
@@ -379,10 +408,295 @@ void main() {
     GeolocatorPlatform.instance = platform;
     connector = _ChatConnector();
   });
-  tearDown(() {
+  tearDown(() async {
     GeolocatorPlatform.instance = originalPlatform;
     connector.dispose();
+    await platform.updates.close();
   });
+
+  testWidgets(
+    'map self pin uses phone fallback and a dismissible timed popup',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await _pumpChat(
+        tester,
+        connector,
+        channel: false,
+        home: const MapScreen(),
+      );
+      final selfPin = find.byKey(const ValueKey('map-self-location'));
+      expect(selfPin, findsOneWidget);
+      expect(
+        (tester
+                    .widget<Container>(
+                      find.byKey(const ValueKey('map-self-location-dot')),
+                    )
+                    .decoration!
+                as BoxDecoration)
+            .color,
+        const Color(0xFF007AFF),
+      );
+      await tester.tap(selfPin);
+      await tester.pump();
+      expect(find.text('Using phone location'), findsOneWidget);
+      final popup = tester.widget<Material>(
+        find.byKey(const ValueKey('map-self-location-popup')),
+      );
+      expect(popup.color!.a, closeTo(0.5, 0.01));
+      await _capture(tester, 'map-self-location-phone');
+      await tester.tap(find.byTooltip('Close'));
+      await tester.pump();
+      expect(find.text('Using phone location'), findsNothing);
+      await tester.tap(selfPin);
+      await tester.pump(const Duration(seconds: 2));
+      expect(find.text('Using phone location'), findsOneWidget);
+      await tester.tap(selfPin);
+      await tester.pump();
+      expect(find.text('Using phone location'), findsNothing);
+      await tester.tap(selfPin);
+      await tester.pump(const Duration(seconds: 2));
+      expect(find.text('Using phone location'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.text('Using phone location'), findsNothing);
+
+      connector
+        ..latitude = 45.501
+        ..longitude = -122.601;
+      connector.notifyListeners();
+      await tester.pumpAndSettle();
+      expect(
+        (tester
+                    .widget<Container>(
+                      find.byKey(const ValueKey('map-self-location-dot')),
+                    )
+                    .decoration!
+                as BoxDecoration)
+            .color,
+        const Color(0xFF34C759),
+      );
+      await tester.tap(find.byTooltip('Center on my location'));
+      await tester.pumpAndSettle();
+      final map = tester.widget<FlutterMap>(find.byType(FlutterMap));
+      expect(map.mapController!.camera.center, const LatLng(45.501, -122.601));
+      await tester.tap(selfPin);
+      await tester.pump();
+      expect(find.text('Using radio location'), findsOneWidget);
+      await _capture(tester, 'map-self-location-radio');
+    },
+  );
+
+  testWidgets('self location dot stays visible and tappable across map zooms', (
+    tester,
+  ) async {
+    connector
+      ..latitude = 45.5
+      ..longitude = -122.6;
+    await _pumpChat(tester, connector, channel: false, home: const MapScreen());
+    final controller = tester
+        .widget<FlutterMap>(find.byType(FlutterMap))
+        .mapController!;
+    final dot = find.byKey(const ValueKey('map-self-location-dot'));
+    final hitArea = find.byKey(const ValueKey('map-self-location'));
+    for (final zoomAndDiameter in [
+      (18.0, 24.0),
+      (12.0, 18.0),
+      (12.1, 18.1),
+      (2.0, 8.0),
+    ]) {
+      controller.move(const LatLng(45.5, -122.6), zoomAndDiameter.$1);
+      await tester.pumpAndSettle();
+      expect(dot, findsOneWidget);
+      expect(tester.getRect(dot).width, closeTo(zoomAndDiameter.$2, 0.001));
+      expect(tester.getSize(hitArea), const Size(48, 48));
+      expect(tester.getCenter(dot), tester.getCenter(hitArea));
+    }
+    await tester.tapAt(tester.getCenter(hitArea) + const Offset(18, 0));
+    await tester.pump();
+    expect(find.text('Using radio location'), findsOneWidget);
+    await _capture(tester, 'map-self-location-world-zoom');
+  });
+
+  testWidgets(
+    'self location dot remains visible while resuming a phone lookup',
+    (tester) async {
+      await _pumpChat(
+        tester,
+        connector,
+        channel: false,
+        home: const MapScreen(),
+      );
+      final dot = find.byKey(const ValueKey('map-self-location-dot'));
+      final positionBefore = tester.getCenter(dot);
+      final pending = Completer<Position>();
+      platform.locate = () => pending.future;
+      addTearDown(() {
+        if (tester.binding.lifecycleState == AppLifecycleState.paused) {
+          tester.binding.handleAppLifecycleStateChanged(
+            AppLifecycleState.hidden,
+          );
+        }
+        if (tester.binding.lifecycleState == AppLifecycleState.hidden) {
+          tester.binding.handleAppLifecycleStateChanged(
+            AppLifecycleState.inactive,
+          );
+        }
+        tester.binding.handleAppLifecycleStateChanged(
+          AppLifecycleState.resumed,
+        );
+      });
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      await tester.pump();
+      expect(dot, findsOneWidget);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pump();
+      expect(platform.lookups, 2);
+      expect(dot, findsOneWidget);
+      expect(tester.getCenter(dot), positionBefore);
+      await tester.pump(const Duration(seconds: 2));
+      expect(dot, findsOneWidget);
+      pending.complete(_position());
+      await tester.pumpAndSettle();
+      expect(dot, findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  for (final language in ['en', 'es', 'fr']) {
+    testWidgets('map radio pin and source popup use $language', (tester) async {
+      connector
+        ..latitude = 45.5
+        ..longitude = -122.6;
+      await _pumpChat(
+        tester,
+        connector,
+        channel: false,
+        language: language,
+        home: const MapScreen(),
+      );
+      expect(platform.lookups, 0);
+      await tester.tap(find.byKey(const ValueKey('map-self-location')));
+      await tester.pump();
+      final l10n = lookupAppLocalizations(Locale(language));
+      expect(find.text(l10n.map_usingRadioLocation), findsOneWidget);
+      await tester.tap(find.byTooltip(l10n.common_close));
+      await tester.pump();
+      expect(find.text(l10n.map_usingRadioLocation), findsNothing);
+    });
+  }
+
+  for (final language in ['en', 'es', 'fr']) {
+    testWidgets(
+      'manual map location has a purple source and Revert in $language',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(390, 844));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        await _pumpChat(
+          tester,
+          connector,
+          channel: false,
+          language: language,
+          home: const MapScreen(),
+        );
+        final l10n = lookupAppLocalizations(Locale(language));
+        await _setLocationOnMap(tester, l10n.map_setAsMyLocation);
+        expect(connector.manualLocation, isNotNull);
+        final dot = tester.widget<Container>(
+          find.byKey(const ValueKey('map-self-location-dot')),
+        );
+        expect(
+          (dot.decoration! as BoxDecoration).color,
+          const Color(0xFFAF52DE),
+        );
+        expect(find.text(l10n.map_usingSetLocation), findsOneWidget);
+        expect(find.text(l10n.map_revertLocation), findsOneWidget);
+        await tester.tap(find.text(l10n.map_usingSetLocation));
+        await tester.pump();
+        expect(find.text(l10n.map_usingSetLocation), findsOneWidget);
+        if (language == 'en') {
+          ScaffoldMessenger.of(
+            tester.element(find.byType(FlutterMap)),
+          ).removeCurrentSnackBar();
+          await tester.pump();
+          await _capture(tester, 'map-self-location-manual');
+        }
+        await tester.tap(find.text(l10n.map_revertLocation));
+        await tester.pumpAndSettle();
+        expect(connector.manualLocation, isNull);
+        final restoredDot = tester.widget<Container>(
+          find.byKey(const ValueKey('map-self-location-dot')),
+        );
+        expect(
+          (restoredDot.decoration! as BoxDecoration).color,
+          const Color(0xFF007AFF),
+        );
+      },
+    );
+  }
+
+  testWidgets('manual Revert returns to the original radio GPS location', (
+    tester,
+  ) async {
+    connector
+      ..gpsEnabled = true
+      ..latitude = 45.5
+      ..longitude = -122.6;
+    await _pumpChat(tester, connector, channel: false, home: const MapScreen());
+    await _setLocationOnMap(tester, 'Set as my location');
+    await tester.tap(find.text('Revert'));
+    await tester.pumpAndSettle();
+    expect(connector.manualLocation, isNull);
+    expect(connector.selfLatitude, 45.5);
+    expect(connector.selfLongitude, -122.6);
+    final dot = tester.widget<Container>(
+      find.byKey(const ValueKey('map-self-location-dot')),
+    );
+    expect((dot.decoration! as BoxDecoration).color, const Color(0xFF34C759));
+  });
+
+  for (final selfPopup in [true, false]) {
+    testWidgets(
+      '${selfPopup ? 'self' : 'regular'} popup dismisses on outside screen taps while inside taps and pans keep it open',
+      (tester) async {
+        await _pumpChat(
+          tester,
+          connector,
+          channel: false,
+          home: selfPopup
+              ? const MapScreen()
+              : const MapScreen(highlightPosition: LatLng(45.5, -122.6)),
+        );
+        final pin = selfPopup
+            ? find.byKey(const ValueKey('map-self-location'))
+            : find.byIcon(Icons.location_on);
+        final popupText = selfPopup
+            ? find.text('Using phone location')
+            : find.text('45.500000, -122.600000');
+        await tester.tap(pin);
+        await tester.pumpAndSettle();
+        await tester.tap(popupText);
+        await tester.pump();
+        expect(popupText, findsOneWidget);
+        await tester.tap(find.byTooltip('Zoom in'));
+        await tester.pumpAndSettle();
+        expect(popupText, findsNothing);
+        await tester.tap(pin);
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Node Map'));
+        await tester.pumpAndSettle();
+        expect(popupText, findsNothing);
+        await tester.tap(pin);
+        await tester.pumpAndSettle();
+        await tester.drag(find.byType(FlutterMap), const Offset(-60, 30));
+        await tester.pumpAndSettle();
+        expect(popupText, findsOneWidget);
+      },
+    );
+  }
 
   final paletteLabels = {
     'en': [
@@ -1005,6 +1319,20 @@ void main() {
   });
 
   for (final channel in [false, true]) {
+    testWidgets(
+      '${channel ? 'channel' : 'direct'} sharing prioritizes the manually set location',
+      (tester) async {
+        await connector.setNodeLocation(lat: 28, lon: -82);
+        await _pumpChat(tester, connector, channel: channel);
+        await _tapLocation(tester, channel: channel);
+        await tester.pumpAndSettle();
+        final text = channel
+            ? connector.channelMessages.single.text
+            : connector.directMessages.single.text;
+        expect(text, startsWith('My location: 28.000000,-82.000000\n'));
+        expect(platform.lookups, 0);
+      },
+    );
     final kind = channel ? 'channel' : 'direct';
 
     for (final outgoing in [false, true]) {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -24,6 +25,7 @@ import '../l10n/contact_localization.dart';
 import '../services/app_settings_service.dart';
 import '../services/path_history_service.dart';
 import '../services/map_marker_service.dart';
+import '../services/map_location_service.dart';
 import '../services/map_tile_cache_service.dart';
 import '../storage/prefs_manager.dart';
 import '../utils/contact_search.dart';
@@ -69,7 +71,8 @@ class MapScreen extends StatefulWidget {
   State<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
+class _MapScreenState extends State<MapScreen>
+    with DisconnectNavigationMixin, WidgetsBindingObserver {
   // Zoom level at which node labels start to appear
   static const double _labelZoomThreshold = 14.0;
   // Below this zoom, nearby nodes collapse into clusters.
@@ -80,8 +83,24 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   static const double _mapMinZoom = 2.0;
   static const double _mapMaxZoom = 18.0;
   static const double _pinCardMinZoom = 11.28;
+  static const double _selfLocationMinScale = 0.25;
+  static const double _selfLocationMaxScale = 0.75;
+  static const Color _phoneLocationColor = Color(0xFF007AFF);
+  static const Color _radioLocationColor = Color.fromARGB(255, 31, 203, 74);
+  static const Color _manualLocationColor = Color.fromARGB(255, 40, 33, 35);
 
   final MapController _mapController = MapController();
+  late final MapLocationService _selfLocation;
+  Timer? _selfLocationPopupTimer;
+  bool _showSelfLocationPopup = false;
+  bool _isUpdatingLocation = false;
+  final Object _selfLocationPopupGroup = Object();
+  final Object _highlightPinPopupGroup = Object();
+  PointerDownEvent? _selfPopupOutsidePointer;
+  PointerDownEvent? _highlightPopupOutsidePointer;
+  bool _canCenterOnSelf = false;
+  bool _hasCenteredOnSelf = false;
+  bool _hasInteractedWithMap = false;
   final MapMarkerService _markerService = MapMarkerService();
   final Set<String> _hiddenMarkerIds = {};
   Set<String> _removedMarkerIds = {};
@@ -134,11 +153,10 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
 
   static const String _lastCameraKey = 'map_last_camera';
 
-  ({LatLng center, double zoom}) _fallbackCamera(MeshCoreConnector connector) {
-    final lat = connector.selfLatitude;
-    final lon = connector.selfLongitude;
-    if (lat != null && lon != null && isPlausibleLocation(lat, lon)) {
-      return (center: LatLng(lat, lon), zoom: 12.0);
+  ({LatLng center, double zoom}) _fallbackCamera() {
+    final position = _selfLocation.position;
+    if (position != null) {
+      return (center: position, zoom: 12.0);
     }
     final saved = PrefsManager.instance.getStringList(_lastCameraKey);
     if (saved != null && saved.length == 3) {
@@ -163,11 +181,86 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _selfLocationPopupTimer?.cancel();
+    _selfLocation.removeListener(_onSelfLocationChanged);
+    _selfLocation.dispose();
     _saveLastCamera();
     _searchController.dispose();
     _searchFocus.dispose();
     _mapController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _selfLocation.start();
+    } else if (state != AppLifecycleState.inactive) {
+      _selfLocation.stop();
+      _dismissSelfLocationPopup();
+    }
+  }
+
+  void _onSelfLocationChanged() {
+    if (!mounted) return;
+    setState(() {});
+    final position = _selfLocation.position;
+    if (position != null &&
+        _hasInitializedMap &&
+        _canCenterOnSelf &&
+        !_hasCenteredOnSelf &&
+        !_hasInteractedWithMap) {
+      _hasCenteredOnSelf = true;
+      _mapController.move(position, 12);
+    }
+  }
+
+  void _toggleSelfLocationPopup() {
+    if (_showSelfLocationPopup) {
+      _dismissSelfLocationPopup();
+      return;
+    }
+    _selfLocationPopupTimer?.cancel();
+    setState(() => _showSelfLocationPopup = true);
+    _selfLocationPopupTimer = Timer(
+      const Duration(seconds: 3),
+      _dismissSelfLocationPopup,
+    );
+  }
+
+  void _dismissSelfLocationPopup() {
+    _selfLocationPopupTimer?.cancel();
+    if (mounted && _showSelfLocationPopup) {
+      setState(() => _showSelfLocationPopup = false);
+    }
+  }
+
+  void _dismissHighlightPinPopup() {
+    if (!mounted || !_isHighlightPinSelected) return;
+    setState(() {
+      _isHighlightPinSelected = false;
+      _isPinCardZoomOverrideActive = false;
+    });
+  }
+
+  Future<void> _revertManualLocation() async {
+    if (_isUpdatingLocation) return;
+    _selfLocationPopupTimer?.cancel();
+    setState(() => _isUpdatingLocation = true);
+    try {
+      await context.read<MeshCoreConnector>().revertManualLocation();
+      _dismissSelfLocationPopup();
+    } catch (_) {
+      if (mounted) {
+        showDismissibleSnackBar(
+          context,
+          content: Text(context.l10n.map_locationUpdateFailed),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isUpdatingLocation = false);
+    }
   }
 
   ColorScheme get _overlayScheme => Theme.of(context).colorScheme;
@@ -223,6 +316,9 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _selfLocation = MapLocationService(context.read<MeshCoreConnector>())
+      ..addListener(_onSelfLocationChanged);
     final position = widget.highlightPosition;
     if (position != null) {
       _highlightPin = MapPin(
@@ -235,6 +331,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
     _loadRemovedMarkers();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
+        _selfLocation.start();
         context.read<MeshCoreConnector>().getChannels();
         if (widget.highlightPosition != null) {
           _mapController.move(widget.highlightPosition!, widget.highlightZoom);
@@ -312,10 +409,9 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
     BuildContext context, {
     required LatLng center,
     required double zoom,
-    required MeshCoreConnector connector,
+    required LatLng? selfPosition,
+    required Color selfColor,
   }) {
-    final hasSelf =
-        connector.selfLatitude != null && connector.selfLongitude != null;
     return Positioned(
       left: 12,
       bottom: 96,
@@ -356,15 +452,13 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                 tooltip: context.l10n.map_centerMap,
                 onPressed: () => _mapController.move(center, zoom),
               ),
-              if (hasSelf)
+              if (selfPosition != null)
                 IconButton(
-                  color: MapPalette.selected,
+                  color: selfColor,
                   icon: const Icon(Icons.my_location),
                   tooltip: context.l10n.map_centerOnMe,
-                  onPressed: () => _mapController.move(
-                    LatLng(connector.selfLatitude!, connector.selfLongitude!),
-                    max(_zoom, 14),
-                  ),
+                  onPressed: () =>
+                      _mapController.move(selfPosition, max(_zoom, 14)),
                 ),
             ],
           ),
@@ -407,6 +501,12 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
               _MapConnectorSnapshot.fromConnector,
             );
         final connector = connectorSnapshot.connector;
+        final selfPosition = _selfLocation.position;
+        final selfColor = switch (_selfLocation.source) {
+          MapLocationSource.manual => _manualLocationColor,
+          MapLocationSource.radio => _radioLocationColor,
+          _ => _phoneLocationColor,
+        };
         if (!checkConnectionAndNavigate(connector)) {
           return const SizedBox.shrink();
         }
@@ -569,9 +669,18 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
 
         // Only the first frame's camera matters; afterwards reuse it instead
         // of re-reading prefs on every rebuild.
-        final (center: fallbackCenter, zoom: fallbackZoom) = _hasInitializedMap
-            ? (_cachedFallbackCamera ??= _fallbackCamera(connector))
-            : _fallbackCamera(connector);
+        _canCenterOnSelf =
+            contactsWithLocation.isEmpty &&
+            sharedMarkers.isEmpty &&
+            highlightPosition == null;
+        final (
+          center: fallbackCenter,
+          zoom: fallbackZoom,
+        ) = selfPosition != null
+            ? (center: selfPosition, zoom: 12.0)
+            : _hasInitializedMap
+            ? (_cachedFallbackCamera ??= _fallbackCamera())
+            : _fallbackCamera();
         LatLng center = fallbackCenter;
         double initialZoom = fallbackZoom;
         if (contactsWithLocation.isNotEmpty || sharedMarkers.isNotEmpty) {
@@ -698,9 +807,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
               actions: [
                 PopupMenuButton(
                   itemBuilder: (context) => [
-                    if (!_isBuildingPathTrace &&
-                        connector.selfLatitude != null &&
-                        connector.selfLongitude != null)
+                    if (!_isBuildingPathTrace && selfPosition != null)
                       PopupMenuItem(
                         child: Row(
                           children: [
@@ -709,12 +816,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                             Text(context.l10n.contacts_pathTrace),
                           ],
                         ),
-                        onTap: () => _startPath(
-                          LatLng(
-                            connector.selfLatitude!,
-                            connector.selfLongitude!,
-                          ),
-                        ),
+                        onTap: () => _startPath(selfPosition),
                       ),
                     if (!_isBuildingPathTrace)
                       PopupMenuItem(
@@ -727,16 +829,12 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                         ),
                         onTap: () {
                           final candidates = <LineOfSightEndpoint>[];
-                          if (connector.selfLatitude != null &&
-                              connector.selfLongitude != null) {
+                          if (selfPosition != null) {
                             candidates.add(
                               LineOfSightEndpoint(
                                 label: context.l10n.pathTrace_you,
-                                point: LatLng(
-                                  connector.selfLatitude!,
-                                  connector.selfLongitude!,
-                                ),
-                                color: MapPalette.selected,
+                                point: selfPosition,
+                                color: selfColor,
                                 icon: Icons.person_pin_circle,
                               ),
                             );
@@ -818,6 +916,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                           : const KeyboardOptions.disabled(),
                     ),
                     onTap: (_, latLng) {
+                      _dismissSelfLocationPopup();
                       if (_isSelectingPoi) {
                         setState(() {
                           _isSelectingPoi = false;
@@ -855,6 +954,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                       }
                     },
                     onPositionChanged: (camera, hasGesture) {
+                      if (hasGesture) _hasInteractedWithMap = true;
                       final previousZoom = _lastCameraZoom;
                       final clearCardOverride =
                           _isPinCardZoomOverrideActive &&
@@ -894,6 +994,75 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                       PolylineLayer(polylines: sharedMarkerPolylines),
                     MarkerLayer(
                       markers: [
+                        if (selfPosition != null)
+                          Marker(
+                            point: selfPosition,
+                            width: 48,
+                            height: 48,
+                            child: GestureDetector(
+                              key: const ValueKey('map-self-location'),
+                              behavior: HitTestBehavior.opaque,
+                              onTap: _toggleSelfLocationPopup,
+                              child: TapRegion(
+                                groupId: _selfLocationPopupGroup,
+                                child: Semantics(
+                                  button: true,
+                                  label: context.l10n.pathTrace_you,
+                                  child: Builder(
+                                    builder: (dotContext) {
+                                      final zoom = MapCamera.of(
+                                        dotContext,
+                                      ).zoom;
+                                      final progress =
+                                          ((zoom - _mapMinZoom) /
+                                                  (_mapMaxZoom - _mapMinZoom))
+                                              .clamp(0.0, 1.0);
+                                      final scale =
+                                          _selfLocationMinScale +
+                                          (_selfLocationMaxScale -
+                                                  _selfLocationMinScale) *
+                                              progress;
+                                      return Transform.scale(
+                                        scale: scale,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: selfColor.withValues(
+                                              alpha: 0.16,
+                                            ),
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Container(
+                                            key: const ValueKey(
+                                              'map-self-location-dot',
+                                            ),
+                                            width: 32,
+                                            height: 32,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: selfColor,
+                                              border: Border.all(
+                                                color: Colors.white,
+                                                width: 3,
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withValues(alpha: 0.2),
+                                                  blurRadius: 4,
+                                                  offset: const Offset(0, 1),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         if (pin != null && showHighlightPin)
                           Marker(
                             point: pin.position,
@@ -916,51 +1085,55 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                                   _lastCameraZoom = preciseZoom;
                                 });
                               },
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Builder(
-                                  builder: (pinContext) {
-                                    final preciseZoom = MapCamera.of(
-                                      pinContext,
-                                    ).zoom;
-                                    final rawProgress =
-                                        (preciseZoom - _lowZoom) /
-                                        (_highZoom - _lowZoom);
-                                    final zoomProgress = rawProgress.clamp(
-                                      0.0,
-                                      1.0,
-                                    );
-                                    final pinScale =
-                                        _minimumScale +
-                                        (_maximumScale - _minimumScale) *
-                                            zoomProgress;
-                                    return Transform.scale(
-                                      scale: pinScale,
-                                      alignment: Alignment.bottomCenter,
-                                      child: SizedBox(
-                                        width: _pinIconSize,
-                                        height: _pinIconSize,
-                                        child: Transform.translate(
-                                          offset: const Offset(
-                                            0,
-                                            _pinIconBottomInset,
-                                          ),
-                                          child: Icon(
-                                            Icons.location_on,
-                                            color: pin.color,
-                                            size: _pinIconSize,
-                                            shadows: const [
-                                              Shadow(
-                                                color: MapPalette.markerShadow,
-                                                blurRadius: 8,
-                                                offset: Offset(0, 3),
-                                              ),
-                                            ],
+                              child: TapRegion(
+                                groupId: _highlightPinPopupGroup,
+                                child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Builder(
+                                    builder: (pinContext) {
+                                      final preciseZoom = MapCamera.of(
+                                        pinContext,
+                                      ).zoom;
+                                      final rawProgress =
+                                          (preciseZoom - _lowZoom) /
+                                          (_highZoom - _lowZoom);
+                                      final zoomProgress = rawProgress.clamp(
+                                        0.0,
+                                        1.0,
+                                      );
+                                      final pinScale =
+                                          _minimumScale +
+                                          (_maximumScale - _minimumScale) *
+                                              zoomProgress;
+                                      return Transform.scale(
+                                        scale: pinScale,
+                                        alignment: Alignment.bottomCenter,
+                                        child: SizedBox(
+                                          width: _pinIconSize,
+                                          height: _pinIconSize,
+                                          child: Transform.translate(
+                                            offset: const Offset(
+                                              0,
+                                              _pinIconBottomInset,
+                                            ),
+                                            child: Icon(
+                                              Icons.location_on,
+                                              color: pin.color,
+                                              size: _pinIconSize,
+                                              shadows: const [
+                                                Shadow(
+                                                  color:
+                                                      MapPalette.markerShadow,
+                                                  blurRadius: 8,
+                                                  offset: Offset(0, 3),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
@@ -991,56 +1164,99 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                           selectedContact: selectedContact,
                         ),
                         ...sharedMarkers.map(_buildSharedMarker),
-                        if (connector.selfLatitude != null &&
-                            connector.selfLongitude != null)
-                          Marker(
-                            point: LatLng(
-                              connector.selfLatitude!,
-                              connector.selfLongitude!,
-                            ),
-                            width: 40,
-                            height: 40,
-                            child: IgnorePointer(
-                              ignoring: true,
-                              child: Container(
-                                width: 36,
-                                height: 36,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: MapPalette.panelDark,
-                                  border: Border.all(
-                                    color: MapPalette.markerOutline,
-                                    width: 2.5,
-                                  ),
-                                  boxShadow: [
-                                    const BoxShadow(
-                                      color: MapPalette.markerShadow,
-                                      blurRadius: 8,
-                                      offset: Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                alignment: Alignment.center,
-                                child: const Icon(
-                                  Icons.person_pin_circle,
-                                  color: MapPalette.selected,
-                                  size: 22,
-                                ),
-                              ),
-                            ),
-                          ),
-                        if (_showNodeLabels &&
-                            connector.selfLatitude != null &&
-                            connector.selfLongitude != null)
+                        if (_showNodeLabels && selfPosition != null)
                           _buildNodeLabelMarker(
-                            point: LatLng(
-                              connector.selfLatitude!,
-                              connector.selfLongitude!,
-                            ),
+                            point: selfPosition,
                             label: context.l10n.pathTrace_you,
                           ),
                       ],
                     ),
+                    if (_showSelfLocationPopup && selfPosition != null)
+                      MarkerLayer(
+                        markers: [
+                          Marker(
+                            point: selfPosition,
+                            width:
+                                _selfLocation.source == MapLocationSource.manual
+                                ? 300
+                                : 240,
+                            height: 70,
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 22),
+                              child: TapRegion(
+                                groupId: _selfLocationPopupGroup,
+                                onTapOutside: (event) =>
+                                    _selfPopupOutsidePointer = event,
+                                onTapUpOutside: (event) {
+                                  final down = _selfPopupOutsidePointer;
+                                  _selfPopupOutsidePointer = null;
+                                  if (down != null &&
+                                      down.pointer == event.pointer &&
+                                      (event.position - down.position)
+                                              .distance <=
+                                          kTouchSlop) {
+                                    _dismissSelfLocationPopup();
+                                  }
+                                },
+                                child: Material(
+                                  key: const ValueKey(
+                                    'map-self-location-popup',
+                                  ),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.surface.withValues(alpha: 0.5),
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(switch (_selfLocation
+                                            .source) {
+                                          MapLocationSource.manual =>
+                                            context.l10n.map_usingSetLocation,
+                                          MapLocationSource.radio =>
+                                            context.l10n.map_usingRadioLocation,
+                                          _ =>
+                                            context.l10n.map_usingPhoneLocation,
+                                        }),
+                                      ),
+                                      if (_selfLocation.source ==
+                                          MapLocationSource.manual)
+                                        TextButton(
+                                          onPressed: _isUpdatingLocation
+                                              ? null
+                                              : _revertManualLocation,
+                                          child: _isUpdatingLocation
+                                              ? const SizedBox(
+                                                  width: 16,
+                                                  height: 16,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                      ),
+                                                )
+                                              : Text(
+                                                  context
+                                                      .l10n
+                                                      .map_revertLocation,
+                                                ),
+                                        ),
+                                      IconButton(
+                                        padding: EdgeInsets.zero,
+                                        iconSize: 18,
+                                        tooltip: context.l10n.common_close,
+                                        onPressed: _dismissSelfLocationPopup,
+                                        icon: const Icon(Icons.close),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     if (pin != null &&
                         showHighlightPin &&
                         _isHighlightPinSelected)
@@ -1082,100 +1298,126 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                                       height:
                                           _expandedPinCardSize.height -
                                           _pinCardGap,
-                                      child: Card(
-                                        margin: EdgeInsets.zero,
-                                        elevation: 0,
-                                        surfaceTintColor: Colors.transparent,
-                                        color: _overlayPanelColor.withValues(
-                                          alpha: 0.5,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
+                                      child: TapRegion(
+                                        groupId: _highlightPinPopupGroup,
+                                        onTapOutside: (event) =>
+                                            _highlightPopupOutsidePointer =
+                                                event,
+                                        onTapUpOutside: (event) {
+                                          final down =
+                                              _highlightPopupOutsidePointer;
+                                          _highlightPopupOutsidePointer = null;
+                                          if (down != null &&
+                                              down.pointer == event.pointer &&
+                                              (event.position - down.position)
+                                                      .distance <=
+                                                  kTouchSlop) {
+                                            _dismissHighlightPinPopup();
+                                          }
+                                        },
+                                        child: Card(
+                                          margin: EdgeInsets.zero,
+                                          elevation: 0,
+                                          surfaceTintColor: Colors.transparent,
+                                          color: _overlayPanelColor.withValues(
+                                            alpha: 0.5,
                                           ),
-                                          side: BorderSide(
-                                            color: pin.color.withValues(
-                                              alpha: 0.6,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
                                             ),
-                                            width: 1.5,
+                                            side: BorderSide(
+                                              color: pin.color.withValues(
+                                                alpha: 0.6,
+                                              ),
+                                              width: 1.5,
+                                            ),
                                           ),
-                                        ),
-                                        child: ListView(
-                                          padding: const EdgeInsets.all(12),
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    pin.label.isEmpty
-                                                        ? context
-                                                              .l10n
-                                                              .chat_location
-                                                        : pin.label,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleSmall
-                                                        ?.copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                  tooltip:
-                                                      context.l10n.common_close,
-                                                  icon: const Icon(Icons.close),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      _isHighlightPinSelected =
-                                                          false;
-                                                      _isPinCardZoomOverrideActive =
-                                                          false;
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              '${pin.position.latitude.toStringAsFixed(6)}, '
-                                              '${pin.position.longitude.toStringAsFixed(6)}',
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Tooltip(
-                                                message:
-                                                    context.l10n.map_pinColor,
-                                                child: FilledButton.tonal(
-                                                  onPressed: () =>
-                                                      _showPinColorDialog(pin),
-                                                  style: FilledButton.styleFrom(
-                                                    shape:
-                                                        const StadiumBorder(),
-                                                    fixedSize: const Size(
-                                                      72,
-                                                      24,
+                                          child: ListView(
+                                            padding: const EdgeInsets.all(12),
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      pin.label.isEmpty
+                                                          ? context
+                                                                .l10n
+                                                                .chat_location
+                                                          : pin.label,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleSmall
+                                                          ?.copyWith(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
-                                                    padding:
-                                                        const EdgeInsets.all(2),
                                                   ),
-                                                  child: Text(
-                                                    context.l10n.map_color,
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: Theme.of(
-                                                      context,
-                                                    ).textTheme.labelMedium,
+                                                  IconButton(
+                                                    tooltip: context
+                                                        .l10n
+                                                        .common_close,
+                                                    icon: const Icon(
+                                                      Icons.close,
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _isHighlightPinSelected =
+                                                            false;
+                                                        _isPinCardZoomOverrideActive =
+                                                            false;
+                                                      });
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                '${pin.position.latitude.toStringAsFixed(6)}, '
+                                                '${pin.position.longitude.toStringAsFixed(6)}',
+                                              ),
+                                              const SizedBox(height: 20),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Tooltip(
+                                                  message:
+                                                      context.l10n.map_pinColor,
+                                                  child: FilledButton.tonal(
+                                                    onPressed: () =>
+                                                        _showPinColorDialog(
+                                                          pin,
+                                                        ),
+                                                    style: FilledButton.styleFrom(
+                                                      shape:
+                                                          const StadiumBorder(),
+                                                      fixedSize: const Size(
+                                                        72,
+                                                        24,
+                                                      ),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            2,
+                                                          ),
+                                                    ),
+                                                    child: Text(
+                                                      context.l10n.map_color,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: Theme.of(
+                                                        context,
+                                                      ).textTheme.labelMedium,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -1193,7 +1435,8 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                     context,
                     center: center,
                     zoom: initialZoom,
-                    connector: connector,
+                    selfPosition: selfPosition,
+                    selfColor: selfColor,
                   ),
                 if (!_isBuildingPathTrace)
                   _buildTopOverlay(
@@ -3357,13 +3600,22 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
                 final successMsg = context.l10n.settings_locationUpdated;
                 Navigator.pop(sheetContext);
                 if (!connector.isConnected) return;
-                await connector.setNodeLocation(
-                  lat: position.latitude,
-                  lon: position.longitude,
-                );
-                await connector.refreshDeviceInfo();
-                if (!mounted) return;
-                messenger.showSnackBar(SnackBar(content: Text(successMsg)));
+                try {
+                  await connector.setNodeLocation(
+                    lat: position.latitude,
+                    lon: position.longitude,
+                  );
+                  if (!mounted || !context.mounted) return;
+                  _dismissSelfLocationPopup();
+                  _toggleSelfLocationPopup();
+                  messenger.showSnackBar(SnackBar(content: Text(successMsg)));
+                } catch (_) {
+                  if (!mounted || !context.mounted) return;
+                  showDismissibleSnackBar(
+                    context,
+                    content: Text(context.l10n.map_locationUpdateFailed),
+                  );
+                }
               },
             ),
             ListTile(

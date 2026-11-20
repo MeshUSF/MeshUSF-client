@@ -270,6 +270,8 @@ See `buildSendCliCommandFrame()` (takes the repeater public key) in [meshcore_pr
 
 Reactions use `r:<four-hex message hash>:<two-hex emoji index>`. Channel replies use `@[senderName] text`; location pins use `m:<lat>,<lon>|<label>|...`. These are application conventions and require compatible clients for special rendering.
 
+Manual self-location source tracking is stored locally per companion public key; it is not a firmware response field. Setting or reverting a manual location reuses `CMD_SET_ADVERT_LATLON` (14) and waits for its OK/ERR before changing the app's selected source. Revert writes a newer radio fix or the saved pre-override GPS coordinates when available, otherwise `(0,0)` (the app's unset-radio-location value), then requests `CMD_APP_START` for fresh self-info. No new command or frame format is introduced. See [map and location](map-and-location.md).
+
 ## Regions and image data
 
 Transport-routed raw packets include four transport-code bytes before packed path metadata. For transport floods, the app matches the first two code bytes against locally known region candidates using HMAC-SHA256 over `[payloadType][payload]`. Region scope keys are the first 16 bytes of SHA256 of `#<region>`. The name itself is not carried as plain text. Unknown or ambiguous matches remain null; see [regions](regions.md).
