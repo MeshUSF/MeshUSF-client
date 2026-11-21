@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/helpers/path_helper.dart';
-import 'package:meshcore_open/models/channel_message.dart';
-import 'package:meshcore_open/models/contact.dart';
-import 'package:meshcore_open/storage/contact_discovery_store.dart';
-import 'package:meshcore_open/storage/contact_store.dart';
-import 'package:meshcore_open/storage/prefs_manager.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/helpers/path_helper.dart';
+import 'package:meshusf/models/channel_message.dart';
+import 'package:meshusf/models/contact.dart';
+import 'package:meshusf/storage/contact_discovery_store.dart';
+import 'package:meshusf/storage/contact_store.dart';
+import 'package:meshusf/storage/prefs_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Uint8List _contactFrame(int pathLen, List<int> path) {

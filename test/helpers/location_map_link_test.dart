@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meshcore_open/helpers/location_map_link.dart';
+import 'package:meshusf/helpers/location_map_link.dart';
 
 void main() {
   const labels = [

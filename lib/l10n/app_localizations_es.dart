@@ -9,7 +9,7 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get appTitle => 'MeshCore Open';
+  String get appTitle => 'MeshUSF';
 
   @override
   String get radioDisconnectedReconnecting =>
@@ -183,7 +183,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get common_interval => 'Intervalo';
 
   @override
-  String get scanner_title => 'MeshCore Open';
+  String get scanner_title => 'MeshUSF';
 
   @override
   String get connectionChoiceUsbLabel => 'USB';
@@ -342,6 +342,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String scanner_connectionFailed(String error) {
     return 'Error de conexión: $error';
   }
+
+  @override
+  String get scanner_blePermissionGuidance =>
+      'Bluetooth permission is missing. Allow Nearby Devices or Bluetooth access in system settings, then try again.';
+
+  @override
+  String get scanner_blePairingGuidance =>
+      'Bluetooth pairing did not finish. Check the radio\'s pairing instructions and any system pairing prompt, then try again.';
+
+  @override
+  String get scanner_bleTimeoutGuidance =>
+      'The Bluetooth connection timed out. Keep the radio nearby and awake, then try again.';
 
   @override
   String get scanner_stop => 'Detener';
@@ -664,11 +676,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String settings_aboutVersion(String version) {
-    return 'MeshCore Open v$version';
+    return 'MeshUSF v$version';
   }
 
   @override
-  String get settings_aboutLegalese => 'Proyecto MeshCore Open Source 2026';
+  String get settings_aboutLegalese => 'MeshUSF\nBasado en MeshCore Open';
 
   @override
   String get settings_aboutDescription =>
@@ -922,7 +934,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get appSettings_batteryOptimizationSubtitle =>
-      'Establece MeshCore Open en \"No optimizar\" en los ajustes de batería para que los mensajes sigan llegando en segundo plano';
+      'Establece MeshUSF en \"No optimizar\" en los ajustes de batería para que los mensajes sigan llegando en segundo plano';
 
   @override
   String get appSettings_channelMessageNotifications =>
@@ -1692,7 +1704,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get chat_locationPermissionDenied =>
-      'Permite que MeshCore acceda a la ubicación del dispositivo e inténtalo de nuevo.';
+      'Permite que MeshUSF acceda a la ubicación del dispositivo e inténtalo de nuevo.';
 
   @override
   String get chat_locationServicesDisabled =>
@@ -4708,7 +4720,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo copiar el anuncio al portapapeles.';
 
   @override
-  String get notification_activityTitle => 'Actividad de MeshCore';
+  String get notification_activityTitle => 'Actividad de MeshUSF';
 
   @override
   String notification_messagesCount(int count) {
@@ -4771,11 +4783,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get notification_replyNotConnected =>
-      'Sin conexión con una radio. Vuelve a conectarte en MeshCore Open y envía tu respuesta de nuevo.';
+      'Sin conexión con una radio. Vuelve a conectarte en MeshUSF y envía tu respuesta de nuevo.';
 
   @override
   String get notification_replyTooLong =>
-      'Tu respuesta es demasiado larga para enviarla desde una notificación. Envíala desde MeshCore Open.';
+      'Tu respuesta es demasiado larga para enviarla desde una notificación. Envíala desde MeshUSF.';
 
   @override
   String get notification_replyUnavailable =>
@@ -4783,11 +4795,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get notification_replySendFailed =>
-      'Puede que tu respuesta no se haya enviado. Compruébalo en MeshCore Open e inténtalo de nuevo.';
+      'Puede que tu respuesta no se haya enviado. Compruébalo en MeshUSF e inténtalo de nuevo.';
 
   @override
   String get notification_replyAppNotRunning =>
-      'MeshCore Open no está en ejecución. Ábrelo y envía tu respuesta de nuevo.';
+      'MeshUSF no está en ejecución. Ábrelo y envía tu respuesta de nuevo.';
 
   @override
   String get settings_gpxExportRepeaters =>
@@ -4837,11 +4849,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settings_gpxExportShareText =>
-      'Datos del mapa exportados desde meshcore-open';
+      'Datos del mapa exportados desde MeshUSF';
 
   @override
   String get settings_gpxExportShareSubject =>
-      'Exportación GPX de datos de mapa de meshcore-open';
+      'Exportación GPX de datos de mapa de MeshUSF';
 
   @override
   String get snrIndicator_nearByRepeaters => 'Repetidores cercanos';
@@ -5192,7 +5204,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get translation_systemLanguage => 'Idioma del sistema';
 
   @override
-  String get background_serviceTitle => 'MeshCore en ejecución';
+  String get background_serviceTitle => 'MeshUSF en ejecución';
 
   @override
   String get background_serviceText => 'Manteniendo BLE conectado';

@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:meshcore_open/connector/meshcore_connector.dart';
-import 'package:meshcore_open/services/location_sharing_service.dart';
-import 'package:meshcore_open/storage/manual_location_store.dart';
+import 'package:meshusf/connector/meshcore_connector.dart';
+import 'package:meshusf/services/location_sharing_service.dart';
+import 'package:meshusf/storage/manual_location_store.dart';
 
 class _LocationConnector extends MeshCoreConnector {
   bool connected = true;

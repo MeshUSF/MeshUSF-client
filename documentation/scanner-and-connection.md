@@ -12,7 +12,7 @@ The BLE Scanner is the app's home screen, displayed immediately on launch.
 
 ### What the User Sees
 
-**App Bar**: Centered title "Scanner".
+**App Bar**: Centered title "MeshUSF".
 
 **Bluetooth-Off Warning Banner** (conditional): Appears when the Bluetooth adapter is off, showing a `bluetooth_disabled` icon, a warning message, and on Android, an "Enable Bluetooth" button.
 

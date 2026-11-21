@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/models/channel_message.dart';
+import 'package:meshusf/models/channel_message.dart';
 
 void main() {
   test('outgoing reply keeps the selected target, not the latest post', () {

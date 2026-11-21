@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/services/map_tile_cache_service.dart';
+import 'package:meshusf/services/map_tile_cache_service.dart';
 
 void main() {
   test('tile cache key drops api_key and keeps everything else', () {

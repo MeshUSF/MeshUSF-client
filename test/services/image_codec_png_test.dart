@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/services/image_codec_service.dart';
+import 'package:meshusf/services/image_codec_service.dart';
 
 /// Covers the one piece of the decode path that can be executed without a model
 /// file, a device or ONNX Runtime: turning the backend's packed RGB output into

@@ -1,5 +1,5 @@
-import 'package:meshcore_open/storage/channel_region_store.dart';
-import 'package:meshcore_open/storage/channel_store.dart';
+import 'package:meshusf/storage/channel_region_store.dart';
+import 'package:meshusf/storage/channel_store.dart';
 
 import 'prefs_manager.dart';
 

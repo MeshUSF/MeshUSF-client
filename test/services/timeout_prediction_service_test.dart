@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/models/delivery_observation.dart';
-import 'package:meshcore_open/services/timeout_prediction_service.dart';
+import 'package:meshusf/models/delivery_observation.dart';
+import 'package:meshusf/services/timeout_prediction_service.dart';
 
 void main() {
   late TimeoutPredictionService service;

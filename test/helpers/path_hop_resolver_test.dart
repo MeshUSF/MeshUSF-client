@@ -2,9 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/helpers/path_hop_resolver.dart';
-import 'package:meshcore_open/models/contact.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/helpers/path_hop_resolver.dart';
+import 'package:meshusf/models/contact.dart';
 
 Contact _contact({
   required int prefix,

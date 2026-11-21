@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
 
 void main() {
   // Frame layout per the doc comment on buildUpdateContactPathFrame:

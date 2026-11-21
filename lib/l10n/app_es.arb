@@ -8,7 +8,7 @@
     }
   },
   "@@locale": "es",
-  "appTitle": "MeshCore Open",
+  "appTitle": "MeshUSF",
   "radioDisconnectedReconnecting": "Tu radio se desconectó. Intentando reconectar...",
   "nav_contacts": "Contactos",
   "nav_channels": "Canales",
@@ -56,7 +56,7 @@
       }
     }
   },
-  "scanner_title": "MeshCore Open",
+  "scanner_title": "MeshUSF",
   "scanner_scanning": "Escaneando dispositivos...",
   "scanner_connecting": "Conectando...",
   "scanner_disconnecting": "Desconectando...",
@@ -129,7 +129,7 @@
   "settings_appDebugLog": "Registro de Depuración de la App",
   "settings_appDebugLogSubtitle": "Mensajes de depuración de la aplicación",
   "settings_about": "Acerca de",
-  "settings_aboutVersion": "MeshCore Open v{version}",
+  "settings_aboutVersion": "MeshUSF v{version}",
   "@settings_aboutVersion": {
     "placeholders": {
       "version": {
@@ -137,7 +137,7 @@
       }
     }
   },
-  "settings_aboutLegalese": "Proyecto MeshCore Open Source 2026",
+  "settings_aboutLegalese": "MeshUSF\nBasado en MeshCore Open",
   "settings_aboutDescription": "Un cliente Flutter de código abierto para dispositivos MeshCore de malla LoRa.",
   "settings_infoName": "Nombre",
   "settings_infoId": "ID",
@@ -515,7 +515,7 @@
   "chat_myLocation": "Mi ubicación",
   "chat_gettingLocation": "Obteniendo ubicación…",
   "chat_viewOnMap": "Ver en el mapa",
-  "chat_locationPermissionDenied": "Permite que MeshCore acceda a la ubicación del dispositivo e inténtalo de nuevo.",
+  "chat_locationPermissionDenied": "Permite que MeshUSF acceda a la ubicación del dispositivo e inténtalo de nuevo.",
   "chat_locationServicesDisabled": "Activa los servicios de ubicación del dispositivo e inténtalo de nuevo.",
   "chat_locationUnavailable": "No se pudo determinar la ubicación del dispositivo. Comprueba los ajustes de ubicación e inténtalo de nuevo.",
   "chat_reply": "Responder",
@@ -1899,7 +1899,7 @@
   "contacts_zeroHopContactAdvertSent": "Contacto enviado por anuncio.",
   "contacts_contactAdvertCopied": "Anuncio copiado al portapapeles.",
   "contacts_contactAdvertCopyFailed": "No se pudo copiar el anuncio al portapapeles.",
-  "notification_activityTitle": "Actividad de MeshCore",
+  "notification_activityTitle": "Actividad de MeshUSF",
   "notification_messagesCount": "{count} {count, plural, =1{mensaje} other{mensajes}}",
   "@notification_messagesCount": {
     "placeholders": {
@@ -1946,8 +1946,8 @@
   "settings_gpxExportChat": "Ubicaciones de compañeros",
   "settings_gpxExportRepeatersRoom": "Ubicaciones de repetidores y servidores de sala",
   "settings_gpxExportAllContacts": "Todas las ubicaciones de contactos",
-  "settings_gpxExportShareText": "Datos del mapa exportados desde meshcore-open",
-  "settings_gpxExportShareSubject": "Exportación GPX de datos de mapa de meshcore-open",
+  "settings_gpxExportShareText": "Datos del mapa exportados desde MeshUSF",
+  "settings_gpxExportShareSubject": "Exportación GPX de datos de mapa de MeshUSF",
   "pathTrace_someHopsNoLocation": "Uno o más de los saltos carecen de una ubicación",
   "pathTrace_clearTooltip": "Borrar ruta",
   "map_runTrace": "Ejecutar traza de ruta",
@@ -2501,7 +2501,7 @@
   "repeater_cliHelpStatsRadio": "(Solo para transmisiones en serie) Muestra estadísticas de radio.",
   "repeater_cliHelpStatsCore": "(Solo para series) Muestra estadísticas clave del firmware.",
   "common_done": "Hecho",
-  "background_serviceTitle": "MeshCore en ejecución",
+  "background_serviceTitle": "MeshUSF en ejecución",
   "background_serviceText": "Manteniendo BLE conectado",
   "appSettings_translationModelDeleted": "Eliminado {name}",
   "@appSettings_translationModelDeleted": {
@@ -3124,7 +3124,7 @@
     }
   },
   "appSettings_batteryOptimization": "Actividad en segundo plano",
-  "appSettings_batteryOptimizationSubtitle": "Establece MeshCore Open en \"No optimizar\" en los ajustes de batería para que los mensajes sigan llegando en segundo plano",
+  "appSettings_batteryOptimizationSubtitle": "Establece MeshUSF en \"No optimizar\" en los ajustes de batería para que los mensajes sigan llegando en segundo plano",
   "contacts_storageFull": "El almacenamiento de contactos del nodo está lleno. No se pueden añadir nodos nuevos hasta que se eliminen contactos.",
   "contacts_removeFromContacts": "Quitar de contactos",
   "contacts_removeFromContactsConfirm": "{contactName} pasará a Contactos descubiertos. Se eliminará el historial del chat.",
@@ -3190,11 +3190,11 @@
   "notification_replyHint": "Mensaje",
   "notification_you": "Tú",
   "notification_replyFailedTitle": "Respuesta no enviada",
-  "notification_replyNotConnected": "Sin conexión con una radio. Vuelve a conectarte en MeshCore Open y envía tu respuesta de nuevo.",
-  "notification_replyTooLong": "Tu respuesta es demasiado larga para enviarla desde una notificación. Envíala desde MeshCore Open.",
+  "notification_replyNotConnected": "Sin conexión con una radio. Vuelve a conectarte en MeshUSF y envía tu respuesta de nuevo.",
+  "notification_replyTooLong": "Tu respuesta es demasiado larga para enviarla desde una notificación. Envíala desde MeshUSF.",
   "notification_replyUnavailable": "Esta conversación ya no está en la radio conectada.",
-  "notification_replySendFailed": "Puede que tu respuesta no se haya enviado. Compruébalo en MeshCore Open e inténtalo de nuevo.",
-  "notification_replyAppNotRunning": "MeshCore Open no está en ejecución. Ábrelo y envía tu respuesta de nuevo.",
+  "notification_replySendFailed": "Puede que tu respuesta no se haya enviado. Compruébalo en MeshUSF e inténtalo de nuevo.",
+  "notification_replyAppNotRunning": "MeshUSF no está en ejecución. Ábrelo y envía tu respuesta de nuevo.",
   "snrIndicator_nearByRepeatersDescription": "Repetidores que tu radio ha oído directamente, del más reciente al más antiguo.",
   "radioStats_sectionSignal": "Señal",
   "radioStats_sectionAirtime": "Tiempo de emisión",

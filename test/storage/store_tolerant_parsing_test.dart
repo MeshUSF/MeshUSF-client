@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/models/community.dart';
-import 'package:meshcore_open/services/storage_service.dart';
-import 'package:meshcore_open/storage/channel_message_store.dart';
-import 'package:meshcore_open/storage/community_store.dart';
-import 'package:meshcore_open/storage/message_store.dart';
-import 'package:meshcore_open/storage/prefs_manager.dart';
+import 'package:meshusf/models/community.dart';
+import 'package:meshusf/services/storage_service.dart';
+import 'package:meshusf/storage/channel_message_store.dart';
+import 'package:meshusf/storage/community_store.dart';
+import 'package:meshusf/storage/message_store.dart';
+import 'package:meshusf/storage/prefs_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _device = 'abcdef012345';

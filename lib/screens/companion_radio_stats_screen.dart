@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:meshcore_open/connector/meshcore_connector.dart';
-import 'package:meshcore_open/models/companion_radio_stats.dart';
-import 'package:meshcore_open/screens/telemetry_screen.dart';
-import 'package:meshcore_open/l10n/l10n.dart';
-import 'package:meshcore_open/theme/mesh_theme.dart';
-import 'package:meshcore_open/widgets/mesh_ui.dart';
+import 'package:meshusf/connector/meshcore_connector.dart';
+import 'package:meshusf/models/companion_radio_stats.dart';
+import 'package:meshusf/screens/telemetry_screen.dart';
+import 'package:meshusf/l10n/l10n.dart';
+import 'package:meshusf/theme/mesh_theme.dart';
+import 'package:meshusf/widgets/mesh_ui.dart';
 import 'package:provider/provider.dart';
 
 class CompanionRadioStatsScreen extends StatefulWidget {

@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/models/contact.dart';
-import 'package:meshcore_open/utils/contact_qr.dart';
-import 'package:meshcore_open/utils/contact_qr_frame.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/models/contact.dart';
+import 'package:meshusf/utils/contact_qr.dart';
+import 'package:meshusf/utils/contact_qr_frame.dart';
 
 void main() {
   final publicKey = Uint8List.fromList(List<int>.filled(32, 0xAB));

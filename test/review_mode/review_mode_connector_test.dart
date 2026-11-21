@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_connector.dart';
-import 'package:meshcore_open/models/message.dart';
-import 'package:meshcore_open/review_mode/review_radio.dart';
-import 'package:meshcore_open/services/message_retry_service.dart';
-import 'package:meshcore_open/services/path_history_service.dart';
-import 'package:meshcore_open/services/storage_service.dart';
-import 'package:meshcore_open/storage/prefs_manager.dart';
+import 'package:meshusf/connector/meshcore_connector.dart';
+import 'package:meshusf/models/message.dart';
+import 'package:meshusf/review_mode/review_radio.dart';
+import 'package:meshusf/services/message_retry_service.dart';
+import 'package:meshusf/services/path_history_service.dart';
+import 'package:meshusf/services/storage_service.dart';
+import 'package:meshusf/storage/prefs_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> _waitFor(bool Function() condition, {int seconds = 8}) async {

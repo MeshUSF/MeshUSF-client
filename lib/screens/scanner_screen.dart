@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../connector/meshcore_connector.dart';
 import '../l10n/l10n.dart';
 import '../services/linux_ble_error_classifier.dart';
+import '../services/ble_connection_error.dart';
 import '../theme/mesh_theme.dart';
 import '../utils/app_logger.dart';
 import '../widgets/adaptive_app_bar_title.dart';
@@ -227,7 +228,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
     //     content: Text(context.l10n.scanner_bluetoothWebUnsupported),
     //   );
     //   return;
-    // }   
+    // }
 
     // Removed guardrail preventing BLE on web
 
@@ -328,7 +329,19 @@ class _ScannerScreenState extends State<ScannerScreen> {
       if (context.mounted) {
         showDismissibleSnackBar(
           context,
-          content: Text(context.l10n.scanner_connectionFailed(e.toString())),
+          content: Text(switch (classifyBleConnectionError(e)) {
+            BleConnectionError.permission =>
+              context.l10n.scanner_blePermissionGuidance,
+            BleConnectionError.pairing =>
+              context.l10n.scanner_blePairingGuidance,
+            BleConnectionError.bluetoothOff =>
+              context.l10n.scanner_bluetoothOffMessage,
+            BleConnectionError.timeout =>
+              context.l10n.scanner_bleTimeoutGuidance,
+            BleConnectionError.unknown => context.l10n.scanner_connectionFailed(
+              errorText,
+            ),
+          }),
           backgroundColor: Theme.of(context).colorScheme.error,
         );
       }

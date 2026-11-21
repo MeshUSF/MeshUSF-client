@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/models/remote_node_stats.dart';
+import 'package:meshusf/models/remote_node_stats.dart';
 
 Uint8List _frame(int statsSize, void Function(ByteData stats) fill) {
   final frame = Uint8List(RemoteNodeStats.payloadOffset + statsSize);

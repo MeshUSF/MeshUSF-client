@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/models/channel.dart';
-import 'package:meshcore_open/models/channel_message.dart';
-import 'package:meshcore_open/models/contact.dart';
-import 'package:meshcore_open/review_mode/review_radio.dart';
-import 'package:meshcore_open/review_mode/review_script.dart';
-import 'package:meshcore_open/services/message_retry_service.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/models/channel.dart';
+import 'package:meshusf/models/channel_message.dart';
+import 'package:meshusf/models/contact.dart';
+import 'package:meshusf/review_mode/review_radio.dart';
+import 'package:meshusf/review_mode/review_script.dart';
+import 'package:meshusf/services/message_retry_service.dart';
 
 const _tick = Duration(milliseconds: 60);
 
@@ -92,7 +92,7 @@ void main() {
     expect(info[3], ReviewScript.maxChannels);
     expect(
       String.fromCharCodes(info.sublist(20, 40)),
-      startsWith('MeshCore Open Review'),
+      startsWith('MeshUSF Review'),
     );
     expect(String.fromCharCodes(info.sublist(60, 66)), 'review');
     expect(info[81], 0);

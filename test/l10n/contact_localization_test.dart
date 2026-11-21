@@ -2,10 +2,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/l10n/app_localizations.dart';
-import 'package:meshcore_open/l10n/contact_localization.dart';
-import 'package:meshcore_open/models/contact.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/l10n/app_localizations.dart';
+import 'package:meshusf/l10n/contact_localization.dart';
+import 'package:meshusf/models/contact.dart';
 
 Contact _contact({
   int type = advTypeChat,

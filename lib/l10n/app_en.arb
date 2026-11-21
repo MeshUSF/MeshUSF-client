@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "MeshCore Open",
+  "appTitle": "MeshUSF",
   "radioDisconnectedReconnecting": "Your radio disconnected. Trying to reconnect...",
   "nav_contacts": "Contacts",
   "nav_channels": "Channels",
@@ -92,7 +92,7 @@
   },
   "common_autoRefresh": "Autorefresh",
   "common_interval": "Interval",
-  "scanner_title": "MeshCore Open",
+  "scanner_title": "MeshUSF",
   "connectionChoiceUsbLabel": "USB",
   "connectionChoiceBluetoothLabel": "Bluetooth",
   "connectionChoiceTcpLabel": "TCP",
@@ -173,6 +173,12 @@
       }
     }
   },
+  "scanner_blePermissionGuidance": "Bluetooth permission is missing. Allow Nearby Devices or Bluetooth access in system settings, then try again.",
+  "@scanner_blePermissionGuidance": {"description": "Recovery guidance when Bluetooth connection permission is missing."},
+  "scanner_blePairingGuidance": "Bluetooth pairing did not finish. Check the radio's pairing instructions and any system pairing prompt, then try again.",
+  "@scanner_blePairingGuidance": {"description": "Recovery guidance for authentication, cancelled pairing or pairing timeout. Does not assume the PIN was wrong."},
+  "scanner_bleTimeoutGuidance": "The Bluetooth connection timed out. Keep the radio nearby and awake, then try again.",
+  "@scanner_bleTimeoutGuidance": {"description": "Recovery guidance for a generic Bluetooth connection timeout."},
   "scanner_stop": "Stop",
   "scanner_scan": "Scan",
   "scanner_bluetoothOff": "Bluetooth is off",
@@ -275,7 +281,7 @@
   "settings_appDebugLog": "App Debug Log",
   "settings_appDebugLogSubtitle": "Application debug messages",
   "settings_about": "About",
-  "settings_aboutVersion": "MeshCore Open v{version}",
+  "settings_aboutVersion": "MeshUSF v{version}",
   "@settings_aboutVersion": {
     "placeholders": {
       "version": {
@@ -283,7 +289,7 @@
       }
     }
   },
-  "settings_aboutLegalese": "2026 MeshCore Open Source Project",
+  "settings_aboutLegalese": "MeshUSF\nBased on MeshCore Open",
   "settings_aboutDescription": "An open-source Flutter client for MeshCore LoRa mesh networking devices.",
   "settings_aboutOpenMeteoAttribution": "LOS elevation data: Open-Meteo (CC BY 4.0)",
   "settings_infoName": "Name",
@@ -402,7 +408,7 @@
   "appSettings_messageNotifications": "Message Notifications",
   "appSettings_messageNotificationsSubtitle": "Show notification when receiving new messages",
   "appSettings_batteryOptimization": "Background Activity",
-  "appSettings_batteryOptimizationSubtitle": "Set MeshCore Open to \"Don't optimize\" in battery settings so messages keep arriving in the background",
+  "appSettings_batteryOptimizationSubtitle": "Set MeshUSF to \"Don't optimize\" in battery settings so messages keep arriving in the background",
   "appSettings_channelMessageNotifications": "Channel Message Notifications",
   "appSettings_channelMessageNotificationsSubtitle": "Show notification when receiving channel messages",
   "appSettings_advertisementNotifications": "Advertisement Notifications",
@@ -871,7 +877,7 @@
   "chat_myLocation": "My location",
   "chat_gettingLocation": "Getting location…",
   "chat_viewOnMap": "View on map",
-  "chat_locationPermissionDenied": "Allow MeshCore to access this device's location, then try again.",
+  "chat_locationPermissionDenied": "Allow MeshUSF to access this device's location, then try again.",
   "chat_locationServicesDisabled": "Turn on this device's location services, then try again.",
   "chat_locationUnavailable": "Couldn't determine this device's location. Check its location settings and try again.",
   "chat_removeGif": "Remove GIF",
@@ -2607,7 +2613,7 @@
   "contacts_zeroHopContactAdvertFailed": "Failed to send contact.",
   "contacts_contactAdvertCopied": "Advert copied to Clipboard.",
   "contacts_contactAdvertCopyFailed": "Copying advert to Clipboard failed.",
-  "notification_activityTitle": "MeshCore Activity",
+  "notification_activityTitle": "MeshUSF Activity",
   "notification_messagesCount": "{count} {count, plural, =1{message} other{messages}}",
   "@notification_messagesCount": {
     "placeholders": {
@@ -2647,11 +2653,11 @@
   "notification_replyHint": "Message",
   "notification_you": "You",
   "notification_replyFailedTitle": "Reply not sent",
-  "notification_replyNotConnected": "Not connected to a radio. Reconnect in MeshCore Open and send your reply again.",
-  "notification_replyTooLong": "Your reply is too long to send from a notification. Send it from MeshCore Open instead.",
+  "notification_replyNotConnected": "Not connected to a radio. Reconnect in MeshUSF and send your reply again.",
+  "notification_replyTooLong": "Your reply is too long to send from a notification. Send it from MeshUSF instead.",
   "notification_replyUnavailable": "This conversation is no longer on the connected radio.",
-  "notification_replySendFailed": "Your reply may not have been sent. Check in MeshCore Open and try again.",
-  "notification_replyAppNotRunning": "MeshCore Open isn't running. Open it and send your reply again.",
+  "notification_replySendFailed": "Your reply may not have been sent. Check in MeshUSF and try again.",
+  "notification_replyAppNotRunning": "MeshUSF isn't running. Open it and send your reply again.",
   "settings_gpxExportRepeaters": "Export repeaters / room server to GPX",
   "settings_gpxExportRepeatersSubtitle": "Exports repeaters / roomserver with a location to GPX file.",
   "settings_gpxExportContacts": "Export companions to GPX",
@@ -2665,8 +2671,8 @@
   "settings_gpxExportRepeatersRoom": "Repeater & room server locations",
   "settings_gpxExportChat": "Companion locations",
   "settings_gpxExportAllContacts": "All contacts locations",
-  "settings_gpxExportShareText": "Map data exported from meshcore-open",
-  "settings_gpxExportShareSubject": "meshcore-open GPX map data export",
+  "settings_gpxExportShareText": "Map data exported from MeshUSF",
+  "settings_gpxExportShareSubject": "MeshUSF GPX map data export",
   "snrIndicator_nearByRepeaters": "Nearby Repeaters",
   "snrIndicator_lastSeen": "Last seen",
   "snrIndicator_nearByRepeatersDescription": "Repeaters your radio heard directly, most recently heard first.",
@@ -2833,7 +2839,7 @@
   },
   "translation_translationOptions": "Translation options",
   "translation_systemLanguage": "System language",
-  "background_serviceTitle": "MeshCore running",
+  "background_serviceTitle": "MeshUSF running",
   "background_serviceText": "Keeping BLE connected",
   "appSettings_translationModelDeleted": "Deleted {name}",
   "@appSettings_translationModelDeleted": {

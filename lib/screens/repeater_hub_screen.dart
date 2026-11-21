@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/connector/meshcore_connector.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/connector/meshcore_connector.dart';
 import 'package:provider/provider.dart';
 import '../l10n/l10n.dart';
 import '../models/contact.dart';

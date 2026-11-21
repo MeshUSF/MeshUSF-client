@@ -3,10 +3,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/l10n/app_localizations.dart';
-import 'package:meshcore_open/utils/lora_airtime.dart';
-import 'package:meshcore_open/widgets/image_send_codec_binding.dart';
-import 'package:meshcore_open/widgets/image_send_preview_sheet.dart';
+import 'package:meshusf/l10n/app_localizations.dart';
+import 'package:meshusf/utils/lora_airtime.dart';
+import 'package:meshusf/widgets/image_send_codec_binding.dart';
+import 'package:meshusf/widgets/image_send_preview_sheet.dart';
 
 /// A real 1x1 PNG. Image.memory reports decode failures through FlutterError,
 /// which fails the test even though the sheet has an errorBuilder, so the test

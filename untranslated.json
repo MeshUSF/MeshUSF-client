@@ -1,5 +1,8 @@
 {
   "es": [
+    "scanner_blePermissionGuidance",
+    "scanner_blePairingGuidance",
+    "scanner_bleTimeoutGuidance",
     "contacts_alreadyAdded",
     "contacts_yourContact",
     "contacts_cannotAddSelf",
@@ -11,6 +14,9 @@
   ],
 
   "fr": [
+    "scanner_blePermissionGuidance",
+    "scanner_blePairingGuidance",
+    "scanner_bleTimeoutGuidance",
     "contacts_alreadyAdded",
     "contacts_yourContact",
     "contacts_cannotAddSelf",

@@ -58,6 +58,13 @@ enum MeshCoreConnectionState {
 
 ## Auto-Reconnect (BLE Only)
 
+The scanner displays recovery guidance for recognized Bluetooth permission,
+pairing, adapter-off and connection-timeout failures. Unknown errors retain the
+original diagnostic text. Guidance is presentation-only: it does not change
+pairing policy, reconnect timing, protocol frames or command retries. Pairing
+guidance does not assume that a PIN was wrong. New recovery strings use English
+fallback until translations are supplied.
+
 On unexpected disconnection, auto-reconnect with exponential backoff:
 - Delays: 1s, 2s, 4s, 8s, 16s, 30s, 30s...
 - Resets on successful connection

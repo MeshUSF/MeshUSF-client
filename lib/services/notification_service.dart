@@ -111,7 +111,7 @@ class NotificationService {
       requestSoundPermission: true,
     );
     const windowsSettings = WindowsInitializationSettings(
-      appName: 'MeshCore Open',
+      appName: 'MeshUSF',
       appUserModelId: 'org.meshcore.open.app',
       guid: 'e7ea8f85-72f5-4f36-91f6-038f740ccf86',
     );

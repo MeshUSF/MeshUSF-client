@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/utils/contact_qr.dart';
+import 'package:meshusf/utils/contact_qr.dart';
 
 void main() {
   const key =

@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/connector/pending_command_replies.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/connector/pending_command_replies.dart';
 
 void main() {
   Uint8List frame(List<int> bytes) => Uint8List.fromList(bytes);

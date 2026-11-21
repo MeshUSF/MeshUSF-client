@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/models/companion_radio_stats.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/models/companion_radio_stats.dart';
 
 void main() {
   test('CompanionRadioStats.tryParse golden 14-byte radio frame', () {

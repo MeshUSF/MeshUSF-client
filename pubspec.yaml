@@ -1,5 +1,5 @@
-name: meshcore_open
-description: "A new Flutter project."
+name: meshusf
+description: "Off-grid emergency communication and coordination over MeshCore LoRa radios."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
