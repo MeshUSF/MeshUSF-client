@@ -72,7 +72,14 @@ set_target_properties(${BINARY_NAME}
 
 # Generated plugin build rules, which manage building the plugins and adding
 # them to the application.
+set(CMAKE_PROJECT_flutter_onnxruntime_INCLUDE
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/onnxruntime.cmake")
 include(flutter/generated_plugins.cmake)
+if(ONNXRUNTIME_COMPANION_LIBRARIES AND flutter_onnxruntime_bundled_libraries)
+  # The bundle copies the plugin file, so its build RUNPATH must find sibling libraries.
+  set_property(TARGET flutter_onnxruntime_plugin APPEND PROPERTY BUILD_RPATH "$ORIGIN")
+  list(APPEND PLUGIN_BUNDLED_LIBRARIES ${ONNXRUNTIME_COMPANION_LIBRARIES})
+endif()
 
 # Work around tinycthread/glibc 2.43+ conflict: glibc 2.43 (with Clang 21's
 # C23 default) exports once_flag from stdlib.h bt tinycthread in flserial

@@ -40,6 +40,8 @@ jobs:
           channel: "stable"
           cache: true
       - run: flutter pub get
+      - name: Prepare ONNX Runtime Swift package
+        run: python3 .github/scripts/prepare_apple_onnxruntime.py ios
       - run: flutter build ios --release --no-codesign --no-pub
 
   linux:
@@ -64,6 +66,8 @@ jobs:
           channel: "stable"
           cache: true
       - run: flutter pub get
+      - name: Prepare ONNX Runtime Swift package
+        run: python3 .github/scripts/prepare_apple_onnxruntime.py macos
       - run: flutter build macos --release --no-pub
 
   web:
