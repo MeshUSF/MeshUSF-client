@@ -965,12 +965,6 @@ class _MapScreenState extends State<MapScreen>
                       // detail levels update without rebuilding every frame.
                       final bucket = (camera.zoom * 2).roundToDouble() / 2;
 
-                      if (kDebugMode && bucket != _zoom) {
-                        debugPrint(
-                          'Map zoom: ${camera.zoom.toStringAsFixed(2)}',
-                        );
-                      }
-
                       final shouldShow = camera.zoom >= _labelZoomThreshold;
                       if ((bucket != _zoom ||
                               shouldShow != _showNodeLabels ||
