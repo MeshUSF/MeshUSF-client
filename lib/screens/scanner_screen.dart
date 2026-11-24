@@ -11,7 +11,6 @@ import '../services/linux_ble_error_classifier.dart';
 import '../services/ble_connection_error.dart';
 import '../theme/mesh_theme.dart';
 import '../utils/app_logger.dart';
-import '../widgets/adaptive_app_bar_title.dart';
 import '../widgets/device_tile.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/mesh_ui.dart';
@@ -115,7 +114,22 @@ class _ScannerScreenState extends State<ScannerScreen> {
               )
             : null,
         title: ReviewModeLongPress(
-          child: AdaptiveAppBarTitle(context.l10n.scanner_title),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const ExcludeSemantics(
+                  child: CustomPaint(
+                    size: Size.square(24),
+                    painter: _BullMarkPainter(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(context.l10n.scanner_title, maxLines: 1),
+              ],
+            ),
+          ),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -444,6 +458,49 @@ class _ScannerScreenState extends State<ScannerScreen> {
 // ── Private sub-widgets ────────────────────────────────────────────────────
 
 /// Bluetooth-off warning banner — styled as an alert MeshCard.
+class _BullMarkPainter extends CustomPainter {
+  const _BullMarkPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = MeshPalette.usfGreen;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Offset.zero & size, const Radius.circular(7)),
+      paint,
+    );
+
+    final horns = Path()
+      ..moveTo(9, 11)
+      ..quadraticBezierTo(5, 11, 5, 7)
+      ..moveTo(15, 11)
+      ..quadraticBezierTo(19, 11, 19, 7);
+    canvas.drawPath(
+      horns,
+      paint
+        ..color = MeshPalette.usfGold
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round
+        ..strokeWidth = 1.7,
+    );
+
+    final head = Path()
+      ..moveTo(7.5, 10.5)
+      ..lineTo(16.5, 10.5)
+      ..lineTo(14, 17)
+      ..quadraticBezierTo(12, 18.5, 10, 17)
+      ..close();
+    canvas.drawPath(
+      head,
+      paint
+        ..color = MeshPalette.lightBg
+        ..style = PaintingStyle.fill,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _BullMarkPainter oldDelegate) => false;
+}
+
 class _BluetoothOffBanner extends StatelessWidget {
   final VoidCallback? onEnable;
 
@@ -511,7 +568,7 @@ class _ConnectionStatusHeader extends StatelessWidget {
     final (String label, Color color, bool pulse) = switch (connector.state) {
       MeshCoreConnectionState.scanning => (
         l10n.scanner_scanning,
-        MeshPalette.blue,
+        scheme.primary,
         true,
       ),
       MeshCoreConnectionState.connecting => (

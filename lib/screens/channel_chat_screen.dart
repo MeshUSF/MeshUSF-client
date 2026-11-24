@@ -254,6 +254,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   }
 
   Widget _channelIcon(Channel channel) {
+    final scheme = Theme.of(context).colorScheme;
     // Determine icon based on channel type
     final ChannelType channelType = Channel.getChannelType(
       channel,
@@ -289,14 +290,14 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
               width: 12,
               height: 12,
               decoration: BoxDecoration(
-                color: Colors.purple,
+                color: scheme.tertiary,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: Theme.of(context).cardColor,
                   width: 2,
                 ),
               ),
-              child: const Icon(Icons.people, size: 8, color: Colors.white),
+              child: Icon(Icons.people, size: 8, color: scheme.onTertiary),
             ),
           ),
       ],
@@ -639,15 +640,26 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
       message.pathLength,
     );
 
-    // Bubble colors — outgoing uses MeshPalette.me / meBorder / meInk.
-    final bubbleColor = isOutgoing
-        ? MeshPalette.me
+    final isFailed = message.status == ChannelMessageStatus.failed;
+    final sentColors = MeshTheme.sentMessageColors(scheme);
+    final bubbleColor = isFailed
+        ? scheme.errorContainer
+        : isOutgoing
+        ? sentColors.background
         : scheme.surfaceContainerLow;
-    final bubbleBorder = isOutgoing
-        ? MeshPalette.meBorder
+    final bubbleBorder = isFailed
+        ? scheme.error
+        : isOutgoing
+        ? sentColors.border
         : scheme.outlineVariant;
-    final textColor = isOutgoing ? MeshPalette.meInk : scheme.onSurface;
-    final metaColor = textColor.withValues(alpha: 0.65);
+    final textColor = isFailed
+        ? scheme.onErrorContainer
+        : isOutgoing
+        ? sentColors.foreground
+        : scheme.onSurface;
+    final metaColor = isOutgoing && !isFailed
+        ? sentColors.mutedForeground
+        : textColor.withValues(alpha: 0.65);
     const bodyFontSize = 14.0;
 
     Widget buildTextContent() {
@@ -791,6 +803,8 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                             isOutgoing,
                             textScale,
                             message.senderName,
+                            textColor: textColor,
+                            metaColor: metaColor,
                           )
                         else if (gifId != null)
                           Stack(
@@ -1003,9 +1017,7 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
                                   isPending:
                                       message.status ==
                                       ChannelMessageStatus.pending,
-                                  isFailed:
-                                      message.status ==
-                                      ChannelMessageStatus.failed,
+                                  isFailed: isFailed,
                                   onColor: metaColor,
                                 ),
                               ],
@@ -1352,17 +1364,15 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     bool isOutgoing,
     double textScale,
     String senderName, {
+    required Color textColor,
+    required Color metaColor,
     Widget? trailing,
   }) {
-    final scheme = Theme.of(context).colorScheme;
-    final textColor = isOutgoing ? MeshPalette.meInk : scheme.onSurface;
-    final metaColor = textColor.withValues(alpha: 0.7);
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         IconButton(
-          icon: Icon(Icons.location_on_outlined, color: scheme.primary),
+          icon: Icon(Icons.location_on_outlined, color: textColor),
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
           onPressed: () {
@@ -1767,8 +1777,11 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
   Widget _buildImageBubble(ReceivedImageEntry entry, double textScale) {
     final scheme = Theme.of(context).colorScheme;
     final isOutgoing = entry.isOutgoing;
-    final textColor = isOutgoing ? MeshPalette.meInk : scheme.onSurface;
-    final metaColor = textColor.withValues(alpha: 0.65);
+    final sentColors = MeshTheme.sentMessageColors(scheme);
+    final textColor = isOutgoing ? sentColors.foreground : scheme.onSurface;
+    final metaColor = isOutgoing
+        ? sentColors.mutedForeground
+        : textColor.withValues(alpha: 0.65);
 
     final bubble = Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
@@ -1786,12 +1799,12 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: isOutgoing ? MeshPalette.me : scheme.surfaceContainerLow,
+                color: isOutgoing
+                    ? sentColors.background
+                    : scheme.surfaceContainerLow,
                 borderRadius: BorderRadius.circular(MeshRadii.lg),
                 border: Border.all(
-                  color: isOutgoing
-                      ? MeshPalette.meBorder
-                      : scheme.outlineVariant,
+                  color: isOutgoing ? sentColors.border : scheme.outlineVariant,
                   width: 1,
                 ),
               ),
@@ -2904,16 +2917,18 @@ class _RegionSelectDialogState extends State<_RegionSelectDialog> {
                   itemCount: regions.length,
                   itemBuilder: (context, index) {
                     final selected = selectedIndex == index;
+                    final scheme = Theme.of(context).colorScheme;
                     return ListTile(
                       leading: Icon(
                         Icons.landscape,
-                        color: selected ? MeshPalette.blue : null,
+                        color: selected ? scheme.onPrimaryContainer : null,
                       ),
                       title: Text(regions[index]),
                       trailing: selected
-                          ? const Icon(Icons.check, color: MeshPalette.blue)
+                          ? Icon(Icons.check, color: scheme.onPrimaryContainer)
                           : null,
-                      tileColor: selected ? MeshPalette.blueBg : null,
+                      tileColor: selected ? scheme.primaryContainer : null,
+                      textColor: selected ? scheme.onPrimaryContainer : null,
                       onTap: () {
                         // Tapping the already-selected region clears it.
                         context.read<MeshCoreConnector>().setChannelRegion(

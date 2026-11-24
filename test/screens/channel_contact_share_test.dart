@@ -796,7 +796,11 @@ void main() {
         expect(color, isNotNull);
         expect(
           color,
-          isNot(outgoing ? MeshPalette.me : scheme.surfaceContainerLow),
+          isNot(
+            outgoing
+                ? MeshTheme.sentMessageColors(scheme).background
+                : scheme.surfaceContainerLow,
+          ),
         );
         expect(find.text('abababab'), findsOneWidget);
       },

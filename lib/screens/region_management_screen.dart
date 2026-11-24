@@ -8,7 +8,6 @@ import 'package:meshusf/connector/meshcore_protocol.dart';
 import 'package:meshusf/l10n/l10n.dart';
 import 'package:meshusf/models/contact.dart';
 import 'package:meshusf/storage/region_store.dart';
-import 'package:meshusf/theme/mesh_theme.dart';
 import 'package:meshusf/widgets/mesh_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -104,7 +103,11 @@ class _RegionManagementScreenState extends State<RegionManagementScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.landscape, size: 48, color: MeshPalette.blue),
+            Icon(
+              Icons.landscape,
+              size: 48,
+              color: Theme.of(context).colorScheme.primary,
+            ),
             const SizedBox(height: 16),
             Text(
               l10n.settings_regionEmptyExplanation,
@@ -235,9 +238,9 @@ class _RegionManagementScreenState extends State<RegionManagementScreen> {
                           padding: const EdgeInsets.only(left: 14, right: 4),
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.landscape,
-                                color: MeshPalette.blue,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                               const SizedBox(width: 12),
                               Expanded(
@@ -542,7 +545,7 @@ class _RegionManagementScreenState extends State<RegionManagementScreen> {
       padding: const EdgeInsets.only(left: 14, right: 4),
       child: Row(
         children: [
-          const Icon(Icons.landscape, color: MeshPalette.blue),
+          Icon(Icons.landscape, color: scheme.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Text(

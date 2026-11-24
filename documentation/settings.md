@@ -104,7 +104,7 @@ Settings take effect when saved. A snackbar confirms the update.
 A dedicated sub-screen for app-level preferences (nothing here is sent to the device). All settings persist locally via SharedPreferences.
 
 ### Appearance
-- **Theme**: System / Light / Dark
+- **Theme** can follow your device appearance or be set to Light or Dark. Contacts and Channels use a tint of the Add button’s green in both modes. Dark uses a charcoal background, bright green primary buttons, and USF green sent messages. [Light Connect](../docs/screenshots/appearance-light.png) · [Dark Connect](../docs/screenshots/appearance-dark.png) · [Dark Channels](../docs/screenshots/appearance-dark-channels.png) · [Dark Contacts](../docs/screenshots/appearance-dark-contacts.png) · [Dark chat](../docs/screenshots/appearance-dark-chat.png)
 - **Language**: System default or one of 18 languages (English, French, Spanish, German, Polish, Slovenian, Portuguese, Italian, Chinese, Swedish, Dutch, Slovak, Bulgarian, Russian, Ukrainian, Hungarian, Japanese, Korean)
 
 ### Notifications

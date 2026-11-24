@@ -361,7 +361,7 @@ class ChannelMessagePathScreen extends StatelessWidget {
                         width: 18,
                         height: 18,
                         decoration: BoxDecoration(
-                          color: MeshPalette.blueDim,
+                          color: scheme.primary,
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: scheme.surfaceContainerLow,
@@ -371,8 +371,8 @@ class ChannelMessagePathScreen extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           hop.index.toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: scheme.onPrimary,
                             fontSize: 9,
                             fontWeight: FontWeight.w700,
                           ),
@@ -386,7 +386,7 @@ class ChannelMessagePathScreen extends StatelessWidget {
                     child: Container(
                       width: 2,
                       margin: const EdgeInsets.symmetric(vertical: 4),
-                      color: MeshPalette.blueLine,
+                      color: scheme.primary.withValues(alpha: 0.5),
                     ),
                   )
                 else
@@ -1677,7 +1677,7 @@ class _ChannelMessagePathMapScreenState
             activeSegment < selectedDisplay.rowForSegment.length) {
           highlightRow = selectedDisplay.rowForSegment[activeSegment];
         }
-        final highlightColor = (selectedDisplay?.color ?? MeshPalette.blue)
+        final highlightColor = (selectedDisplay?.color ?? MapPalette.selected)
             .withValues(alpha: 0.14);
         return ListView.separated(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -1693,7 +1693,7 @@ class _ChannelMessagePathMapScreenState
                 color: index == highlightRow
                     ? highlightColor
                     : isFocused
-                    ? MeshPalette.blueBg
+                    ? MapPalette.selected.withValues(alpha: 0.16)
                     : Colors.transparent,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -1705,10 +1705,10 @@ class _ChannelMessagePathMapScreenState
                       width: 28,
                       height: 28,
                       decoration: BoxDecoration(
-                        color: MeshPalette.blueDim.withValues(alpha: 0.3),
+                        color: MapPalette.selected.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: MeshPalette.blueDim.withValues(alpha: 0.5),
+                          color: MapPalette.selected.withValues(alpha: 0.5),
                         ),
                       ),
                       alignment: Alignment.center,

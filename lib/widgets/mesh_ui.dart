@@ -267,25 +267,32 @@ class AvatarCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final accent = color ?? _colorFor(name);
+    final background = Color.alphaBlend(
+      accent.withValues(
+        alpha: scheme.brightness == Brightness.dark ? 0.82 : 0.58,
+      ),
+      scheme.surface,
+    );
+    // Pick the stronger contrast for initials and glyphs on each avatar color.
+    final foreground = background.computeLuminance() > 0.179
+        ? Colors.black
+        : Colors.white;
     final initials = _initials(name);
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: accent.withValues(alpha: 0.14),
-        border: Border.all(color: accent.withValues(alpha: 0.4)),
-      ),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: background),
       alignment: Alignment.center,
       child: icon != null
-          ? Icon(icon, size: size * 0.5, color: accent)
+          ? Icon(icon, size: size * 0.5, color: foreground)
           : Text(
               initials,
               style: MeshTheme.mono(
                 fontSize: size * 0.36,
                 fontWeight: FontWeight.w700,
-                color: accent,
+                color: foreground,
               ),
             ),
     );

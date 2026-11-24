@@ -125,7 +125,7 @@ class _ContactQrScannerScreenState extends State<ContactQrScannerScreen> {
         // Corner brackets on top
         const ScannerCornerOverlay(
           scanWindowSize: 250,
-          borderColor: MeshPalette.blue,
+          borderColor: MapPalette.selected,
           borderWidth: 2,
           cornerLength: 24,
         ),

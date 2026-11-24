@@ -382,6 +382,10 @@ class _ChannelsScreenState extends State<ChannelsScreen>
       channel.muteKey,
     );
     final scheme = Theme.of(context).colorScheme;
+    final isDark = scheme.brightness == Brightness.dark;
+    final cardColor = isDark
+        ? MeshPalette.darkListCard
+        : MeshPalette.lightListCard;
 
     // Determine icon and colors based on channel type
     IconData icon;
@@ -417,13 +421,13 @@ class _ChannelsScreenState extends State<ChannelsScreen>
         }
       case ChannelType.public:
         icon = Icons.public;
-        iconColor = MeshPalette.signal;
+        iconColor = scheme.primary;
       case ChannelType.hashtag:
         icon = Icons.tag;
-        iconColor = MeshPalette.warn;
+        iconColor = MeshPalette.blue;
       case ChannelType.private:
         icon = Icons.lock;
-        iconColor = MeshPalette.blue;
+        iconColor = const Color(0xFFB8A5F6);
     }
 
     // Last message preview
@@ -448,6 +452,10 @@ class _ChannelsScreenState extends State<ChannelsScreen>
         key: ValueKey('channel_${channel.index}'),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        color: cardColor,
+        borderColor: isDark
+            ? MeshPalette.darkListCardBorder
+            : MeshPalette.lightListCardBorder,
         onTap: () {
           HapticFeedback.selectionClick();
           final unread = connector.getUnreadCountForChannelIndex(channel.index);
@@ -497,19 +505,14 @@ class _ChannelsScreenState extends State<ChannelsScreen>
                       width: 16,
                       height: 16,
                       decoration: BoxDecoration(
-                        color: MeshPalette.magenta,
+                        color: scheme.tertiary,
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.surfaceContainerLow,
-                          width: 2,
-                        ),
+                        border: Border.all(color: cardColor, width: 2),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.people,
                         size: 8,
-                        color: Colors.white,
+                        color: scheme.onTertiary,
                       ),
                     ),
                   ),
@@ -874,8 +877,10 @@ class _ChannelsScreenState extends State<ChannelsScreen>
             return MeshCard(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              borderColor: isSelected && enabled ? MeshPalette.blueLine : null,
-              color: isSelected && enabled ? MeshPalette.blueBg : null,
+              borderColor: isSelected && enabled
+                  ? cardScheme.primary.withValues(alpha: 0.4)
+                  : null,
+              color: isSelected && enabled ? cardScheme.primaryContainer : null,
               onTap: enabled
                   ? () {
                       setSheetState(() {
@@ -893,7 +898,7 @@ class _ChannelsScreenState extends State<ChannelsScreen>
                     size: 38,
                     color: enabled
                         ? (isSelected
-                              ? MeshPalette.blue
+                              ? cardScheme.onPrimaryContainer
                               : cardScheme.onSurfaceVariant)
                         : cardScheme.outline,
                     icon: icon,
@@ -931,7 +936,7 @@ class _ChannelsScreenState extends State<ChannelsScreen>
                     Icon(
                       Icons.chevron_right,
                       color: isSelected
-                          ? MeshPalette.blue
+                          ? cardScheme.onPrimaryContainer
                           : cardScheme.onSurfaceVariant,
                       size: 20,
                     ),
@@ -1910,12 +1915,13 @@ class _ChannelsScreenState extends State<ChannelsScreen>
                       itemCount: _communities.length,
                       itemBuilder: (context, index) {
                         final community = _communities[index];
+                        final scheme = Theme.of(context).colorScheme;
                         return ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: MeshPalette.magentaBg,
-                            child: const Icon(
+                            backgroundColor: scheme.tertiaryContainer,
+                            child: Icon(
                               Icons.groups,
-                              color: MeshPalette.magenta,
+                              color: scheme.onTertiaryContainer,
                             ),
                           ),
                           title: Text(community.name),

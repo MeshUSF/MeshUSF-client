@@ -2115,7 +2115,7 @@ class _MapScreenState extends State<MapScreen>
   Color _getNodeColor(int type) {
     switch (type) {
       case advTypeChat:
-        return MapPalette.selected;
+        return MapPalette.chat;
       case advTypeRepeater:
         return MapPalette.repeater;
       case advTypeRoom:
@@ -2212,7 +2212,11 @@ class _MapScreenState extends State<MapScreen>
             ],
           ),
           alignment: Alignment.center,
-          child: Icon(icon, color: Colors.white, size: selected ? 22 : 19),
+          child: Icon(
+            icon,
+            color: selected ? MapPalette.onSelected : Colors.white,
+            size: selected ? 22 : 19,
+          ),
         ),
         Positioned(
           right: selected ? -1 : -2,
@@ -2380,7 +2384,7 @@ class _MapScreenState extends State<MapScreen>
                       color: _overlayPrimaryTextColor,
                       fontWeight: FontWeight.w600,
                     ),
-                    cursorColor: MapPalette.selected,
+                    cursorColor: _overlayScheme.primary,
                     onChanged: (value) {
                       setState(() => _searchQuery = value);
                     },
@@ -2404,10 +2408,10 @@ class _MapScreenState extends State<MapScreen>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.hub,
                           size: 15,
-                          color: MapPalette.selected,
+                          color: _overlayScheme.primary,
                         ),
                         const SizedBox(width: 6),
                         Text(
@@ -2474,7 +2478,7 @@ class _MapScreenState extends State<MapScreen>
                   _mapChip(
                     label: context.l10n.map_chatNodes,
                     selected: settings.mapShowChatNodes,
-                    color: MapPalette.selected,
+                    color: MapPalette.chat,
                     onTap: () => settingsService.setMapShowChatNodes(
                       !settings.mapShowChatNodes,
                     ),
@@ -2527,7 +2531,7 @@ class _MapScreenState extends State<MapScreen>
     required VoidCallback onTap,
     Color? color,
   }) {
-    final accent = color ?? MapPalette.selected;
+    final accent = color ?? _overlayScheme.primary;
     return Padding(
       padding: const EdgeInsets.only(right: 6),
       child: Semantics(
@@ -2753,7 +2757,11 @@ class _MapScreenState extends State<MapScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _statRow(context.l10n.map_visible, visibleCount, MapPalette.selected),
+          _statRow(
+            context.l10n.map_visible,
+            visibleCount,
+            _overlayScheme.primary,
+          ),
           _statRow(context.l10n.map_online, onlineCount, MapPalette.online),
           _statRow(
             context.l10n.map_repeaters,
@@ -2766,7 +2774,7 @@ class _MapScreenState extends State<MapScreen>
           _buildLegendItem(
             Icons.person,
             context.l10n.map_chat,
-            MapPalette.selected,
+            MapPalette.chat,
           ),
           _buildLegendItem(
             Icons.router,
@@ -2970,7 +2978,7 @@ class _MapScreenState extends State<MapScreen>
                   ..._selectedNodeActions(context, contact, connector),
                   TextButton(
                     style: TextButton.styleFrom(
-                      foregroundColor: MapPalette.selected,
+                      foregroundColor: _overlayScheme.primary,
                     ),
                     onPressed: () => _showNodeInfo(
                       context,
@@ -3890,7 +3898,7 @@ class _MapScreenState extends State<MapScreen>
               Widget freshnessChip(_Freshness value, String label) {
                 final selected = _freshness == value;
                 final accent = switch (value) {
-                  _Freshness.all => MapPalette.selected,
+                  _Freshness.all => scheme.primary,
                   _Freshness.online => MapPalette.online,
                   _Freshness.recent => MapPalette.stale,
                   _Freshness.stale => MapPalette.offline,
@@ -4273,7 +4281,7 @@ class _MapScreenState extends State<MapScreen>
                   style: MeshTheme.mono(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: MapPalette.selected,
+                    color: _overlayScheme.primary,
                   ),
                 ),
                 // const SizedBox(height: 6),

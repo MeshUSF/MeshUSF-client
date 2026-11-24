@@ -26,20 +26,23 @@ class QuickSwitchBar extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final labelStyle = theme.textTheme.labelMedium ?? const TextStyle();
     final background = highContrast ? MapPalette.panelDark : Colors.transparent;
-    // The selected icon sits on the primary indicator pill, so it uses
-    // onPrimary. The label sits below on the bar background, so it must use a
-    // foreground color that contrasts with the surface (not onPrimary, which
-    // is white-on-white in the light theme).
-    final selectedIconColor = highContrast
-        ? MapPalette.textPrimary
-        : colorScheme.onPrimary;
+    final (indicator, selectedIconColor) = switch ((
+      highContrast,
+      theme.brightness,
+    )) {
+      (true, _) => (MapPalette.selected, MapPalette.onSelected),
+      (false, Brightness.dark) => (
+        colorScheme.primaryContainer,
+        colorScheme.onPrimaryContainer,
+      ),
+      (false, Brightness.light) => (colorScheme.primary, colorScheme.onPrimary),
+    };
     final selectedLabelColor = highContrast
         ? MapPalette.textPrimary
         : colorScheme.onSurface;
     final unselectedColor = highContrast
         ? MapPalette.textSecondary
         : colorScheme.onSurfaceVariant;
-    final indicator = highContrast ? MapPalette.selected : colorScheme.primary;
 
     return SizedBox(
       width: double.infinity,

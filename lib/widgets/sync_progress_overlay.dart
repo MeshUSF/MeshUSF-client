@@ -16,7 +16,10 @@ class SyncProgressAppBarBottom extends StatelessWidget
   Widget build(BuildContext context) {
     return Consumer<MeshCoreConnector>(
       builder: (context, connector, _) {
-        final state = _SyncProgressState.fromConnector(connector);
+        final state = _SyncProgressState.fromConnector(
+          connector,
+          Theme.of(context).colorScheme,
+        );
         if (state == null) return const SizedBox(height: height);
 
         return SizedBox(
@@ -39,21 +42,24 @@ class _SyncProgressState {
 
   const _SyncProgressState({required this.value, required this.color});
 
-  static _SyncProgressState? fromConnector(MeshCoreConnector connector) {
+  static _SyncProgressState? fromConnector(
+    MeshCoreConnector connector,
+    ColorScheme scheme,
+  ) {
     if (connector.isLoadingContacts) {
       return _SyncProgressState(
         value: connector.contactSyncProgress,
-        color: Colors.red,
+        color: scheme.tertiary,
       );
     }
     if (connector.isSyncingChannels) {
       return _SyncProgressState(
         value: connector.channelSyncProgress / 100,
-        color: Colors.blue,
+        color: scheme.primary,
       );
     }
     if (connector.isShowingQueuedMessageSyncProgress) {
-      return const _SyncProgressState(value: null, color: Colors.green);
+      return _SyncProgressState(value: null, color: scheme.secondary);
     }
     return null;
   }

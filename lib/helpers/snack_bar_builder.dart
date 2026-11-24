@@ -38,12 +38,21 @@ void showDismissibleSnackBar(
   if (!isActive) return;
   final messenger = ScaffoldMessenger.maybeOf(context);
   if (messenger == null) return;
+  final scheme = Theme.of(context).colorScheme;
+  final errorForeground = backgroundColor == scheme.error
+      ? scheme.onError
+      : null;
   messenger.showSnackBar(
     SnackBar(
       key: key,
       content: GestureDetector(
         onTap: () => messenger.hideCurrentSnackBar(),
-        child: content,
+        child: errorForeground == null
+            ? content
+            : DefaultTextStyle.merge(
+                style: TextStyle(color: errorForeground),
+                child: content,
+              ),
       ),
       backgroundColor: backgroundColor,
       elevation: elevation,
@@ -56,7 +65,7 @@ void showDismissibleSnackBar(
       action: action,
       actionOverflowThreshold: actionOverflowThreshold,
       showCloseIcon: showCloseIcon,
-      closeIconColor: closeIconColor,
+      closeIconColor: closeIconColor ?? errorForeground,
       duration: duration ?? const Duration(seconds: 4),
       persist: persist ?? false,
       animation: animation,

@@ -83,7 +83,10 @@ class _MessageStatusIconState extends State<MessageStatusIcon>
     final colorScheme = Theme.of(context).colorScheme;
     final double size = widget.size;
     final Color baseColor = widget.onColor ?? colorScheme.onSurfaceVariant;
-    final Color confirmedColor = MeshPalette.signal.withValues(alpha: 0.9);
+    final confirmedColor = widget.onColor ?? MeshPalette.signal;
+    final warningColor = colorScheme.brightness == Brightness.dark
+        ? MeshPalette.warn
+        : const Color(0xFF80520C);
 
     final String label;
     final Widget icon;
@@ -105,11 +108,7 @@ class _MessageStatusIconState extends State<MessageStatusIcon>
         shortfall.hops,
         shortfall.required,
       );
-      icon = Icon(
-        Icons.warning_amber_rounded,
-        size: size,
-        color: MeshPalette.warn,
-      );
+      icon = Icon(Icons.warning_amber_rounded, size: size, color: warningColor);
     } else if (widget.isChannel && (widget.resendProgress?.resends ?? 0) > 0) {
       final progress = widget.resendProgress!;
       label = l10n.messageStatus_resending(
@@ -119,14 +118,14 @@ class _MessageStatusIconState extends State<MessageStatusIcon>
       icon = Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.autorenew, size: size, color: MeshPalette.warn),
+          Icon(Icons.autorenew, size: size, color: warningColor),
           const SizedBox(width: 2),
           Text(
             '${progress.resends}/${progress.maxResends}',
             style: MeshTheme.mono(
               fontSize: size * 0.8,
               fontWeight: FontWeight.w600,
-              color: MeshPalette.warn,
+              color: baseColor,
             ),
           ),
         ],

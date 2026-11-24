@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
 
-/// MeshCore palette — high-contrast slate surfaces with sky-blue accents.
+/// MeshUSF brand colors, surfaces, and fixed indicator colors.
 class MeshPalette {
   MeshPalette._();
 
+  static const usfGreen = Color(0xFF006747);
+  static const usfGold = Color(0xFFCFC493);
+  static const darkPrimary = Color(0xFF86D3AB);
+  static const darkOnPrimary = Color(0xFF10251A);
+  static const darkAction = Color(0xFF47E98D);
+
   // Surfaces shared with the map overlays and navigation.
-  static const bg = Color(0xFF0B1220);
-  static const bg1 = Color(0xFF0F172A);
-  static const bg2 = Color(0xFF162033);
-  static const bg3 = Color(0xFF1E293B);
-  static const bg4 = Color(0xFF334155);
+  static const bg = Color(0xFF111214);
+  static const bg1 = Color(0xFF222327);
+  static const bg2 = Color(0xFF2B2D31);
+  static const bg3 = Color(0xFF34363C);
+  static const bg4 = Color(0xFF42454B);
 
-  // Lines — lifted for clearer element separation on the near-black surface
-  static const line = Color(0xFF2A3850);
-  static const line2 = Color(0xFF3B4A61);
-  static const line3 = Color(0xFF546376);
+  static const line = Color(0xFF45484F);
+  static const line2 = Color(0xFF888C96);
+  static const line3 = Color(0xFF626671);
 
-  // Ink — muted tones brightened for readable secondary/tertiary text in dark
-  static const ink = Color(0xFFF8FAFC);
-  static const ink2 = Color(0xFFD5DEE9);
-  static const ink3 = Color(0xFFAAB6C6);
-  static const ink4 = Color(0xFF828FA3);
+  static const ink = Color(0xFFEFF0F3);
+  static const ink2 = Color(0xFFC5C8CF);
+  static const ink3 = Color(0xFFADB1BA);
+  static const ink4 = Color(0xFF969CA7);
 
   // Signal-quality green (used only for SNR coloring, not UI chrome)
   static const signal = Color(0xFF22C55E);
@@ -37,31 +41,35 @@ class MeshPalette {
   static const alertBg = Color(0x1FEF4444);
   static const alertLine = Color(0x66EF4444);
 
-  // Blue — primary map/app accent
+  // Blue for map data and identity colors.
   static const blue = Color(0xFF0EA5E9);
-  static const blueDim = Color(0xFF0284C7);
-  static const blueBg = Color(0x290EA5E9);
-  static const blueLine = Color(0x800EA5E9);
 
   // Magenta
   static const magenta = Color(0xFFDE7FDB);
-  static const magentaBg = Color(0x1CDE7FDB);
-  static const magentaLine = Color(0x47DE7FDB);
 
-  // Me bubble (dusk blue)
-  static const me = Color(0xFF0C4A6E);
-  static const meBorder = Color(0xFF0369A1);
-  static const meInk = Color(0xFFF0F9FF);
+  static const lightBg = Color(0xFFF7F8F3);
+  static const lightBg1 = Color(0xFFEFF3EC);
+  static const lightBg2 = Color(0xFFE2EAE2);
+  static const lightLine = Color(0xFFCDD8CF);
+  static const lightInk = Color(0xFF172820);
+  static const lightInk2 = Color(0xFF43584B);
 
-  // ── Light variant (used when user explicitly picks light theme)
-  static const lightBg = Color(0xFFF4F6F8);
-  static const lightBg1 = Color(0xFFEAEEF2);
-  static const lightBg2 = Color(0xFFDFE5EA);
-  static const lightLine = Color(0xFFC3CCD4);
-  static const lightInk = Color(0xFF10161B);
-  static const lightInk2 = Color(0xFF3C4853);
-  static const lightInk3 = Color(0xFF69767F);
-  static const lightBlue = Color(0xFF2F6EA8);
+  static final darkListCard = Color.alphaBlend(
+    darkAction.withValues(alpha: 0.26),
+    bg,
+  );
+  static final darkListCardBorder = Color.alphaBlend(
+    darkAction.withValues(alpha: 0.48),
+    bg,
+  );
+  static final lightListCard = Color.alphaBlend(
+    usfGreen.withValues(alpha: 0.12),
+    lightBg,
+  );
+  static final lightListCardBorder = Color.alphaBlend(
+    usfGreen.withValues(alpha: 0.30),
+    lightBg,
+  );
 }
 
 /// High-contrast semantic colors for UI rendered over variable map tiles.
@@ -75,18 +83,20 @@ class MapPalette {
   static const router = Color(0xFF7C3AED);
   static const batteryLow = Color(0xFFEF4444);
   static const cluster = Color(0xFFF97316);
-  static const selected = Color(0xFF0EA5E9);
+  static const chat = MeshPalette.blue;
+  static const selected = MeshPalette.darkPrimary;
+  static const onSelected = MeshPalette.darkOnPrimary;
   static const sensor = Color(0xFF0F766E);
   static const shared = Color(0xFF0369A1);
   static const pinLightRed = Color(0xFFEF5350);
   static const pinRichRed = Color(0xFFB71C1C);
 
-  static const panelLight = Color(0xF0FFFFFF);
-  static const panelDark = Color(0xF50B1220);
-  static const textPrimary = Color(0xFFF8FAFC);
-  static const textSecondary = Color(0xFFCBD5E1);
-  static const textMuted = Color(0xFF94A3B8);
-  static const border = Color(0x5264758B);
+  static const panelLight = Color(0xF0F7F8F3);
+  static const panelDark = Color(0xF5111214);
+  static const textPrimary = MeshPalette.ink;
+  static const textSecondary = MeshPalette.ink2;
+  static const textMuted = MeshPalette.ink3;
+  static const border = Color(0x52888C96);
   static const markerOutline = Colors.white;
   static const markerShadow = Color(0xB3000000);
 }
@@ -101,13 +111,13 @@ class LosPalette {
   static const blocked = Color(0xFFEF4444);
   static const marginal = Color(0xFFF59E0B);
   static const clear = Color(0xFF22C55E);
-  static const selected = Color(0xFF0EA5E9);
-  static const chartBackground = Color(0xFF0B1220);
-  static const panelDark = Color(0xF00F172A);
-  static const panelLight = Color(0xF5FFFFFF);
-  static const text = Color(0xFFF8FAFC);
-  static const textMuted = Color(0xFFCBD5E1);
-  static const border = Color(0x5264758B);
+  static const selected = MapPalette.selected;
+  static const chartBackground = MeshPalette.bg;
+  static const panelDark = Color(0xF0222327);
+  static const panelLight = Color(0xF5F7F8F3);
+  static const text = MeshPalette.ink;
+  static const textMuted = MeshPalette.ink2;
+  static const border = MapPalette.border;
   static const shadow = Color(0x99000000);
 }
 
@@ -159,26 +169,49 @@ class MeshRadii {
   static const pill = 999.0;
 }
 
-/// Shared helpers exposed via [MeshTheme.of].
+/// Material themes and shared text styles.
 class MeshTheme {
   MeshTheme._();
 
+  static ({
+    Color background,
+    Color foreground,
+    Color mutedForeground,
+    Color border,
+  })
+  sentMessageColors(ColorScheme scheme) {
+    if (scheme.brightness == Brightness.dark) {
+      return (
+        background: MeshPalette.usfGreen,
+        foreground: Colors.white,
+        mutedForeground: const Color(0xFFD3F0E2),
+        border: const Color(0xFF429A7B),
+      );
+    }
+    return (
+      background: const Color(0xFFB0E4C9),
+      foreground: const Color(0xFF15382A),
+      mutedForeground: const Color(0xFF2D5947),
+      border: const Color(0xFF71AE93),
+    );
+  }
+
   static ThemeData dark() {
     const scheme = ColorScheme.dark(
-      primary: MeshPalette.blue,
-      onPrimary: Colors.white,
-      primaryContainer: Color(0xFF075985),
-      onPrimaryContainer: Colors.white,
-      secondary: MeshPalette.magenta,
-      onSecondary: Colors.white,
-      secondaryContainer: Color(0xFF331A33),
-      onSecondaryContainer: Colors.white,
-      tertiary: MeshPalette.warn,
-      onTertiary: Color(0xFF0B1220),
-      tertiaryContainer: Color(0xFF78350F),
-      onTertiaryContainer: Colors.white,
-      error: MeshPalette.alert,
-      onError: Colors.white,
+      primary: MeshPalette.darkPrimary,
+      onPrimary: MeshPalette.darkOnPrimary,
+      primaryContainer: Color(0xFF33423A),
+      onPrimaryContainer: Color(0xFFE1EEE5),
+      secondary: Color(0xFFBCC2CA),
+      onSecondary: Color(0xFF282D33),
+      secondaryContainer: MeshPalette.bg3,
+      onSecondaryContainer: MeshPalette.ink,
+      tertiary: Color(0xFFADC1CF),
+      onTertiary: Color(0xFF24333E),
+      tertiaryContainer: Color(0xFF334550),
+      onTertiaryContainer: Color(0xFFD8E7F0),
+      error: Color(0xFFFFB4AA),
+      onError: Color(0xFF52170F),
       errorContainer: Color(0xFF7F1D1D),
       onErrorContainer: Colors.white,
       surface: MeshPalette.bg,
@@ -195,25 +228,25 @@ class MeshTheme {
       scrim: Colors.black54,
       inverseSurface: MeshPalette.ink,
       onInverseSurface: MeshPalette.bg,
-      inversePrimary: MeshPalette.blueDim,
+      inversePrimary: MeshPalette.usfGreen,
     );
     return _build(scheme, Brightness.dark);
   }
 
   static ThemeData light() {
     const scheme = ColorScheme.light(
-      primary: MeshPalette.lightBlue,
+      primary: MeshPalette.usfGreen,
       onPrimary: Colors.white,
-      primaryContainer: Color(0xFFD3E4F5),
-      onPrimaryContainer: Color(0xFF12354F),
-      secondary: Color(0xFF8C4A8A),
+      primaryContainer: Color(0xFFD2EADC),
+      onPrimaryContainer: Color(0xFF163B2A),
+      secondary: Color(0xFF46634F),
       onSecondary: Colors.white,
-      secondaryContainer: Color(0xFFEFD6EE),
-      onSecondaryContainer: Color(0xFF3D1A3C),
-      tertiary: Color(0xFF9A5B16),
+      secondaryContainer: Color(0xFFDDE9DF),
+      onSecondaryContainer: Color(0xFF263E2F),
+      tertiary: Color(0xFF37635A),
       onTertiary: Colors.white,
-      tertiaryContainer: Color(0xFFF8E3C9),
-      onTertiaryContainer: Color(0xFF4A2A05),
+      tertiaryContainer: Color(0xFFD5EBE6),
+      onTertiaryContainer: Color(0xFF203D37),
       error: Color(0xFFB53D2F),
       onError: Colors.white,
       errorContainer: Color(0xFFF6D9D4),
@@ -224,15 +257,21 @@ class MeshTheme {
       surfaceContainerLow: MeshPalette.lightBg1,
       surfaceContainer: MeshPalette.lightBg1,
       surfaceContainerHigh: MeshPalette.lightBg2,
-      surfaceContainerHighest: Color(0xFFD2DAE1),
+      surfaceContainerHighest: Color(0xFFD8E2D9),
       onSurfaceVariant: MeshPalette.lightInk2,
-      outline: MeshPalette.lightLine,
-      outlineVariant: Color(0xFFD8DEE5),
+      outline: Color(0xFF687C6E),
+      outlineVariant: MeshPalette.lightLine,
+      inverseSurface: MeshPalette.bg3,
+      onInverseSurface: MeshPalette.ink,
+      inversePrimary: MeshPalette.darkPrimary,
     );
     return _build(scheme, Brightness.light);
   }
 
   static ThemeData _build(ColorScheme scheme, Brightness brightness) {
+    final actionColor = brightness == Brightness.dark
+        ? MeshPalette.darkAction
+        : scheme.primary;
     final baseText =
         Typography.material2021(
           platform: TargetPlatform.android,
@@ -298,7 +337,7 @@ class MeshTheme {
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: scheme.primary,
+        backgroundColor: actionColor,
         foregroundColor: scheme.onPrimary,
         elevation: 0,
         focusElevation: 0,
@@ -316,7 +355,7 @@ class MeshTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: scheme.primary,
+          backgroundColor: actionColor,
           foregroundColor: scheme.onPrimary,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
@@ -401,7 +440,7 @@ class MeshTheme {
             fontSize: 11.5,
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
             letterSpacing: 0.1,
-            color: selected ? scheme.onPrimary : scheme.onSurfaceVariant,
+            color: selected ? scheme.onSurface : scheme.onSurfaceVariant,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
@@ -532,7 +571,7 @@ class MeshTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: scheme.primary,
+          backgroundColor: actionColor,
           foregroundColor: scheme.onPrimary,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           shape: RoundedRectangleBorder(

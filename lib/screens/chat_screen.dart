@@ -1605,23 +1605,25 @@ class _MessageBubble extends StatelessWidget {
       (connector) => connector.isContactUrlImagesEnabled(sourceId),
     );
 
-    // Bubble colors — outgoing uses MeshPalette.me / meBorder / meInk.
+    final sentColors = MeshTheme.sentMessageColors(scheme);
     final bubbleColor = isFailed
         ? scheme.errorContainer
         : isOutgoing
-        ? MeshPalette.me
+        ? sentColors.background
         : scheme.surfaceContainerLow;
     final bubbleBorder = isFailed
         ? scheme.error
         : isOutgoing
-        ? MeshPalette.meBorder
+        ? sentColors.border
         : scheme.outlineVariant;
     final textColor = isFailed
         ? scheme.onErrorContainer
         : isOutgoing
-        ? MeshPalette.meInk
+        ? sentColors.foreground
         : scheme.onSurface;
-    final metaColor = textColor.withValues(alpha: 0.65);
+    final metaColor = isOutgoing && !isFailed
+        ? sentColors.mutedForeground
+        : textColor.withValues(alpha: 0.65);
     const bodyFontSize = 14.0;
 
     // Asymmetric radius: outgoing — top-left large, others also large; outgoing bottom-right tight.

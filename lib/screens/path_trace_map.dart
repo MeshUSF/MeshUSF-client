@@ -1077,7 +1077,7 @@ class _PathTraceMapScreenState extends State<PathTraceMapScreen>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (_isLoading)
-                          CircularProgressIndicator(color: MeshPalette.blue),
+                          CircularProgressIndicator(color: scheme.primary),
                         const SizedBox(height: 16),
                         if (!_isLoading && _failed2Loaded)
                           Text(

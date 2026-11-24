@@ -31,6 +31,7 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
   Widget build(BuildContext context) {
     return Consumer<BleDebugLogService>(
       builder: (context, logService, _) {
+        final scheme = Theme.of(context).colorScheme;
         final entries = logService.entries.reversed.toList();
         final rawEntries = logService.rawLogRxEntries.reversed.toList();
         final showingFrames = _view == _BleLogView.frames;
@@ -110,8 +111,7 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                           itemCount: showingFrames
                               ? entries.length
                               : rawEntries.length,
-                          separatorBuilder: (_, _) =>
-                              const Divider(height: 1, color: MeshPalette.line),
+                          separatorBuilder: (_, _) => const Divider(height: 1),
                           itemBuilder: (context, index) {
                             if (showingFrames) {
                               final entry = entries[index];
@@ -144,7 +144,6 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                                 onLongPress: copyHex,
                                 onSecondaryTap: copyHex,
                                 child: Container(
-                                  color: MeshPalette.bg,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16,
                                     vertical: 8,
@@ -159,8 +158,8 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                                             : Icons.download,
                                         size: 18,
                                         color: entry.outgoing
-                                            ? MeshPalette.blue
-                                            : MeshPalette.signal,
+                                            ? scheme.primary
+                                            : scheme.tertiary,
                                       ),
                                       const SizedBox(width: 10),
                                       Expanded(
@@ -172,7 +171,7 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                                               entry.description,
                                               style: MeshTheme.mono(
                                                 fontSize: 11.5,
-                                                color: MeshPalette.ink,
+                                                color: scheme.onSurface,
                                               ),
                                             ),
                                             const SizedBox(height: 2),
@@ -180,7 +179,7 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                                               entry.hexPreview,
                                               style: MeshTheme.mono(
                                                 fontSize: 10,
-                                                color: MeshPalette.ink3,
+                                                color: scheme.onSurfaceVariant,
                                               ),
                                             ),
                                             const SizedBox(height: 2),
@@ -188,7 +187,7 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                                               time,
                                               style: MeshTheme.mono(
                                                 fontSize: 9.5,
-                                                color: MeshPalette.ink4,
+                                                color: scheme.onSurfaceVariant,
                                               ),
                                             ),
                                           ],
@@ -207,7 +206,6 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                             return GestureDetector(
                               onTap: () => _showRawDialog(context, info),
                               child: Container(
-                                color: MeshPalette.bg,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,
                                   vertical: 8,
@@ -215,10 +213,10 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.download,
                                       size: 18,
-                                      color: MeshPalette.signal,
+                                      color: scheme.tertiary,
                                     ),
                                     const SizedBox(width: 10),
                                     Expanded(
@@ -230,7 +228,7 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                                             info.title,
                                             style: MeshTheme.mono(
                                               fontSize: 11.5,
-                                              color: MeshPalette.ink,
+                                              color: scheme.onSurface,
                                             ),
                                           ),
                                           const SizedBox(height: 2),
@@ -238,7 +236,7 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                                             info.summary,
                                             style: MeshTheme.mono(
                                               fontSize: 10,
-                                              color: MeshPalette.ink3,
+                                              color: scheme.onSurfaceVariant,
                                             ),
                                           ),
                                           const SizedBox(height: 2),
@@ -246,7 +244,7 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                                             time,
                                             style: MeshTheme.mono(
                                               fontSize: 9.5,
-                                              color: MeshPalette.ink4,
+                                              color: scheme.onSurfaceVariant,
                                             ),
                                           ),
                                         ],
@@ -261,7 +259,7 @@ class _BleDebugLogScreenState extends State<BleDebugLogScreen> {
                       : Center(
                           child: Text(
                             context.l10n.debugLog_noBleActivity,
-                            style: const TextStyle(color: MeshPalette.ink3),
+                            style: TextStyle(color: scheme.onSurfaceVariant),
                           ),
                         ),
                 ),

@@ -17,6 +17,7 @@ class AppDebugLogScreen extends StatelessWidget {
       builder: (context, logService, _) {
         final entries = logService.entries.reversed.toList();
         final hasEntries = entries.isNotEmpty;
+        final scheme = Theme.of(context).colorScheme;
 
         return Scaffold(
           appBar: AppBar(
@@ -59,12 +60,11 @@ class AppDebugLogScreen extends StatelessWidget {
             child: hasEntries
                 ? ListView.separated(
                     itemCount: entries.length,
-                    separatorBuilder: (_, _) =>
-                        const Divider(height: 1, color: MeshPalette.line),
+                    separatorBuilder: (_, _) => const Divider(height: 1),
                     itemBuilder: (context, index) {
                       final entry = entries[index];
+                      final levelColor = _levelColor(entry.level, scheme);
                       return Container(
-                        color: MeshPalette.bg,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 8,
@@ -72,7 +72,11 @@ class AppDebugLogScreen extends StatelessWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildLevelIcon(context, entry.level),
+                            Icon(
+                              _levelIcon(entry.level),
+                              size: 18,
+                              color: levelColor,
+                            ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Column(
@@ -85,14 +89,14 @@ class AppDebugLogScreen extends StatelessWidget {
                                           text: '[${entry.tag}] ',
                                           style: MeshTheme.mono(
                                             fontSize: 11.5,
-                                            color: _levelColor(entry.level),
+                                            color: levelColor,
                                           ),
                                         ),
                                         TextSpan(
                                           text: entry.message,
                                           style: MeshTheme.mono(
                                             fontSize: 11.5,
-                                            color: MeshPalette.ink2,
+                                            color: scheme.onSurface,
                                           ),
                                         ),
                                       ],
@@ -103,7 +107,7 @@ class AppDebugLogScreen extends StatelessWidget {
                                     entry.formattedTime,
                                     style: MeshTheme.mono(
                                       fontSize: 9.5,
-                                      color: MeshPalette.ink4,
+                                      color: scheme.onSurfaceVariant,
                                     ),
                                   ),
                                 ],
@@ -118,25 +122,25 @@ class AppDebugLogScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.bug_report_outlined,
                           size: 64,
-                          color: MeshPalette.ink3,
+                          color: scheme.onSurfaceVariant,
                         ),
                         const SizedBox(height: 16),
                         Text(
                           context.l10n.debugLog_noEntries,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
-                            color: MeshPalette.ink3,
+                            color: scheme.onSurfaceVariant,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           context.l10n.debugLog_enableInSettings,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: MeshPalette.ink3,
+                            color: scheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -148,37 +152,19 @@ class AppDebugLogScreen extends StatelessWidget {
     );
   }
 
-  Color _levelColor(AppDebugLogLevel level) {
-    switch (level) {
-      case AppDebugLogLevel.info:
-        return MeshPalette.blue;
-      case AppDebugLogLevel.warning:
-        return MeshPalette.warn;
-      case AppDebugLogLevel.error:
-        return MeshPalette.alert;
-    }
-  }
+  Color _levelColor(AppDebugLogLevel level, ColorScheme scheme) =>
+      switch (level) {
+        AppDebugLogLevel.info => scheme.primary,
+        AppDebugLogLevel.warning =>
+          scheme.brightness == Brightness.dark
+              ? MeshPalette.warn
+              : const Color(0xFF80520C),
+        AppDebugLogLevel.error => scheme.error,
+      };
 
-  Widget _buildLevelIcon(BuildContext context, AppDebugLogLevel level) {
-    switch (level) {
-      case AppDebugLogLevel.info:
-        return const Icon(
-          Icons.info_outline,
-          size: 18,
-          color: MeshPalette.blue,
-        );
-      case AppDebugLogLevel.warning:
-        return const Icon(
-          Icons.warning_amber_outlined,
-          size: 18,
-          color: MeshPalette.warn,
-        );
-      case AppDebugLogLevel.error:
-        return const Icon(
-          Icons.error_outline,
-          size: 18,
-          color: MeshPalette.alert,
-        );
-    }
-  }
+  IconData _levelIcon(AppDebugLogLevel level) => switch (level) {
+    AppDebugLogLevel.info => Icons.info_outline,
+    AppDebugLogLevel.warning => Icons.warning_amber_outlined,
+    AppDebugLogLevel.error => Icons.error_outline,
+  };
 }

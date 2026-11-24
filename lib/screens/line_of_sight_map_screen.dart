@@ -2189,7 +2189,7 @@ class _LosProfilePainter extends CustomPainter {
       text: TextSpan(
         text: text,
         style: const TextStyle(
-          color: LosPalette.text,
+          color: MapPalette.onSelected,
           fontSize: 9,
           fontWeight: FontWeight.w800,
         ),

@@ -1513,7 +1513,10 @@ class _ContactsScreenState extends State<ContactsScreen>
                 },
               ),
               ListTile(
-                leading: Icon(Icons.meeting_room, color: MeshPalette.blue),
+                leading: Icon(
+                  Icons.meeting_room,
+                  color: Theme.of(sheetContext).colorScheme.primary,
+                ),
                 title: Text(context.l10n.contacts_roomLogin),
                 onTap: () {
                   Navigator.pop(sheetContext);
@@ -1729,6 +1732,7 @@ class _ContactTile extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final emoji = firstEmoji(contact.name);
     final isChat = contact.type == advTypeChat;
+    final isDark = scheme.brightness == Brightness.dark;
 
     return GestureDetector(
       onSecondaryTapUp: PlatformInfo.isDesktop ? (_) => onLongPress() : null,
@@ -1736,6 +1740,10 @@ class _ContactTile extends StatelessWidget {
         onTap: onTap,
         onLongPress: onLongPress,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        color: isDark ? MeshPalette.darkListCard : MeshPalette.lightListCard,
+        borderColor: isDark
+            ? MeshPalette.darkListCardBorder
+            : MeshPalette.lightListCardBorder,
         child: Row(
           children: [
             // Avatar
@@ -1847,7 +1855,7 @@ class _ContactTile extends StatelessWidget {
                     style: MeshTheme.mono(
                       fontSize: 11,
                       color: unreadCount > 0
-                          ? MeshPalette.blue
+                          ? scheme.primary
                           : scheme.onSurfaceVariant,
                     ),
                   ),

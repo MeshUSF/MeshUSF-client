@@ -125,9 +125,7 @@ class RepeaterHubScreen extends StatelessWidget {
                       label: isAdmin
                           ? l10n.repeater_roleAdmin
                           : l10n.repeater_roleGuest,
-                      color: isAdmin
-                          ? MeshPalette.blue
-                          : scheme.onSurfaceVariant,
+                      color: isAdmin ? scheme.primary : scheme.onSurfaceVariant,
                     ),
                   ],
                 ),
@@ -188,7 +186,7 @@ class RepeaterHubScreen extends StatelessWidget {
               icon: Icons.analytics,
               title: l10n.repeater_status,
               subtitle: l10n.repeater_statusSubtitle,
-              accentColor: MeshPalette.blue,
+              accentColor: scheme.primary,
               onTap: () {
                 HapticFeedback.selectionClick();
                 Navigator.push(
@@ -208,7 +206,7 @@ class RepeaterHubScreen extends StatelessWidget {
               icon: Icons.bar_chart_sharp,
               title: l10n.repeater_telemetry,
               subtitle: l10n.repeater_telemetrySubtitle,
-              accentColor: MeshPalette.magenta,
+              accentColor: scheme.tertiary,
               onTap: () {
                 HapticFeedback.selectionClick();
                 Navigator.push(
