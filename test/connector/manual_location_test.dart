@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshcore_open/connector/meshcore_connector.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/storage/manual_location_store.dart';
-import 'package:meshcore_open/storage/prefs_manager.dart';
+import 'package:meshusf/connector/meshcore_connector.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/storage/manual_location_store.dart';
+import 'package:meshusf/storage/prefs_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _Connector extends MeshCoreConnector {

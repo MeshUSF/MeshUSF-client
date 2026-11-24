@@ -4,10 +4,10 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meshcore_open/connector/meshcore_connector.dart';
-import 'package:meshcore_open/connector/meshcore_protocol.dart';
-import 'package:meshcore_open/services/map_location_service.dart';
-import 'package:meshcore_open/storage/manual_location_store.dart';
+import 'package:meshusf/connector/meshcore_connector.dart';
+import 'package:meshusf/connector/meshcore_protocol.dart';
+import 'package:meshusf/services/map_location_service.dart';
+import 'package:meshusf/storage/manual_location_store.dart';
 
 class _MapConnector extends MeshCoreConnector {
   bool connected = true;
