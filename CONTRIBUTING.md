@@ -1,4 +1,12 @@
-# How to contribute to Meshcore Open
+## Contributing
+
+Contributions are welcome from USF students and the wider community. To get involved, email [meshusf@gmail.com](mailto:meshusf@gmail.com).
+
+USF students can attend project meetings on **Thursdays from 7 to 9 p.m. in ENG 004**.
+
+Follow the guidelines in this file, inherited from MeshCore Open, for feature branches, pull requests, implementation reviews, and testing. Open issues and pull requests in the MeshUSF repository.
+
+# How to contribute to MeshUSF
 
 Before submitting any pull requests (PR), please review the following information.
 
